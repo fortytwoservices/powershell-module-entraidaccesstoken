@@ -1,0 +1,97 @@
+name: ReleasePlease
+on:
+  repository_dispatch:
+    types: [create-pull-request]
+  pull_request:
+  push:
+    branches: [ "main" ]
+
+permissions:
+  pull-requests: write
+  contents: write
+
+jobs:
+
+  update-documentation:
+    if: github.event_name == 'pull_request'
+    name: Update psd1 and documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 2
+          ref: ${{ github.event.pull_request.head.ref }}
+      - name: Update Documentation.md and psd1 version
+        shell: pwsh
+        run: |
+          $Path = ".\Documentation.md"
+      
+          # Load platyPS module for generating markdown documentation
+          Install-Module platyPS -Scope CurrentUser -Confirm:$false -Force
+          Import-Module platyPS
+      
+          # Locate the module manifest file
+          $psd1 = Get-ChildItem -Recurse -Include *.psd1
+          $count = ($psd1 | Measure-Object).Count
+              if($count -ne 1) {
+              Write-Error "Wrong number of psd1 files found ($count)"
+              exit 1
+          }
+      
+          # Update the psd1 file with the release-please version
+          if((Test-Path ".release-please-manifest.json")) {
+              $releasePleaseVersion = (Get-Content ".release-please-manifest.json" | ConvertFrom-Json -AsHashTable)."."
+              if($releasePleaseVersion -notlike "*.*.*") {
+                  Write-Error "Invalid release-please version '($releasePleaseVersion)' found"
+                  exit 1
+              }
+      
+              # Replace the ModuleVersion line in the psd1 file
+              (Get-Content $psd1.FullName | 
+              ForEach-Object {if($_ -like "*ModuleVersion*=*"){"    ModuleVersion = '$releasePleaseVersion'"} else {$_}} | 
+              Out-String).Trim() | 
+              Set-Content $psd1.FullName
+          }
+          
+          # Import the module
+          $ModulePath = $psd1.FullName | Split-Path -Parent
+          $Module = Import-Module $ModulePath -Verbose -Force -PassThru
+          
+          # Generate Documentation.md
+          {
+              "# Documentation for module $($Module.Name)"
+              ""
+              $Module.Description
+              ""
+              "| Metadata | Information |"
+              "| --- | --- |"
+              "| Version | $($Module.Version) |"
+              if($Module.RequiredModules) {"| Required modules | $($Module.RequiredModules) |"}
+              if($Module.Author) {"| Author | $($Module.Author) |"}
+              if($Module.CompanyName) {"| Company name | $($Module.CompanyName) |"}
+              if($Module.PowerShellVersion) {"| PowerShell version | $($Module.PowerShellVersion) |"}
+              ""
+              
+              New-MarkdownHelp -Module $Module.Name -OutputFolder "$($ENV:RUNNER_TEMP)/generateddocs" -Force -NoMetadata |
+              Get-Content |
+              ForEach-Object {$_ -replace "^#","##"} |
+              ForEach-Object {$_ -replace "{{ Fill [\w\s]+ Description }}"}
+          }.Invoke() | Out-File -FilePath $Path -Encoding utf8 -Force
+      - name: Push back to PR
+        shell: pwsh
+        run: |
+          # Commit and push the changes back to the PR
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git add --all
+          git commit -m "chore: Update generated content"
+          git push origin ${{ github.event.pull_request.head.ref }}
+  release-please:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - uses: google-github-actions/release-please-action@e4dc86ba9405554aeba3c6bb2d169500e7d3b4ee # v4.1.1
+        with:
+          token: ${{ secrets.MARVIN_PAT }}
+          release-type: simple
