@@ -25,6 +25,9 @@ function Add-EntraIDAccessTokenProfile {
         [Parameter(Mandatory = $true, ParameterSetName = "clientsecret")]
         [securestring] $ClientSecret,
 
+        [Parameter(Mandatory = $false, ParameterSetName = "accesstoken")]
+        [String] $AccessToken,
+
         [Parameter(Mandatory = $false, ParameterSetName = "automationaccountmsi")]
         [ValidatePattern("^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$")]
         [String] $TrustingApplicationClientId,
@@ -58,6 +61,7 @@ function Add-EntraIDAccessTokenProfile {
             Resource                                = $Resource
             TenantId                                = $TenantId
             TrustingApplicationClientId             = $TrustingApplicationClientId
+            AccessToken                             = $AccessToken
         }
 
         Get-EntraIDAccessToken -Profile $Profile | Out-Null

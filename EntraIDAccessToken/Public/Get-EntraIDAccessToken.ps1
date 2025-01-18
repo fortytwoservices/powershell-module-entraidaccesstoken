@@ -38,7 +38,10 @@ function Get-EntraIDAccessToken {
             Write-Verbose "Access token expired for profile $Profile, getting new access token"
         }
 
-        if ($P.AuthenticationMethod -eq "clientsecret") {
+        if ($P.AuthenticationMethod -eq "accesstoken") {
+            return $P.AccessToken
+        } 
+        elseif ($P.AuthenticationMethod -eq "clientsecret") {
             if (!$P.ClientSecret) {
                 Write-Error "ClientSecretCredential must be specified when using clientsecret as authentication method"
                 return
