@@ -19,7 +19,6 @@ function Add-EntraIDAccessTokenProfile {
 
         [Parameter(Mandatory = $true, ParameterSetName = "clientsecret")]
         [Parameter(Mandatory = $true, ParameterSetName = "azuredevopsfederatedcredential")]
-        [Parameter(Mandatory = $false, ParameterSetName = "interactive")]
         [String] $TenantId,
 
         [Parameter(Mandatory = $true, ParameterSetName = "clientsecret")]
