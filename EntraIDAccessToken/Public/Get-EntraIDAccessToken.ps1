@@ -110,7 +110,7 @@ function Get-EntraIDAccessToken {
             }
             elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and !$P.TrustingApplicationClientId) {
                 $body = @{
-                    'resource' = $P.Resource
+                    'resource' = $P.TrustingApplicationClientId ? "api://AzureADTokenExchange" : $P.Resource
                 }
 
                 if ($P.ClientId) {
