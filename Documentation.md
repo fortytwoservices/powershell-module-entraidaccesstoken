@@ -22,12 +22,6 @@ Add-EntraIDAccessTokenProfile [-Profile <String>] [-Resource <String>] -TenantId
  -ClientSecret <SecureString> -ClientId <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
-#### interactive
-```
-Add-EntraIDAccessTokenProfile [-Profile <String>] [-Resource <String>] [-TenantId <String>]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
-```
-
 #### azuredevopsfederatedcredential
 ```
 Add-EntraIDAccessTokenProfile [-Profile <String>] [-Resource <String>] -TenantId <String> -ClientId <String>
@@ -98,18 +92,6 @@ Parameter Sets: clientsecret, azuredevopsfederatedcredential
 Aliases:
 
 Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-```yaml
-Type: String
-Parameter Sets: interactive
-Aliases:
-
-Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
