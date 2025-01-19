@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v1.1.0...v1.1.1) (2025-01-19)
+
+
+### Bug Fixes
+
+* Fix trusting app not working due to wrong resource ([a6f9a1c](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/a6f9a1c4e95ec862ffd5121026c85b9017fc3b46))
+* Remove interactive ([8c0d05e](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/8c0d05e08f2b91e4931df950061e3302e522ef2e))
+
 ## [1.1.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v1.0.0...v1.1.0) (2025-01-18)
 
 
