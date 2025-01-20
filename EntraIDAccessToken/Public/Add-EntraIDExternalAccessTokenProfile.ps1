@@ -14,7 +14,7 @@ function Add-EntraIDExternalAccessTokenProfile {
         [Parameter(Mandatory = $false)]
         [String] $Profile = "Default",
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $true)]
         [String] $AccessToken
     )
     
