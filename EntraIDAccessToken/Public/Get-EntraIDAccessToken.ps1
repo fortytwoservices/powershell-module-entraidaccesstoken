@@ -83,6 +83,9 @@ function Get-EntraIDAccessToken {
             if ($P.AuthenticationMethod -eq "clientsecret") {
                 $result = Get-EntraIDClientSecretAccessToken -Profile $P
             }
+            elseif ($P.AuthenticationMethod -eq "clientcertificate") {
+                $result = Get-EntraIDClientCertificateAccessToken -Profile $P
+            }
             elseif ($P.AuthenticationMethod -eq "azuredevopsfederatedcredential") {
                 $result = Get-EntraIDAzureDevOpsFederatedCredentialAccessToken -Profile $P
             }
