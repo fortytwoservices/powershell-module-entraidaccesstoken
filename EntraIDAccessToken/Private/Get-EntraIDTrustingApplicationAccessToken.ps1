@@ -1,5 +1,5 @@
 function Get-EntraIDTrustingApplicationAccessToken {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = "default")]
 
     Param(
         [Parameter(Mandatory = $true)]
