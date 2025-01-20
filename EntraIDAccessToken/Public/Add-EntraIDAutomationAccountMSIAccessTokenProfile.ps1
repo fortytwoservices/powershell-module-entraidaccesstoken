@@ -7,7 +7,7 @@ Add-EntraIDAccessTokenProfile
 
 #>
 function Add-EntraIDAutomationAccountMSIAccessTokenProfile {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = "default")]
 
     Param
     (
@@ -17,10 +17,10 @@ function Add-EntraIDAutomationAccountMSIAccessTokenProfile {
         [Parameter(Mandatory = $false)]
         [String] $Resource = "https://graph.microsoft.com",
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true, ParameterSetName = "trustingapplication")]
         [String] $TenantId,
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $true, ParameterSetName = "trustingapplication")]
         [ValidatePattern("^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$")]
         [String] $TrustingApplicationClientId,
 
