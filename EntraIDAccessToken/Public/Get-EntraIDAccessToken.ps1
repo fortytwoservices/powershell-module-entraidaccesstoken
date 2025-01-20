@@ -38,7 +38,7 @@ function Get-EntraIDAccessToken {
             Write-Verbose "Access token expired for profile $Profile, getting new access token"
         }
 
-        if ($P.AuthenticationMethod -eq "accesstoken") {
+        if ($P.AuthenticationMethod -eq "externalaccesstoken") {
             return $P.AccessToken
         } 
         elseif ($P.AuthenticationMethod -eq "clientsecret") {
@@ -81,74 +81,23 @@ function Get-EntraIDAccessToken {
         
         try {
             if ($P.AuthenticationMethod -eq "clientsecret") {
-                Write-Verbose "Getting access token using clientsecret with client_id $($P.ClientId)"
-                # Build body for request and send it in order to get an access token
-                $body = @{
-                    client_id     = $P.ClientId
-                    client_secret = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($P.ClientSecret))
-                    resource      = $P.Resource
-                    grant_type    = "client_credentials"
-                }
-            
-                # Get token
-                $result = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($P.TenantId)/oauth2/token" -Body $body -ErrorAction Stop
+                $result = Get-EntraIDClientSecretAccessToken -Profile $P
             }
             elseif ($P.AuthenticationMethod -eq "azuredevopsfederatedcredential") {
-                Write-Verbose "Getting access token using Azure DevOps Federated Workload Identity for client_id $($P.ClientId)"
-
-                # Build body for request and send it in order to get an access token
-                $body = @{
-                    client_id             = $clientid
-                    resource              = $P.Resource
-                    grant_type            = "client_credentials"
-                    client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-                    client_assertion      = $ENV:idToken
-                }
-            
-                # Get token
-                $result = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($P.TenantId)/oauth2/token" -Body $body -ErrorAction Stop
+                $result = Get-EntraIDAzureDevOpsFederatedCredentialAccessToken -Profile $P
             }
             elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and !$P.TrustingApplicationClientId) {
-                $body = @{
-                    'resource' = $P.TrustingApplicationClientId ? "api://AzureADTokenExchange" : $P.Resource
-                }
-
-                if ($P.ClientId) {
-                    Write-Verbose "Getting access token using Automation Account User Assigned Identity with client_id $($P.ClientId)"
-                    $body['client_id'] = $P.ClientId
-                }
-                else {
-                    Write-Verbose "Getting access token using Automation Account System Assigned Identity"
-                }
-                
-                $result = Invoke-RestMethod $env:IDENTITY_ENDPOINT -Method 'POST' -Headers @{
-                    'Metadata'          = 'true'
-                    'X-IDENTITY-HEADER' = $env:IDENTITY_HEADER
-                } -ContentType 'application/x-www-form-urlencoded' -Body $body
+                $result = Get-EntraIDAutomationAccountMSIAccessToken -Profile $P
+            }
+            elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and $P.TrustingApplicationClientId) {
+                $step1 = Get-EntraIDAutomationAccountMSIAccessToken -Profile $P -Resource "api://AzureADTokenExchange"
+                $result = Get-EntraIDTrustingApplicationAccessToken -Profile $P -JWT $step1.access_token
             }
         }
         catch {
             Write-Error "Caught error when getting access token: $($_)"
             return
         }
-
-        if ($P.TrustingApplicationClientId) {
-            try {
-                Write-Verbose "Getting access token for trusting application with client_id $($P.TrustingApplicationClientId) using MSI with client_id $($P.ClientId)"
-                $result = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($P.TenantId)/oauth2/token" -Body @{
-                    client_id             = $P.TrustingApplicationClientId
-                    client_assertion      = $result.access_token
-                    resource              = $P.Resource
-                    grant_type            = "client_credentials"
-                    client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-                } -ErrorAction Stop
-            }
-            catch {
-                Write-Error "Caught error when getting access token: $($_)"
-                return
-            }
-        }
-    
 
         if (!$result.access_token) {
             Write-Error "Unable to retrieve access token from Entra ID"
