@@ -4,40 +4,28 @@ A module for simplifying the process of getting an access token from Entra ID
 
 | Metadata | Information |
 | --- | --- |
-| Version | 1.1.1 |
+| Version | 2.0.0 |
 | Author | Marius Solbakken Mellum |
 | Company name | Fortytwo Technologies AS |
 | PowerShell version | 7.1 |
 
-## Add-EntraIDAccessTokenProfile
+## Add-EntraIDAutomationAccountMSIAccessTokenProfile
 
 ### SYNOPSIS
 Adds a new profile for getting Entra ID access tokens.
 
 ### SYNTAX
 
-#### clientsecret (Default)
+#### default (Default)
 ```
-Add-EntraIDAccessTokenProfile [-Profile <String>] [-Resource <String>] -TenantId <String>
- -ClientSecret <SecureString> -ClientId <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
-```
-
-#### azuredevopsfederatedcredential
-```
-Add-EntraIDAccessTokenProfile [-Profile <String>] [-Resource <String>] -TenantId <String> -ClientId <String>
- [-AzureDevOpsFederatedCredential] [-ProgressAction <ActionPreference>] [<CommonParameters>]
-```
-
-#### accesstoken
-```
-Add-EntraIDAccessTokenProfile [-Profile <String>] [-Resource <String>] [-AccessToken <String>]
+Add-EntraIDAutomationAccountMSIAccessTokenProfile [-Profile <String>] [-Resource <String>] [-ClientId <String>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
-#### automationaccountmsi
+#### trustingapplication
 ```
-Add-EntraIDAccessTokenProfile [-Profile <String>] [-Resource <String>] [-TrustingApplicationClientId <String>]
- [-ClientId <String>] [-AutomationAccountManagedServiceIdentity] [-ProgressAction <ActionPreference>]
+Add-EntraIDAutomationAccountMSIAccessTokenProfile [-Profile <String>] [-Resource <String>] -TenantId <String>
+ -TrustingApplicationClientId <String> [-ClientId <String>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
 ```
 
@@ -88,7 +76,494 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: clientsecret, azuredevopsfederatedcredential
+Parameter Sets: trustingapplication
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TrustingApplicationClientId
+
+
+```yaml
+Type: String
+Parameter Sets: trustingapplication
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
+## Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens.
+
+### SYNTAX
+
+```
+Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile [-Profile <String>] [-Resource <String>]
+ [-Scope <String>] -TenantId <String> -ClientId <String> [-V2Token] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Add-EntraIDAccessTokenProfile
+```
+
+### PARAMETERS
+
+#### -Profile
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Resource
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Scope
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com/.default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TenantId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -V2Token
+Specifies that we want a V2 token
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
+## Add-EntraIDClientCertificateAccessTokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens.
+
+### SYNTAX
+
+#### x509certificate2 (Default)
+```
+Add-EntraIDClientCertificateAccessTokenProfile [-Profile <String>] [-Resource <String>] [-Scope <String>]
+ -Certificate <X509Certificate2> -ClientId <String> [-TokenVersion <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+#### thumbprint
+```
+Add-EntraIDClientCertificateAccessTokenProfile [-Profile <String>] [-Resource <String>] [-Scope <String>]
+ -Thumbprint <String> -ClientId <String> [-TokenVersion <String>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+#### pfx
+```
+Add-EntraIDClientCertificateAccessTokenProfile [-Profile <String>] [-Resource <String>] [-Scope <String>]
+ -Path <String> -Password <SecureString> -ClientId <String> [-TokenVersion <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Add-EntraIDAccessTokenProfile
+```
+
+### PARAMETERS
+
+#### -Profile
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Resource
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Scope
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com/.default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Certificate
+
+
+```yaml
+Type: X509Certificate2
+Parameter Sets: x509certificate2
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Thumbprint
+
+
+```yaml
+Type: String
+Parameter Sets: thumbprint
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Path
+
+
+```yaml
+Type: String
+Parameter Sets: pfx
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Password
+
+
+```yaml
+Type: SecureString
+Parameter Sets: pfx
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TokenVersion
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: V1
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
+## Add-EntraIDClientSecretAccessTokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens.
+
+### SYNTAX
+
+#### v1 (Default)
+```
+Add-EntraIDClientSecretAccessTokenProfile [-Profile <String>] [-Resource <String>] -TenantId <String>
+ -ClientSecret <SecureString> -ClientId <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+#### v2
+```
+Add-EntraIDClientSecretAccessTokenProfile [-Profile <String>] [-Scope <String>] -TenantId <String>
+ -ClientSecret <SecureString> -ClientId <String> [-V2Token] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Add-EntraIDAccessTokenProfile
+```
+
+### PARAMETERS
+
+#### -Profile
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Resource
+
+
+```yaml
+Type: String
+Parameter Sets: v1
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Scope
+
+
+```yaml
+Type: String
+Parameter Sets: v2
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com/.default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TenantId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
 Aliases:
 
 Required: True
@@ -103,40 +578,10 @@ Accept wildcard characters: False
 
 ```yaml
 Type: SecureString
-Parameter Sets: clientsecret
+Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-#### -AccessToken
-
-
-```yaml
-Type: String
-Parameter Sets: accesstoken
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-#### -TrustingApplicationClientId
-
-
-```yaml
-Type: String
-Parameter Sets: automationaccountmsi
-Aliases:
-
-Required: False
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -148,7 +593,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: clientsecret, azuredevopsfederatedcredential
+Parameter Sets: (All)
 Aliases:
 
 Required: True
@@ -158,10 +603,28 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+#### -V2Token
+Specifies that we want a V2 token
+
 ```yaml
-Type: String
-Parameter Sets: automationaccountmsi
+Type: SwitchParameter
+Parameter Sets: v2
 Aliases:
+
+Required: True
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
 
 Required: False
 Position: Named
@@ -170,32 +633,66 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-#### -AutomationAccountManagedServiceIdentity
-Switch parameter used for specifying the authentication method (used only to set the parameter set)
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
+## Add-EntraIDExternalAccessTokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens.
+
+### SYNTAX
+
+```
+Add-EntraIDExternalAccessTokenProfile [[-Profile] <String>] [-AccessToken] <String>
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Add-EntraIDExternalAccessTokenProfile
+```
+
+### PARAMETERS
+
+#### -Profile
+
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: automationaccountmsi
+Type: String
+Parameter Sets: (All)
 Aliases:
 
-Required: True
-Position: Named
-Default value: False
+Required: False
+Position: 1
+Default value: Default
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-#### -AzureDevOpsFederatedCredential
-Switch parameter used for specifying the authentication method (used only to set the parameter set)
+#### -AccessToken
+
 
 ```yaml
-Type: SwitchParameter
-Parameter Sets: azuredevopsfederatedcredential
+Type: String
+Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: Named
-Default value: False
+Position: 2
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
