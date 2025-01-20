@@ -3,7 +3,7 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
 
     Param(
         [Parameter(Mandatory = $true)]
-        $Profile,
+        $AccessTokenProfile,
 
         [Parameter(Mandatory = $false, ParameterSetName = "v1")]
         [String] $Resource = $null,
@@ -13,33 +13,33 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
     )
 
     Process {
-        if ($Profile.V2Token) {
+        if ($AccessTokenProfile.V2Token) {
             $body = @{
-                client_id             = $Profile.ClientId
-                scope                 = $Scope ?? $Profile.Scope
+                client_id             = $AccessTokenProfile.ClientId
+                scope                 = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope : $Scope
                 grant_type            = "client_credentials"
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
                 client_assertion      = $ENV:idToken
             }
 
-            Write-Verbose "Getting access token (v2) for '$($body.scope)' using Azure DevOps Federated Workload Identity for client_id $($Profile.ClientId)"
+            Write-Verbose "Getting access token (v2) for '$($body.scope)' using Azure DevOps Federated Workload Identity for client_id $($AccessTokenProfile.ClientId)"
         
             # Get token
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($Profile.TenantId)/oauth2/v2.0/token" -Body $body
+            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body
         }
         else {
             $body = @{
-                client_id             = $Profile.ClientId
-                resource              = $Resource ?? $Profile.Resource
+                client_id             = $AccessTokenProfile.ClientId
+                resource              = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
                 grant_type            = "client_credentials"
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
                 client_assertion      = $ENV:idToken
             }
             
-            Write-Verbose "Getting access token (v1) for '$($body.resource)' using Azure DevOps Federated Workload Identity for client_id $($Profile.ClientId)"
+            Write-Verbose "Getting access token (v1) for '$($body.resource)' using Azure DevOps Federated Workload Identity for client_id $($AccessTokenProfile.ClientId)"
         
             # Get token
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($Profile.TenantId)/oauth2/token" -Body $body -ErrorAction Stop
+            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token" -Body $body -ErrorAction Stop
         }        
     }
 }

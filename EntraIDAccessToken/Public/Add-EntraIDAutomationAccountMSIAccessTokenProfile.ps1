@@ -12,7 +12,7 @@ function Add-EntraIDAutomationAccountMSIAccessTokenProfile {
     Param
     (
         [Parameter(Mandatory = $false)]
-        [String] $Profile = "Default",
+        [String] $Name = "Default",
 
         [Parameter(Mandatory = $false)]
         [String] $Resource = "https://graph.microsoft.com",
@@ -30,11 +30,11 @@ function Add-EntraIDAutomationAccountMSIAccessTokenProfile {
     )
     
     Process {
-        if ($Script:Profiles.ContainsKey($Profile)) {
-            Write-Warning "Profile $Profile already exists, overwriting"
+        if ($Script:Profiles.ContainsKey($Name)) {
+            Write-Warning "Profile $Name already exists, overwriting"
         }
 
-        $Script:Profiles[$Profile] = @{
+        $Script:Profiles[$Name] = @{
             AuthenticationMethod        = "automationaccountmsi"
             ClientId                    = $ClientId
             Resource                    = $Resource
@@ -42,6 +42,6 @@ function Add-EntraIDAutomationAccountMSIAccessTokenProfile {
             TrustingApplicationClientId = $TrustingApplicationClientId
         }
 
-        Get-EntraIDAccessToken -Profile $Profile | Out-Null
+        Get-EntraIDAccessToken -Profile $Name | Out-Null
     }
 }

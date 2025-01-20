@@ -12,7 +12,7 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
     Param
     (
         [Parameter(Mandatory = $false)]
-        [String] $Profile = "Default",
+        [String] $Name = "Default",
 
         [Parameter(Mandatory = $false)]
         [String] $Resource = "https://graph.microsoft.com",
@@ -43,8 +43,8 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
     )
     
     Process {
-        if ($Script:Profiles.ContainsKey($Profile)) {
-            Write-Warning "Profile $Profile already exists, overwriting"
+        if ($Script:Profiles.ContainsKey($Name)) {
+            Write-Warning "Profile $Name already exists, overwriting"
         }
 
         if($PSCmdlet.ParameterSetName -eq "x509certificate2") {
@@ -81,7 +81,7 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
         Write-Verbose "Certificate not valid after: $($Script:Certificate.NotAfter)"
         Write-Verbose "Certificate not valid before: $($Script:Certificate.NotBefore)"
 
-        $Script:Profiles[$Profile] = @{
+        $Script:Profiles[$Name] = @{
             AuthenticationMethod = "clientcertificate"
             ClientId             = $ClientId
             Resource             = $Resource
@@ -91,6 +91,6 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
             V2Token              = $TokenVersion -eq "v2"
         }
 
-        Get-EntraIDAccessToken -Profile $Profile | Out-Null
+        Get-EntraIDAccessToken -Profile $Name | Out-Null
     }
 }

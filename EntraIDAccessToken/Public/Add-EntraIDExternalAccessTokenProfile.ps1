@@ -12,22 +12,22 @@ function Add-EntraIDExternalAccessTokenProfile {
     Param
     (
         [Parameter(Mandatory = $false)]
-        [String] $Profile = "Default",
+        [String] $Name = "Default",
 
         [Parameter(Mandatory = $true)]
         [String] $AccessToken
     )
     
     Process {
-        if ($Script:Profiles.ContainsKey($Profile)) {
-            Write-Warning "Profile $Profile already exists, overwriting"
+        if ($Script:Profiles.ContainsKey($Name)) {
+            Write-Warning "Profile $Name already exists, overwriting"
         }
 
-        $Script:Profiles[$Profile] = @{
+        $Script:Profiles[$Name] = @{
             AuthenticationMethod = "externalaccesstoken"
             AccessToken          = $AccessToken
         }
 
-        Get-EntraIDAccessToken -Profile $Profile | Out-Null
+        Get-EntraIDAccessToken -Profile $Name | Out-Null
     }
 }

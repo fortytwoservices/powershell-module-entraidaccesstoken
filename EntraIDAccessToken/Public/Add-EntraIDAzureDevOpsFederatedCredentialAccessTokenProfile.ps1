@@ -12,7 +12,7 @@ function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
     Param
     (
         [Parameter(Mandatory = $false)]
-        [String] $Profile = "Default",
+        [String] $Name = "Default",
 
         [Parameter(Mandatory = $false)]
         [String] $Resource = "https://graph.microsoft.com",
@@ -33,11 +33,11 @@ function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
     )
     
     Process {
-        if ($Script:Profiles.ContainsKey($Profile)) {
-            Write-Warning "Profile $Profile already exists, overwriting"
+        if ($Script:Profiles.ContainsKey($Name)) {
+            Write-Warning "Profile $Name already exists, overwriting"
         }
 
-        $Script:Profiles[$Profile] = @{
+        $Script:Profiles[$Name] = @{
             AuthenticationMethod        = "azuredevopsfederatedcredential"
             ClientId                    = $ClientId
             Resource                    = $Resource
@@ -46,6 +46,6 @@ function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
             V2Token                     = $V2Token.IsPresent ? $true : $false
         }
 
-        Get-EntraIDAccessToken -Profile $Profile | Out-Null
+        Get-EntraIDAccessToken -Profile $Name | Out-Null
     }
 }

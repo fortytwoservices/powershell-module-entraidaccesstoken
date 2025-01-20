@@ -3,7 +3,7 @@ function Get-EntraIDTrustingApplicationAccessToken {
 
     Param(
         [Parameter(Mandatory = $true)]
-        $Profile,
+        $AccessTokenProfile,
         
         [Parameter(Mandatory = $true)]
         [String] $JWT,
@@ -17,21 +17,21 @@ function Get-EntraIDTrustingApplicationAccessToken {
 
     Process {
         if ($PSCmdlet.ParameterSetName -eq "v2") {
-            Write-Verbose "Getting access token (v2) for trusting application with client_id $($ClientId) using MSI with client_id $($Profile.ClientId)"
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($Profile.TenantId)/oauth2/v2.0/token" -Body @{
-                client_id             = $Profile.TrustingApplicationClientId
+            Write-Verbose "Getting access token (v2) for trusting application with client_id $($ClientId) using MSI with client_id $($AccessTokenProfile.ClientId)"
+            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body @{
+                client_id             = $AccessTokenProfile.TrustingApplicationClientId
                 client_assertion      = $JWT
-                scope                 = $Scope ?? $Profile.Scope
+                scope                 = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope : $Scope
                 grant_type            = "client_credentials"
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
             } -ErrorAction Stop
         }
         else {
-            Write-Verbose "Getting access token (v1) for trusting application with client_id $($ClientId) using MSI with client_id $($Profile.ClientId)"
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($Profile.TenantId)/oauth2/token" -Body @{
-                client_id             = $Profile.TrustingApplicationClientId
+            Write-Verbose "Getting access token (v1) for trusting application with client_id $($ClientId) using MSI with client_id $($AccessTokenProfile.ClientId)"
+            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token" -Body @{
+                client_id             = $AccessTokenProfile.TrustingApplicationClientId
                 client_assertion      = $JWT
-                scope                 = $Scope ?? $Profile.Scope
+                resource              = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
                 grant_type            = "client_credentials"
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
             } -ErrorAction Stop

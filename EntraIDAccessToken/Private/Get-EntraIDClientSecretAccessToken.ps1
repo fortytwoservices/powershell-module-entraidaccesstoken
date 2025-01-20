@@ -3,7 +3,7 @@ function Get-EntraIDClientSecretAccessToken {
 
     Param(
         [Parameter(Mandatory = $true)]
-        $Profile,
+        $AccessTokenProfile,
 
         [Parameter(Mandatory = $false, ParameterSetName = "v1")]
         [String] $Resource = $null,
@@ -13,31 +13,31 @@ function Get-EntraIDClientSecretAccessToken {
     )
 
     Process {
-        if ($Profile.V2Token) {
+        if ($AccessTokenProfile.V2Token) {
             $body = @{
-                client_id     = $Profile.ClientId
-                client_secret = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Profile.ClientSecret))
-                scope         = $Scope ?? $Profile.Scope
+                client_id     = $AccessTokenProfile.ClientId
+                client_secret = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($AccessTokenProfile.ClientSecret))
+                scope         = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope : $Scope
                 grant_type    = "client_credentials"
             }
 
-            Write-Verbose "Getting access token (v2) for '$($body.scope)' using Client Secret for client_id $($Profile.ClientId)"
+            Write-Verbose "Getting access token (v2) for '$($body.scope)' using Client Secret for client_id $($AccessTokenProfile.ClientId)"
         
             # Get token
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($Profile.TenantId)/oauth2/v2.0/token" -Body $body
+            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body
         }
         else {
             $body = @{
-                client_id     = $Profile.ClientId
-                client_secret = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($Profile.ClientSecret))
-                resource      = $Resource ?? $Profile.Resource
+                client_id     = $AccessTokenProfile.ClientId
+                client_secret = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($AccessTokenProfile.ClientSecret))
+                resource      = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
                 grant_type    = "client_credentials"
             }
 
-            Write-Verbose "Getting access token (v1) for '$($body.resource)' using Client Secret for client_id $($Profile.ClientId)"
+            Write-Verbose "Getting access token (v1) for '$($body.resource)' using Client Secret for client_id $($AccessTokenProfile.ClientId)"
         
             # Get token
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($Profile.TenantId)/oauth2/token" -Body $body
+            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token" -Body $body
         }        
     }
 }
