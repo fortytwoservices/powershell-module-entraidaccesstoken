@@ -18,13 +18,13 @@ Adds a new profile for getting Entra ID access tokens.
 
 #### default (Default)
 ```
-Add-EntraIDAutomationAccountMSIAccessTokenProfile [-Profile <String>] [-Resource <String>] [-ClientId <String>]
+Add-EntraIDAutomationAccountMSIAccessTokenProfile [-Name <String>] [-Resource <String>] [-ClientId <String>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 #### trustingapplication
 ```
-Add-EntraIDAutomationAccountMSIAccessTokenProfile [-Profile <String>] [-Resource <String>] -TenantId <String>
+Add-EntraIDAutomationAccountMSIAccessTokenProfile [-Name <String>] [-Resource <String>] -TenantId <String>
  -TrustingApplicationClientId <String> [-ClientId <String>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
 ```
@@ -41,7 +41,7 @@ Add-EntraIDAccessTokenProfile
 
 ### PARAMETERS
 
-#### -Profile
+#### -Name
 
 
 ```yaml
@@ -149,7 +149,7 @@ Adds a new profile for getting Entra ID access tokens.
 ### SYNTAX
 
 ```
-Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile [-Profile <String>] [-Resource <String>]
+Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile [-Name <String>] [-Resource <String>]
  [-Scope <String>] -TenantId <String> -ClientId <String> [-V2Token] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
 ```
@@ -166,7 +166,7 @@ Add-EntraIDAccessTokenProfile
 
 ### PARAMETERS
 
-#### -Profile
+#### -Name
 
 
 ```yaml
@@ -290,21 +290,21 @@ Adds a new profile for getting Entra ID access tokens.
 
 #### x509certificate2 (Default)
 ```
-Add-EntraIDClientCertificateAccessTokenProfile [-Profile <String>] [-Resource <String>] [-Scope <String>]
+Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>] [-Scope <String>]
  -Certificate <X509Certificate2> -ClientId <String> [-TokenVersion <String>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 #### thumbprint
 ```
-Add-EntraIDClientCertificateAccessTokenProfile [-Profile <String>] [-Resource <String>] [-Scope <String>]
+Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>] [-Scope <String>]
  -Thumbprint <String> -ClientId <String> [-TokenVersion <String>] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
 ```
 
 #### pfx
 ```
-Add-EntraIDClientCertificateAccessTokenProfile [-Profile <String>] [-Resource <String>] [-Scope <String>]
+Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>] [-Scope <String>]
  -Path <String> -Password <SecureString> -ClientId <String> [-TokenVersion <String>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
@@ -321,7 +321,7 @@ Add-EntraIDAccessTokenProfile
 
 ### PARAMETERS
 
-#### -Profile
+#### -Name
 
 
 ```yaml
@@ -490,13 +490,13 @@ Adds a new profile for getting Entra ID access tokens.
 
 #### v1 (Default)
 ```
-Add-EntraIDClientSecretAccessTokenProfile [-Profile <String>] [-Resource <String>] -TenantId <String>
+Add-EntraIDClientSecretAccessTokenProfile [-Name <String>] [-Resource <String>] -TenantId <String>
  -ClientSecret <SecureString> -ClientId <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 #### v2
 ```
-Add-EntraIDClientSecretAccessTokenProfile [-Profile <String>] [-Scope <String>] -TenantId <String>
+Add-EntraIDClientSecretAccessTokenProfile [-Name <String>] [-Scope <String>] -TenantId <String>
  -ClientSecret <SecureString> -ClientId <String> [-V2Token] [-ProgressAction <ActionPreference>]
  [<CommonParameters>]
 ```
@@ -513,7 +513,7 @@ Add-EntraIDAccessTokenProfile
 
 ### PARAMETERS
 
-#### -Profile
+#### -Name
 
 
 ```yaml
@@ -651,7 +651,7 @@ Adds a new profile for getting Entra ID access tokens.
 ### SYNTAX
 
 ```
-Add-EntraIDExternalAccessTokenProfile [[-Profile] <String>] [-AccessToken] <String>
+Add-EntraIDExternalAccessTokenProfile [[-Name] <String>] [-AccessToken] <String>
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -667,7 +667,7 @@ Add-EntraIDExternalAccessTokenProfile
 
 ### PARAMETERS
 
-#### -Profile
+#### -Name
 
 
 ```yaml
