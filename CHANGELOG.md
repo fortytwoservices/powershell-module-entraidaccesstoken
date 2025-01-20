@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.0.0...v2.0.1) (2025-01-20)
+
+
+### Bug Fixes
+
+* Add default param set name for Get-EntraIDTrustingApplicationAccessToken ([ddb630b](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/ddb630bff542c7222c293bea8caad9ad0083c207))
+
 ## [2.0.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v1.1.1...v2.0.0) (2025-01-20)
 
 
