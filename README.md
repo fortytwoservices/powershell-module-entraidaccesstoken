@@ -6,10 +6,10 @@ The overall approach to using the module is:
 
 1. Load the module (duh...)
 2. Add profiles using one or more of the following profiles (examples 1.*):
-  - Add-EntraIDClientSecretAccessTokenProfile
-  - Add-EntraIDAutomationAccountMSIAccessTokenProfile
-  - Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile
-  - Add-EntraIDExternalAccessTokenProfile
+    - Add-EntraIDClientSecretAccessTokenProfile
+    - Add-EntraIDAutomationAccountMSIAccessTokenProfile
+    - Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile
+    - Add-EntraIDExternalAccessTokenProfile
 3. Utilize ```Get-EntraIDAccessToken -Profile "Name"``` in scripts and modules to get the token (examples 2.*)
 
 ## Example 1.1 - Adding a default profile using client secret authentication and the Microsoft Graph resource
