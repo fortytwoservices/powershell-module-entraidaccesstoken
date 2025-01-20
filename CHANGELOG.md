@@ -1,5 +1,23 @@
 # Changelog
 
+## [2.0.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v1.1.1...v2.0.0) (2025-01-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* Refactor into separate add-entraid*accesstokenprofile cmdlets
+
+### Features
+
+* Add untested client certificate method ([e1556b0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/e1556b0e6fb7b7f6d9796846c34d1a05cc4ac457))
+* Refactor into separate add-entraid*accesstokenprofile cmdlets ([9ed3ff9](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/9ed3ff9ea802a42b79f774934ab34e071d325e8f))
+
+
+### Bug Fixes
+
+* Fix default parameter set ([290f571](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/290f5719d418d58458a14d77fb48cb2e96e8ada0))
+* Mandatory access token for the extenral access token method ([395626c](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/395626c700c78cc87d89e1612f43efbe69105454))
+
 ## [1.1.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v1.1.0...v1.1.1) (2025-01-19)
 
 
