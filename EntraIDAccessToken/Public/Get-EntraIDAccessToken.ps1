@@ -81,20 +81,20 @@ function Get-EntraIDAccessToken {
         
         try {
             if ($P.AuthenticationMethod -eq "clientsecret") {
-                $result = Get-EntraIDClientSecretAccessToken -Profile $P
+                $result = Get-EntraIDClientSecretAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "clientcertificate") {
-                $result = Get-EntraIDClientCertificateAccessToken -Profile $P
+                $result = Get-EntraIDClientCertificateAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "azuredevopsfederatedcredential") {
-                $result = Get-EntraIDAzureDevOpsFederatedCredentialAccessToken -Profile $P
+                $result = Get-EntraIDAzureDevOpsFederatedCredentialAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and !$P.TrustingApplicationClientId) {
-                $result = Get-EntraIDAutomationAccountMSIAccessToken -Profile $P
+                $result = Get-EntraIDAutomationAccountMSIAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and $P.TrustingApplicationClientId) {
-                $step1 = Get-EntraIDAutomationAccountMSIAccessToken -Profile $P -Resource "api://AzureADTokenExchange"
-                $result = Get-EntraIDTrustingApplicationAccessToken -Profile $P -JWT $step1.access_token
+                $step1 = Get-EntraIDAutomationAccountMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
+                $result = Get-EntraIDTrustingApplicationAccessToken -AccessTokenProfile $P -JWT $step1.access_token
             }
         }
         catch {

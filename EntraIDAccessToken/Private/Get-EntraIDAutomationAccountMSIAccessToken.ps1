@@ -3,7 +3,7 @@ function Get-EntraIDAutomationAccountMSIAccessToken {
 
     Param(
         [Parameter(Mandatory = $true)]
-        $Profile,
+        $AccessTokenProfile,
 
         [Parameter(Mandatory = $false, ParameterSetName = "v1")]
         [String] $Resource = $null
@@ -11,12 +11,12 @@ function Get-EntraIDAutomationAccountMSIAccessToken {
 
     Process {       
         $body = @{
-            'resource' = $Resource ?? $Profile.Resource
+            'resource' = $Resource ?? $AccessTokenProfile.Resource
         }
 
-        if ($Profile.ClientId) {
-            Write-Verbose "Getting access token for '$($body.resource)' using Automation Account User Assigned Identity with client_id $($Profile.ClientId)"
-            $body['client_id'] = $Profile.ClientId
+        if ($AccessTokenProfile.ClientId) {
+            Write-Verbose "Getting access token for '$($body.resource)' using Automation Account User Assigned Identity with client_id $($AccessTokenProfile.ClientId)"
+            $body['client_id'] = $AccessTokenProfile.ClientId
         }
         else {
             Write-Verbose "Getting access token for '$($body.resource)' using Automation Account System Assigned Identity"
