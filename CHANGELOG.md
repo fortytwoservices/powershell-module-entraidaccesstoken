@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.0.1...v2.0.2) (2025-01-20)
+
+
+### Bug Fixes
+
+* Module not getting token for proper resource ([898d242](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/898d242663efddda48bdccc3624a737539379262))
+
 ## [2.0.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.0.0...v2.0.1) (2025-01-20)
 
 
