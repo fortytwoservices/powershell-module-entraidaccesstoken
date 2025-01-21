@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.0.2...v2.0.3) (2025-01-21)
+
+
+### Bug Fixes
+
+* Correct resource for automation account msi access token ([725a4c2](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/725a4c2d9a8467903be38ecd23ed5bda0f6eaa00))
+
 ## [2.0.2](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.0.1...v2.0.2) (2025-01-20)
 
 
