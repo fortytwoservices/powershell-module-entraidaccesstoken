@@ -6,10 +6,10 @@ function Get-EntraIDClientCertificateAccessToken {
         $AccessTokenProfile,
 
         [Parameter(Mandatory = $false, ParameterSetName = "v1")]
-        [String] $Resource = $null,
+        [NullString] $Resource = $null,
 
         [Parameter(Mandatory = $false, ParameterSetName = "v2")]
-        [String] $Scope = $null
+        [NullString] $Scope = $null
     )
 
     Process {
@@ -24,7 +24,7 @@ function Get-EntraIDClientCertificateAccessToken {
                 client_id             = $AccessTokenProfile.ClientId
                 client_assertion      = $AssertionJWT
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-                scope                 = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope : $Scope
+                scope                 = $Scope ?? $AccessTokenProfile.Scope
                 grant_type            = "client_credentials"
             }
 
@@ -38,7 +38,7 @@ function Get-EntraIDClientCertificateAccessToken {
                 client_id             = $AccessTokenProfile.ClientId
                 client_assertion      = $AssertionJWT
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-                resource              = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
+                resource              = $Resource ?? $AccessTokenProfile.Resource
                 grant_type            = "client_credentials"
             }
 
