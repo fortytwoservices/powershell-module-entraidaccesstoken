@@ -9,10 +9,10 @@ function Get-EntraIDTrustingApplicationAccessToken {
         [String] $JWT,
 
         [Parameter(Mandatory = $false, ParameterSetName = "v1")]
-        [String] $Resource = $null,
+        [NullString] $Resource = $null,
 
         [Parameter(Mandatory = $false, ParameterSetName = "v2")]
-        [String] $Scope = $null
+        [NullString] $Scope = $null
     )
 
     Process {
@@ -21,7 +21,7 @@ function Get-EntraIDTrustingApplicationAccessToken {
             Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body @{
                 client_id             = $AccessTokenProfile.TrustingApplicationClientId
                 client_assertion      = $JWT
-                scope                 = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope : $Scope
+                scope                 = $Scope ?? $AccessTokenProfile.Scope
                 grant_type            = "client_credentials"
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
             } -ErrorAction Stop
@@ -31,7 +31,7 @@ function Get-EntraIDTrustingApplicationAccessToken {
             Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token" -Body @{
                 client_id             = $AccessTokenProfile.TrustingApplicationClientId
                 client_assertion      = $JWT
-                resource              = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
+                resource              = $Resource ?? $AccessTokenProfile.Resource
                 grant_type            = "client_credentials"
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
             } -ErrorAction Stop

@@ -6,12 +6,12 @@ function Get-EntraIDAutomationAccountMSIAccessToken {
         $AccessTokenProfile,
 
         [Parameter(Mandatory = $false, ParameterSetName = "v1")]
-        [String] $Resource = $null
+        [NullString] $Resource = $null
     )
 
     Process {       
         $body = @{
-            'resource' = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
+            'resource' = $Resource ?? $AccessTokenProfile.Resource
         }
 
         if ($AccessTokenProfile.ClientId) {

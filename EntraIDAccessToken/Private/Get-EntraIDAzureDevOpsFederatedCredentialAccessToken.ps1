@@ -6,17 +6,17 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
         $AccessTokenProfile,
 
         [Parameter(Mandatory = $false, ParameterSetName = "v1")]
-        [String] $Resource = $null,
+        [NullString] $Resource = $null,
 
         [Parameter(Mandatory = $false, ParameterSetName = "v2")]
-        [String] $Scope = $null
+        [NullString] $Scope = $null
     )
 
     Process {
         if ($AccessTokenProfile.V2Token) {
             $body = @{
                 client_id             = $AccessTokenProfile.ClientId
-                scope                 = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope : $Scope
+                scope                 = $Scope ?? $AccessTokenProfile.Scope
                 grant_type            = "client_credentials"
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
                 client_assertion      = $ENV:idToken
@@ -30,7 +30,7 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
         else {
             $body = @{
                 client_id             = $AccessTokenProfile.ClientId
-                resource              = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
+                resource              = $Resource ?? $AccessTokenProfile.Resource
                 grant_type            = "client_credentials"
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
                 client_assertion      = $ENV:idToken
