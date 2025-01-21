@@ -11,7 +11,7 @@ function Get-EntraIDAutomationAccountMSIAccessToken {
 
     Process {       
         $body = @{
-            'resource' = $Resource ?? $AccessTokenProfile.Resource
+            'resource' = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
         }
 
         if ($AccessTokenProfile.ClientId) {
