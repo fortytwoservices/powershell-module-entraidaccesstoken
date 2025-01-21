@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.4](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.0.3...v2.0.4) (2025-01-21)
+
+
+### Bug Fixes
+
+* Fix nullable strings handling ([adb9bfe](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/adb9bfe4dac6bebd32fdd9bd35d27c4a57fc75e4))
+
 ## [2.0.3](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.0.2...v2.0.3) (2025-01-21)
 
 
