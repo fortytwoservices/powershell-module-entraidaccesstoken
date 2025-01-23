@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.0.4...v2.1.0) (2025-01-23)
+
+
+### Features
+
+* Add ConsistencyLevelEventual parameter to Get-EntraIDAccessTokenHeader function ([5689f40](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/5689f409689eafa75e47e16ac5d5daa84ec4477b))
+
 ## [2.0.4](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.0.3...v2.0.4) (2025-01-21)
 
 
