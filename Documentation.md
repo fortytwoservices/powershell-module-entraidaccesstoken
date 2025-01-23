@@ -810,7 +810,8 @@ Internal helper method.
 ### SYNTAX
 
 ```
-Get-EntraIDAccessTokenHeader [[-Profile] <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Get-EntraIDAccessTokenHeader [[-Profile] <String>] [-ConsistencyLevelEventual]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DESCRIPTION
@@ -836,6 +837,21 @@ Aliases:
 Required: False
 Position: 1
 Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ConsistencyLevelEventual
+
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
