@@ -11,12 +11,21 @@ function Get-EntraIDAccessTokenHeader {
 
     Param(
         [Parameter(Mandatory = $false)]
-        [String] $Profile = "Default"
+        [String] $Profile = "Default",
+
+        [Parameter(Mandatory = $false)]
+        [Switch] $ConsistencyLevelEventual
     )
 
     Process {
-        @{
+        $headers = @{
             Authorization = "Bearer $(Get-EntraIDAccessToken -Profile $Profile)"
         }
+
+        if ($ConsistencyLevelEventual.IsPresent) {
+            $headers["ConsistencyLevel"] = "eventual"
+        }
+
+        $headers
     }
 }
