@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.1.0...v2.1.1) (2025-01-23)
+
+
+### Bug Fixes
+
+* Roll back code simplification due to diff in NullString handling between ps 7.2 and 7.4 ([ce5f693](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/ce5f693251ad182604a484dcbcb5caa55122524b))
+
 ## [2.1.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.0.4...v2.1.0) (2025-01-23)
 
 
