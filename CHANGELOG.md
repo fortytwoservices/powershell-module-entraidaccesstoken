@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.2](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.1.1...v2.1.2) (2025-01-24)
+
+
+### Bug Fixes
+
+* Change way of decrypting secure string to work on mac ([f360a94](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/f360a9483b81fc445c83c7a6599b89b801cb359c))
+
 ## [2.1.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.1.0...v2.1.1) (2025-01-23)
 
 
