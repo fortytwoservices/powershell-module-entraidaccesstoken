@@ -13,8 +13,9 @@ function Get-EntraIDClientSecretAccessToken {
     )
 
     Process {
+        $credential = [pscredential]::new($AccessTokenProfile.ClientId, $AccessTokenProfile.ClientSecret)
+
         if ($AccessTokenProfile.V2Token) {
-            $credential = [pscredential]::new($AccessTokenProfile.ClientId, $AccessTokenProfile.ClientSecret)
             $body = @{
                 client_id     = $AccessTokenProfile.ClientId
                 client_secret = $credential.GetNetworkCredential().Password
@@ -30,7 +31,7 @@ function Get-EntraIDClientSecretAccessToken {
         else {
             $body = @{
                 client_id     = $AccessTokenProfile.ClientId
-                client_secret = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($AccessTokenProfile.ClientSecret))
+                client_secret = $credential.GetNetworkCredential().Password
                 resource      = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
                 grant_type    = "client_credentials"
             }
