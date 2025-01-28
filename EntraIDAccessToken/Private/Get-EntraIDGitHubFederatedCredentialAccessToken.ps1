@@ -22,33 +22,6 @@ function Get-EntraIDGitHubFederatedCredentialAccessToken {
             return
         }
 
-        if ($AccessTokenProfile.V2Token) {
-            $body = @{
-                client_id             = $AccessTokenProfile.ClientId
-                scope                 = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope: $Scope
-                grant_type            = "client_credentials"
-                client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-                client_assertion      = $GitHubJWT.Value # [System.Net.WebUtility]::UrlEncode($GitHubJWT.Value)
-            }
-
-            Write-Verbose "Getting access token (v2) for '$($body.scope)' using GitHub Federated Credential for client_id $($AccessTokenProfile.ClientId)"
-        
-            # Get token
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body
-        }
-        else {
-            $body = @{
-                client_id             = $AccessTokenProfile.ClientId
-                resource              = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Scope: $Resource
-                grant_type            = "client_credentials"
-                client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-                client_assertion      = $GitHubJWT.Value # [System.Net.WebUtility]::UrlEncode($GitHubJWT.Value)
-            }
-
-            Write-Verbose "Getting access token (v1) for '$($body.scope)' using GitHub Federated Credential for client_id $($AccessTokenProfile.ClientId)"
-        
-            # Get token
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body
-        }        
+        Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $AccessTokenProfile -JWT $GitHubJWT.Value -ClientId $AccessTokenProfile.ClientId
     }
 }

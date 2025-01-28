@@ -118,7 +118,7 @@ function Get-EntraIDAccessToken {
             }
             elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDAutomationAccountMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
-                $result = Get-EntraIDTrustingApplicationAccessToken -AccessTokenProfile $P -JWT $step1.access_token
+                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $AccessTokenProfile.TrustingApplicationClientId
             }
         }
         catch {
