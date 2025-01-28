@@ -811,7 +811,7 @@ Internal helper method.
 
 ```
 Get-EntraIDAccessTokenHeader [[-Profile] <String>] [-ConsistencyLevelEventual]
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-AdditionalHeaders] <Hashtable>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DESCRIPTION
@@ -852,6 +852,21 @@ Aliases:
 Required: False
 Position: Named
 Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -AdditionalHeaders
+
+
+```yaml
+Type: Hashtable
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
