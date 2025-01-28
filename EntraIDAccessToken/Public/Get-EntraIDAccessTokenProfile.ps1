@@ -11,19 +11,12 @@ function Get-EntraIDAccessTokenProfile {
 
     Param(
         [Parameter(Mandatory = $false)]
-        [String] $Profile = "Default"
+        [String] $Profile = "*"
     )
 
     Process {
-        if($Profile) {
-            if (!$Script:Profiles.ContainsKey($Profile)) {
-                Write-Error "Profile $Profile does not exist"
-                return
-            }
-
-            $Script:Profiles[$Profile] | Select-Object @{L="Profile";E={$Profile}}, TenantId, Resource,  AuthenticationMethod, ClientId
-        } else {
-            $Script:Profiles | Select-Object @{L="Profile";E={$Profile}}, TenantId, Resource,  AuthenticationMethod, ClientId
-        }
+        $Script:Profiles | 
+        Where-Object Name -like $Profile | 
+        Select-Object @{L="Profile";E={$Profile}}, TenantId, Resource,  AuthenticationMethod, ClientId
     }
 }
