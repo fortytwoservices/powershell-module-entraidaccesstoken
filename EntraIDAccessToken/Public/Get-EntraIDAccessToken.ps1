@@ -63,6 +63,27 @@ function Get-EntraIDAccessToken {
                 return
             }
         }
+        elseif ($P.AuthenticationMethod -eq "githubfederatedcredential") {
+            if (!$ENV:ACTIONS_ID_TOKEN_REQUEST_URL) {
+                Write-Error "Missing ACTIONS_ID_TOKEN_REQUEST_URL environment variable when using GitHub Federated Credential as authentication method"
+                return
+            }
+
+            if (!$ENV:ACTIONS_ID_TOKEN_REQUEST_TOKEN) {
+                Write-Error "Missing ACTIONS_ID_TOKEN_REQUEST_TOKEN environment variable when using GitHub Federated Credential as authentication method"
+                return
+            }
+
+            if (!$P.TenantId) {
+                Write-Error "TenantId is not set"
+                return
+            }
+
+            if (!$P.ClientId) {
+                Write-Error "TenantId is not set"
+                return
+            }
+        }
         elseif ($P.AuthenticationMethod -eq "automationaccountmsi") {
             if (!$ENV:IDENTITY_HEADER) {
                 Write-Error "Missing IDENTITY_HEADER environment variable when using Automation Acocunt Managed Service Identity as authentication method"
@@ -89,12 +110,15 @@ function Get-EntraIDAccessToken {
             elseif ($P.AuthenticationMethod -eq "azuredevopsfederatedcredential") {
                 $result = Get-EntraIDAzureDevOpsFederatedCredentialAccessToken -AccessTokenProfile $P
             }
+            elseif ($P.AuthenticationMethod -eq "githubfederatedcredential") {
+                $result = Get-EntraIDGitHubFederatedCredentialAccessToken -AccessTokenProfile $P
+            }
             elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and !$P.TrustingApplicationClientId) {
                 $result = Get-EntraIDAutomationAccountMSIAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDAutomationAccountMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
-                $result = Get-EntraIDTrustingApplicationAccessToken -AccessTokenProfile $P -JWT $step1.access_token
+                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $AccessTokenProfile.TrustingApplicationClientId
             }
         }
         catch {

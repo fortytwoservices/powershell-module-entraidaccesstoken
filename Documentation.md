@@ -722,6 +722,145 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### NOTES
 
 ### RELATED LINKS
+## Add-EntraIDGitHubFederatedCredentialAccessTokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens.
+
+### SYNTAX
+
+```
+Add-EntraIDGitHubFederatedCredentialAccessTokenProfile [-Name <String>] [-Resource <String>] [-Scope <String>]
+ -TenantId <String> -ClientId <String> [-V2Token] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Add-EntraIDGitHubFederatedCredentialAccessTokenProfile
+```
+
+### PARAMETERS
+
+#### -Name
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Resource
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Scope
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com/.default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TenantId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -V2Token
+Specifies that we want a V2 token
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
 ## Get-EntraIDAccessToken
 
 ### SYNOPSIS
@@ -773,6 +912,107 @@ Required: False
 Position: Named
 Default value: False
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
+## Get-EntraIDAccessTokenHasRoles
+
+### SYNOPSIS
+Decodes an input access token and returns the payload as a PowerShell object
+
+### SYNTAX
+
+#### All (Default)
+```
+Get-EntraIDAccessTokenHasRoles -Roles <String[]> -AccessToken <String> [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+#### Any
+```
+Get-EntraIDAccessTokenHasRoles -Roles <String[]> [-Any] -AccessToken <String>
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Get-EntraIDAccessToken | Compare-EntraIDAccessTokenRoles -Roles "Group.Create","AdministrativeUnit.Read.All"
+```
+
+### PARAMETERS
+
+#### -Roles
+
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Any
+
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Any
+Aliases:
+
+Required: True
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -AccessToken
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
@@ -992,7 +1232,7 @@ Aliases:
 
 Required: False
 Position: 1
-Default value: Default
+Default value: *
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
