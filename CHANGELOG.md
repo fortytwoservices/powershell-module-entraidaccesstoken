@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.3.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.2.0...v2.3.0) (2025-01-28)
+
+
+### Features
+
+* Add Get-EntraIDAccessTokenHasRoles for ensuring access to certain scopes ([5b6ec58](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/5b6ec5882116265e92547932c7cb9aa81461d9d9))
+* Add github federated credential support ([e586d88](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/e586d88199b28875b8377244e81fa9a9630d94e4))
+* Simplify code with using the same cmdlet (Get-EntraIDFederatedCredentialAccessToken) for everyone using federated credentials ([9f5daea](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/9f5daea91ba2714f9effcbd96520dac47df0d383))
+
+
+### Bug Fixes
+
+* Allow Get-EntraIDAccessTokenProfile to return all profiles ([56864d2](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/56864d24c7d9c49feb663f2d0adc0dbd9407ea5a))
+* Correct name from Get-EntraIDAccessTokenProfile ([34ca38a](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/34ca38a459e233126acd337a321320cef422d655))
+
 ## [2.2.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.1.2...v2.2.0) (2025-01-28)
 
 
