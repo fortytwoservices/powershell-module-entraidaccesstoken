@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.1.2...v2.2.0) (2025-01-28)
+
+
+### Features
+
+* Add AdditionalHeaders to Get-EntraIDAccessTokenHeader ([6689cd0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/6689cd0bc9be941972c3500731330f22501517c4))
+
 ## [2.1.2](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.1.1...v2.1.2) (2025-01-24)
 
 
