@@ -52,6 +52,17 @@ function Get-EntraIDAccessToken {
                 return
             }
         }
+        elseif ($P.AuthenticationMethod -eq "clientcertificate") {
+            if (!$P.Certificate) {
+                Write-Error "No certificate specificed for clientcertificate auth method"
+                return
+            }
+
+            if (!$P.TenantId) {
+                Write-Error "TenantId is not set"
+                return
+            }
+        }
         elseif ($P.AuthenticationMethod -eq "azuredevopsfederatedcredential") {
             if (!$ENV:idToken) {
                 Write-Error "Missing idToken environment variable (forgot addSpnToEnvironment?) when using Azure DevOps Federated Workload Identity as authentication method"

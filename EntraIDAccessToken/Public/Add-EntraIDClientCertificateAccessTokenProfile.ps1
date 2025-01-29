@@ -36,6 +36,9 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
         [ValidatePattern("^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$")]
         [String] $ClientId,
 
+        [Parameter(Mandatory = $true)]
+        [ValidatePattern("^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$")]
+        [String] $TenantId,
         
         [Parameter(Mandatory = $false)]
         [ValidateSet("v1", "v2")]
@@ -76,10 +79,10 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
             throw "Certificate $($Certificate.Thumbprint) does not have a private key"
         }
         
-        Write-Verbose "Certificate thumbprint: $($Script:Certificate.Thumbprint)"
-        Write-Verbose "Certificate subject: $($Script:Certificate.Subject)"
-        Write-Verbose "Certificate not valid after: $($Script:Certificate.NotAfter)"
-        Write-Verbose "Certificate not valid before: $($Script:Certificate.NotBefore)"
+        Write-Verbose "Certificate thumbprint: $($Certificate.Thumbprint)"
+        Write-Verbose "Certificate subject: $($Certificate.Subject)"
+        Write-Verbose "Certificate not valid after: $($Certificate.NotAfter)"
+        Write-Verbose "Certificate not valid before: $($Certificate.NotBefore)"
 
         $Script:Profiles[$Name] = @{
             AuthenticationMethod = "clientcertificate"
