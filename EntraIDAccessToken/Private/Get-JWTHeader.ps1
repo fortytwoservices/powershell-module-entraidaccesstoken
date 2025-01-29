@@ -18,7 +18,7 @@ function Get-JWTHeader {
                         [ordered] @{
                             "alg" = "RS256"
                             "kid" = $Certificate.Thumbprint
-                            "x5t" = [uri]::EscapeDataString([System.Convert]::ToBase64String($Certificate.GetCertHash()))
+                            "x5t" = (([System.Convert]::ToBase64String($Certificate.GetCertHash())) -replace '\+','-' -replace '/','_' -replace '=')
                             "typ" = "JWT"
                         } | ConvertTo-Json -Compress
                     )))) -replace "=+$" # Required to remove padding

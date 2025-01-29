@@ -291,21 +291,21 @@ Adds a new profile for getting Entra ID access tokens.
 #### x509certificate2 (Default)
 ```
 Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>] [-Scope <String>]
- -Certificate <X509Certificate2> -ClientId <String> [-TokenVersion <String>]
+ -Certificate <X509Certificate2> -ClientId <String> -TenantId <String> [-TokenVersion <String>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 #### thumbprint
 ```
 Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>] [-Scope <String>]
- -Thumbprint <String> -ClientId <String> [-TokenVersion <String>] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ -Thumbprint <String> -ClientId <String> -TenantId <String> [-TokenVersion <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 #### pfx
 ```
 Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>] [-Scope <String>]
- -Path <String> -Password <SecureString> -ClientId <String> [-TokenVersion <String>]
+ -Path <String> -Password <SecureString> -ClientId <String> -TenantId <String> [-TokenVersion <String>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -427,6 +427,21 @@ Accept wildcard characters: False
 ```
 
 #### -ClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TenantId
 
 
 ```yaml
