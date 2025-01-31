@@ -106,6 +106,17 @@ function Get-EntraIDAccessToken {
                 return
             }
         }
+        elseif ($P.AuthenticationMethod -eq "functionappmsi") {
+            if (!$ENV:IDENTITY_HEADER) {
+                Write-Error "Missing IDENTITY_HEADER environment variable when using Function App Managed Service Identity as authentication method"
+                return
+            }
+
+            if (!$ENV:IDENTITY_ENDPOINT) {
+                Write-Error "Missing IDENTITY_ENDPOINT environment variable when using Function App Managed Service Identity as authentication method"
+                return
+            }
+        }
         else {
             Write-Error "Unknown authentication method: $($P.AuthenticationMethod)"
             return
@@ -129,6 +140,13 @@ function Get-EntraIDAccessToken {
             }
             elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDAutomationAccountMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
+                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $AccessTokenProfile.TrustingApplicationClientId
+            }
+            elseif ($P.AuthenticationMethod -eq "functionappmsi" -and !$P.TrustingApplicationClientId) {
+                $result = Get-EntraIDFunctionAppMSIAccessToken -AccessTokenProfile $P
+            }
+            elseif ($P.AuthenticationMethod -eq "functionappmsi" -and $P.TrustingApplicationClientId) {
+                $step1 = Get-EntraIDFunctionAppMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
                 $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $AccessTokenProfile.TrustingApplicationClientId
             }
         }
