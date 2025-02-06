@@ -148,10 +148,16 @@ Adds a new profile for getting Entra ID access tokens.
 
 ### SYNTAX
 
+#### Default (Default)
 ```
 Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile [-Name <String>] [-Resource <String>]
- [-Scope <String>] -TenantId <String> -ClientId <String> [-V2Token] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+ -TenantId <String> -ClientId <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+#### v2
+```
+Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile [-Name <String>] [-Scope <String>]
+ -TenantId <String> -ClientId <String> [-V2Token] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DESCRIPTION
@@ -186,7 +192,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: Default
 Aliases:
 
 Required: False
@@ -201,7 +207,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: v2
 Aliases:
 
 Required: False
@@ -246,7 +252,7 @@ Specifies that we want a V2 token
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: v2
 Aliases:
 
 Required: True
