@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.4.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.3.1...v2.4.0) (2025-02-06)
+
+
+### Features
+
+* Add function app support through Add-EntraIDFunctionAppMSIAccessTokenProfile ([89e4c5a](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/89e4c5ab7b9b6477bdb55e91c073a5e94c7c7c8f))
+
+
+### Bug Fixes
+
+* Missing default parameter set name for devops fed cred profile ([90f17b4](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/90f17b4d0b0b6ca45793749279ab85c91e4a5f67))
+
 ## [2.3.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.3.0...v2.3.1) (2025-01-29)
 
 
