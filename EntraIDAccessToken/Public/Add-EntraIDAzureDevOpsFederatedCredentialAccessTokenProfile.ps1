@@ -7,17 +7,17 @@ Add-EntraIDAccessTokenProfile
 
 #>
 function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName="Default")]
 
     Param
     (
         [Parameter(Mandatory = $false)]
         [String] $Name = "Default",
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ParameterSetName = "Default")]
         [String] $Resource = "https://graph.microsoft.com",
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ParameterSetName = "v2")]
         [String] $Scope = "https://graph.microsoft.com/.default",
 
         [Parameter(Mandatory = $true)]
