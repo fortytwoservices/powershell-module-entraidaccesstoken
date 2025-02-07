@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.4.0...v2.5.0) (2025-02-07)
+
+
+### Features
+
+* Add support for Azure PowerShell Session (simple wrapper of get-azaccesstoken). This way we can utilize this module in a standard fashion for these situations too. ([57e140e](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/57e140e4bba2fc8d9f333e5c00fe72feee0a5cec))
+
 ## [2.4.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.3.1...v2.4.0) (2025-02-06)
 
 
