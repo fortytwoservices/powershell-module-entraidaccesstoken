@@ -117,6 +117,9 @@ function Get-EntraIDAccessToken {
                 return
             }
         }
+        elseif ($P.AuthenticationMethod -eq "azurepowershellsession") {
+            
+        }
         else {
             Write-Error "Unknown authentication method: $($P.AuthenticationMethod)"
             return
@@ -131,6 +134,9 @@ function Get-EntraIDAccessToken {
             }
             elseif ($P.AuthenticationMethod -eq "azuredevopsfederatedcredential") {
                 $result = Get-EntraIDAzureDevOpsFederatedCredentialAccessToken -AccessTokenProfile $P
+            }
+            elseif ($P.AuthenticationMethod -eq "azurepowershellsession") {
+                $result = Get-EntraIDAzurePowerShellSessionAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "githubfederatedcredential") {
                 $result = Get-EntraIDGitHubFederatedCredentialAccessToken -AccessTokenProfile $P
