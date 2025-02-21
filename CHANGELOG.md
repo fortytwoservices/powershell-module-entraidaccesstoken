@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.5.0...v2.5.1) (2025-02-21)
+
+
+### Bug Fixes
+
+* Fix for using Key Storage Provider instead of only legacy CSP ([e63eb70](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/e63eb70ab9e6f511b70981c8182f0b6ad0cdb819))
+
 ## [2.5.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.4.0...v2.5.0) (2025-02-07)
 
 
