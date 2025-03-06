@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.5.1...v2.6.0) (2025-03-06)
+
+
+### Features
+
+* Add default values for tenantid and clientid for Azure DevOps federerated credential ([27c5a4f](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/27c5a4febcac089bdcdcf7a1f0ae4a6120b5d2b8))
+
 ## [2.5.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.5.0...v2.5.1) (2025-02-21)
 
 
