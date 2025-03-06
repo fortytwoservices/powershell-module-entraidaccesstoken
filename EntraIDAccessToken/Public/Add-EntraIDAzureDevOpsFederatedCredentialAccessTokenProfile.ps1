@@ -20,12 +20,12 @@ function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
         [Parameter(Mandatory = $false, ParameterSetName = "v2")]
         [String] $Scope = "https://graph.microsoft.com/.default",
 
-        [Parameter(Mandatory = $true)]
-        [String] $TenantId,
+        [Parameter(Mandatory = $false)]
+        [String] $TenantId = $ENV:AZURESUBSCRIPTION_TENANT_ID,
 
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [ValidatePattern("^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$")]
-        [String] $ClientId,
+        [String] $ClientId = $ENV:AZURESUBSCRIPTION_CLIENT_ID,
 
         # Specifies that we want a V2 token
         [Parameter(Mandatory = $true, ParameterSetName = "v2")]
