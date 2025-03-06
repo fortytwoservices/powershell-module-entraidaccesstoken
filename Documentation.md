@@ -4,7 +4,7 @@ A module for simplifying the process of getting an access token from Entra ID
 
 | Metadata | Information |
 | --- | --- |
-| Version | 2.5.0 |
+| Version | 2.5.1 |
 | Author | Marius Solbakken Mellum |
 | Company name | Fortytwo Technologies AS |
 | PowerShell version | 7.1 |
@@ -151,13 +151,13 @@ Adds a new profile for getting Entra ID access tokens.
 #### Default (Default)
 ```
 Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile [-Name <String>] [-Resource <String>]
- -TenantId <String> -ClientId <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-TenantId <String>] [-ClientId <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 #### v2
 ```
 Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile [-Name <String>] [-Scope <String>]
- -TenantId <String> -ClientId <String> [-V2Token] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-TenantId <String>] [-ClientId <String>] [-V2Token] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DESCRIPTION
@@ -225,9 +225,9 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
-Default value: None
+Default value: $ENV:AZURESUBSCRIPTION_TENANT_ID
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -240,9 +240,9 @@ Type: String
 Parameter Sets: (All)
 Aliases:
 
-Required: True
+Required: False
 Position: Named
-Default value: None
+Default value: $ENV:AZURESUBSCRIPTION_CLIENT_ID
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
