@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.6.0...v2.6.1) (2025-03-14)
+
+
+### Bug Fixes
+
+* Fix for federated credentials using uai towards app reg ([f6f181d](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/f6f181d9cad206c72e181846a8b78a458420be44))
+
 ## [2.6.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.5.1...v2.6.0) (2025-03-06)
 
 
