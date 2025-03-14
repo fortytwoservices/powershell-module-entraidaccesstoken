@@ -146,14 +146,14 @@ function Get-EntraIDAccessToken {
             }
             elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDAutomationAccountMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
-                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $AccessTokenProfile.TrustingApplicationClientId
+                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
             }
             elseif ($P.AuthenticationMethod -eq "functionappmsi" -and !$P.TrustingApplicationClientId) {
                 $result = Get-EntraIDFunctionAppMSIAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "functionappmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDFunctionAppMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
-                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $AccessTokenProfile.TrustingApplicationClientId
+                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
             }
         }
         catch {
