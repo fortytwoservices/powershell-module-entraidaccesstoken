@@ -29,11 +29,7 @@ function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
 
         # Specifies that we want a V2 token
         [Parameter(Mandatory = $true, ParameterSetName = "v2")]
-        [Switch] $V2Token,
-    
-        [Parameter(Mandatory = $false, ParameterSetName = "Default")]
-        [Parameter(Mandatory = $false, ParameterSetName = "v2")]
-        [Switch] $UseOIDCRequestUri
+        [Switch] $V2Token
     )
     
     Process {
@@ -48,7 +44,6 @@ function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
             TenantId                    = $TenantId
             Scope                       = $Scope
             V2Token                     = $V2Token.IsPresent ? $true : $false
-            OIDCRequestUri              = $UseOIDCRequestUri.IsPresent ? $true : $false
         }
 
         Get-EntraIDAccessToken -Profile $Name | Out-Null
