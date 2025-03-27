@@ -13,13 +13,14 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
     )
 
     Process {
+        $token = Get-OIDCToken
         if ($AccessTokenProfile.V2Token) {
             $body = @{
                 client_id             = $AccessTokenProfile.ClientId
                 scope                 = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope: $Scope
                 grant_type            = "client_credentials"
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-                client_assertion      = $ENV:idToken
+                client_assertion      = $token
             }
 
             Write-Verbose "Getting access token (v2) for '$($body.scope)' using Azure DevOps Federated Workload Identity for client_id $($AccessTokenProfile.ClientId)"
@@ -33,7 +34,7 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
                 resource              = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
                 grant_type            = "client_credentials"
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-                client_assertion      = $ENV:idToken
+                client_assertion      = $token
             }
             
             Write-Verbose "Getting access token (v1) for '$($body.resource)' using Azure DevOps Federated Workload Identity for client_id $($AccessTokenProfile.ClientId)"
