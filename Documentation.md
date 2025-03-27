@@ -151,13 +151,15 @@ Adds a new profile for getting Entra ID access tokens.
 #### Default (Default)
 ```
 Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile [-Name <String>] [-Resource <String>]
- [-TenantId <String>] [-ClientId <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-TenantId <String>] [-ClientId <String>] [-UseOIDCRequestUri] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 #### v2
 ```
 Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile [-Name <String>] [-Scope <String>]
- [-TenantId <String>] [-ClientId <String>] [-V2Token] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [-TenantId <String>] [-ClientId <String>] [-V2Token] [-UseOIDCRequestUri] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### DESCRIPTION
@@ -256,6 +258,21 @@ Parameter Sets: v2
 Aliases:
 
 Required: True
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -UseOIDCRequestUri
+
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
 Position: Named
 Default value: False
 Accept pipeline input: False
