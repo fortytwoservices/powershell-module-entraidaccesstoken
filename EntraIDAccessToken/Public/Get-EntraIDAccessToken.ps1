@@ -69,8 +69,8 @@ function Get-EntraIDAccessToken {
                 return
             }
 
-            if ($P.OIDCRequestUri -and !$ENV:SYSTEM_ACCESSTOKEN) {
-                Write-Error "Missing idToken environment variable (forgot addSpnToEnvironment?) when using Azure DevOps Federated Workload Identity as authentication method"
+            if (!$ENV:SYSTEM_OIDCREQUESTURI -and !$ENV:AZURESUBSCRIPTION_SERVICE_CONNECTION_ID) {
+                Write-Error "Missing SYSTEM_OIDCREQUESTURI or AZURESUBSCRIPTION_SERVICE_CONNECTION_ID environment variable when using Azure DevOps Federated Workload Identity as authentication method"
                 return
             }
 
