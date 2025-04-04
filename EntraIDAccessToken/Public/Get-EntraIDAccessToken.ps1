@@ -69,6 +69,11 @@ function Get-EntraIDAccessToken {
                 return
             }
 
+            if (!$ENV:SYSTEM_OIDCREQUESTURI -and !$ENV:AZURESUBSCRIPTION_SERVICE_CONNECTION_ID) {
+                Write-Error "Missing SYSTEM_OIDCREQUESTURI or AZURESUBSCRIPTION_SERVICE_CONNECTION_ID environment variable when using Azure DevOps Federated Workload Identity as authentication method"
+                return
+            }
+
             if (!$P.TenantId) {
                 Write-Error "TenantId is not set"
                 return
