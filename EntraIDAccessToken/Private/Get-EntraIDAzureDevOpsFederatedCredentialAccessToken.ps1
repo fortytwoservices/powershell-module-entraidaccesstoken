@@ -13,13 +13,20 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
     )
 
     Process {
-        $OIDCToken = Invoke-RestMethod `
+        
+        $OIDCToken = $null
+        if($ENV:SYSTEM_ACCESSTOKEN) {
+            $OIDCToken = Invoke-RestMethod `
                         -Uri "$($ENV:SYSTEM_OIDCREQUESTURI)?api-version=7.1&serviceConnectionId=$($ENV:AZURESUBSCRIPTION_SERVICE_CONNECTION_ID)" `
                         -Method Post `
                         -Headers @{
                             Authorization  = "Bearer $ENV:SYSTEM_ACCESSTOKEN"
                             'Content-Type' = 'application/json'
                         } | Select-Object -ExpandProperty oidcToken
+        } else {
+            Write-Warning "Please add SYSTEM_ACCESSTOKEN in order for Azure DevOps to work with Federated Workload Identity for long running tasks"
+            $OIDCToken = $ENV:idToken
+        }
 
         if ($AccessTokenProfile.V2Token) {
             $body = @{
