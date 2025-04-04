@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.6.2](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.6.1...v2.6.2) (2025-04-04)
+
+
+### Features
+
+* Add switch option to use OIDCRequestURI ([70df733](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/70df733ac7e97a754db9786186580bbd8e867ee7))
+* Move OIDC token retrieval ([4c1bd9e](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/4c1bd9e2d00f637f1a1cd13ef25ef94cf89986eb))
+* Remove Get-OIDCToken function ([591eac3](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/591eac33aaf95fb790a11cc12cb5f14b66551d74))
+* Remove OIDCRequestUri parameter ([d83ae75](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/d83ae75eebeca589d34c4d4eb2cd7e8940e30833))
+* Update error handling for missing OIDC request URI and service connection ID ([ec13f2f](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/ec13f2f0770cc2a901568b5b9cdf28c1a9785710))
+* Use OIDCREQUESTURI instead of env:idToken ([19e981b](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/19e981b3137deb6f27fcc1010247957eeeeeb5a9))
+
+
+### Bug Fixes
+
+* Do not break existing implementations ([3fbf15e](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/3fbf15e4010b41089ece2a2d35e814352e1890eb))
+
 ## [2.6.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.6.0...v2.6.1) (2025-03-14)
 
 
