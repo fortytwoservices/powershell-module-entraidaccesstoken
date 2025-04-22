@@ -13,9 +13,8 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
     )
 
     Process {
-        
         $OIDCToken = $null
-        if($ENV:SYSTEM_ACCESSTOKEN) {
+        if(![String]::ISNullOrEmpty($ENV:SYSTEM_ACCESSTOKEN)) {
             $OIDCToken = Invoke-RestMethod `
                         -Uri "$($ENV:SYSTEM_OIDCREQUESTURI)?api-version=7.1&serviceConnectionId=$($ENV:AZURESUBSCRIPTION_SERVICE_CONNECTION_ID)" `
                         -Method Post `
