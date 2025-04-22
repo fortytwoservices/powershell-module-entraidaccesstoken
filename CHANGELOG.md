@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.3](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.6.2...v2.6.3) (2025-04-22)
+
+
+### Bug Fixes
+
+* Handle missing ENV:SYSTEM_ACCESSTOKEN better for DevOps federated credential ([ae6933c](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/ae6933c02769e9a7e987c513e7b9714920dd0edc))
+
 ## [2.6.2](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.6.1...v2.6.2) (2025-04-04)
 
 
