@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.7.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.6.3...v2.7.0) (2025-04-24)
+
+
+### Features
+
+* Add Get-EntraIDAccessTokenSecureString ([a4a7e51](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/a4a7e517c7f4ad1e3f640e32498e1de3ad654b81))
+
 ## [2.6.3](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.6.2...v2.6.3) (2025-04-22)
 
 
