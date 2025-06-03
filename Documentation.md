@@ -1103,8 +1103,8 @@ Verifies that a provided token matches certain criteria
 ```
 Confirm-EntraIDAccessToken [[-Tid] <String>] [[-Aud] <String>] [[-Iss] <String>] [[-Idtyp] <String>]
  [[-Idp] <String>] [[-Sub] <String>] [[-Appid] <String>] [[-Azp] <String>] [[-Oid] <String>]
- [[-Scopes] <String[]>] [[-Wids] <String[]>] [[-OtherClaims] <Hashtable>] [-AccessToken] <String>
- [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-Scopes] <String[]>] [[-Wids] <String[]>] [[-Roles] <String[]>] [[-OtherClaims] <Hashtable>]
+ [-AccessToken] <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DESCRIPTION
@@ -1284,6 +1284,21 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+#### -Roles
+
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 12
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 #### -OtherClaims
 
 
@@ -1293,7 +1308,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 12
+Position: 13
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -1308,7 +1323,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 13
+Position: 14
 Default value: None
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
