@@ -33,6 +33,9 @@ function Confirm-EntraIDAccessToken {
         [String] $Appid = $null,
 
         [Parameter(Mandatory = $false)]
+        [String] $Azp = $null,
+
+        [Parameter(Mandatory = $false)]
         [String] $Oid = $null,
 
         [Parameter(Mandatory = $false)]
@@ -230,6 +233,12 @@ function Confirm-EntraIDAccessToken {
         # Check appid only if the appid parameter is provided
         if ($PSCmdlet.MyInvocation.BoundParameters.ContainsKey("appid") -and $Payload.appid -ne $Appid) {
             Write-Verbose "appid does not match: expected '$Appid', got '$($Payload.appid)'"
+            $AllMatch = $false
+        }
+
+        # Check azp only if the azp parameter is provided
+        if ($PSCmdlet.MyInvocation.BoundParameters.ContainsKey("azp") -and $Payload.azp -ne $Azp) {
+            Write-Verbose "azp does not match: expected '$Azp', got '$($Payload.azp)'"
             $AllMatch = $false
         }
 
