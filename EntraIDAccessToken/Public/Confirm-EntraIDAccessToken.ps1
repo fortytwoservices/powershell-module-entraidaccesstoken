@@ -65,36 +65,12 @@ function Confirm-EntraIDAccessToken {
         $AllMatch = $true
 
 
-        if($Payload.iss -notmatch "^https://sts\.windows\.net/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/$") {
+        if(
+            $Payload.iss -notmatch "^https://sts\.windows\.net/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/$" -and
+            $Payload.iss -notmatch "^https://login\.microsoftonline\.com/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/v2\.0$"
+        ) {
             Write-Error "The 'iss' claim in the token does not match the expected format for Microsoft Entra ID."
             return
-        }
-
-        # $DiscoveryUrl = $Payload.iss.TrimEnd("/") + "/.well-known/openid-configuration"
-        # Invoke-RestMethod -Uri $DiscoveryUrl -Method Get -ErrorAction Stop 
-        # $JwksUrl = "https://login.windows.net/common/discovery/keys"
-
-        $JwksUrl = $Payload.iss.TrimEnd("/") + "/discovery/v2.0/keys"
-        if($Payload.appid) {
-            $JwksUrl += "?appid=" + $Payload.appid
-        }
-        Write-Debug "Using JWKS URL: $JwksUrl"
-
-        # Get the JWKS from the cache or fetch it if not cached
-        if(($Script:ConfirmEntraIDAccessTokenJWKSCache[$JwksUrl].CacheExpiration ?? [DateTime]::MinValue) -lt (Get-Date)) {
-            Write-Debug "Fetching JWKS from $JwksUrl"
-            try {
-                $Jwks = Invoke-RestMethod -Uri $JwksUrl -Method Get -ErrorAction Continue
-                $Script:ConfirmEntraIDAccessTokenJWKSCache[$JwksUrl] = @{
-                    Keys           = $Jwks.keys
-                    CacheExpiration = (Get-Date).AddHours(8) # Cache for 8 hours
-                }
-            } catch {
-                Write-Error "Failed to fetch JWKS from $($JwksUrl): $_"
-                return
-            }
-        } else {
-            Write-Debug "Using cached JWKS for $JwksUrl"
         }
 
         # Extract the header from the JWT token
@@ -107,12 +83,35 @@ function Confirm-EntraIDAccessToken {
             return
         }
 
-        # Validate that the 'kid' claim is present in the header, and that the JWKS contains a key with the same 'kid'
         if(!$header.kid) {
             Write-Error "JWT header does not contain 'kid' claim"
             return
         }
-        $matchingKey = $Script:ConfirmEntraIDAccessTokenJWKSCache[$JwksUrl].Keys | Where-Object kid -eq $header.kid
+
+        if(!$Script:ConfirmEntraIDAccessTokenJWKSCache[$Payload.iss]?.ContainsKey($header.kid)) {
+            $DiscoveryUrl = $Payload.iss.TrimEnd("/") + "/.well-known/openid-configuration"
+
+            Write-Debug "Fetching JWKS from discovery URL: $DiscoveryUrl"
+            try {
+                $Discovery = Invoke-RestMethod -Uri $DiscoveryUrl -Method Get
+                if($Discovery.jwks_uri) {
+                    Write-Debug "Found JWKS URI in discovery document: $($Discovery.jwks_uri)"
+                    $JwksResult = Invoke-RestMethod -Uri "$($Discovery.jwks_uri)?appid=$($Payload.appid ?? $Payload.azp)" -Method Get
+                    $JwksResult.keys | ForEach-Object {
+                        $Script:ConfirmEntraIDAccessTokenJWKSCache[$Payload.iss] ??= @{}
+                        $Script:ConfirmEntraIDAccessTokenJWKSCache[$Payload.iss][$_.kid] = $_
+                    }
+                } else {
+                    Write-Error "Discovery document does not contain 'jwks_uri' claim"
+                    return
+                }
+            } catch {
+                Write-Error "Failed to fetch discovery document from $($DiscoveryUrl): $_"
+                return
+            }
+        }
+        $matchingKey = $Script:ConfirmEntraIDAccessTokenJWKSCache[$Payload.iss][$header.kid]
+
         if(!$matchingKey) {
             Write-Error "No matching key found in JWKS for kid '$($header.kid)'"
             return
@@ -137,7 +136,7 @@ function Confirm-EntraIDAccessToken {
         #$ToSign += "="
 
         # $ToSign = "{0}.{1}" -f $AccessToken.Split(".")[0].PadRight($AccessToken.Split(".")[0].Length + (4 - ($AccessToken.Split(".")[0].Length % 4)), "=").Replace("====", ""), $AccessToken.Split(".")[1].PadRight($AccessToken.Split(".")[1].Length + (4 - ($AccessToken.Split(".")[1].Length % 4)), "=").Replace("====", "")
-        $Signature = $AccessToken.Split(".")[2] | ConvertFrom-Base64UrlEncodedString -ByteArray
+        [byte[]] $Signature = $AccessToken.Split(".")[2] | ConvertFrom-Base64UrlEncodedString -ByteArray
         if (-not $Signature) {
             Write-Error "Failed to decode the JWT signature"
             return
@@ -151,18 +150,16 @@ function Confirm-EntraIDAccessToken {
             $rsaParams.Exponent = $matchingKey.e | ConvertFrom-Base64UrlEncodedString -ByteArray
             $publicKey.ImportParameters($rsaParams)
 
-            $hasher = [System.Security.Cryptography.HashAlgorithm]::Create('sha256')
-            $hash = $hasher.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($ToSign))
-            # $l = "-----BEGIN CERTIFICATE-----`n$($matchingKey.x5c)`n-----END CERTIFICATE-----"
+            # $hasher = [System.Security.Cryptography.HashAlgorithm]::Create('sha256')
+            # $hash = $hasher.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($ToSign))
 
-            [byte[]]$HeaderAndPayloadBytes = [System.Text.Encoding]::UTF8.GetBytes($ToSign)
+            [byte[]] $HeaderAndPayloadBytes = [System.Text.Encoding]::UTF8.GetBytes($ToSign)
 
 
-            $SignatureVerification = $publicKey.VerifyHash($hash, $Signature, [System.Security.Cryptography.HashAlgorithmName]::SHA256, [System.Security.Cryptography.RSASignaturePadding]::Pkcs1)
-            Write-Host "Signature verification result: $SignatureVerification"
+            # $SignatureVerification = $publicKey.VerifyHash($hash, $Signature, [System.Security.Cryptography.HashAlgorithmName]::SHA256, [System.Security.Cryptography.RSASignaturePadding]::Pkcs1)
+            # Write-Host "Signature verification result: $SignatureVerification"
 
             $SignatureVerification = $publicKey.VerifyData($HeaderAndPayloadBytes, $Signature, [System.Security.Cryptography.HashAlgorithmName]::SHA256 , [System.Security.Cryptography.RSASignaturePadding]::Pkcs1)
-            Write-Host "Signature verification result: $SignatureVerification"
         }
         catch {
             $SignatureVerification = $false
