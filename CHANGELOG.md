@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.8.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.7.0...v2.8.0) (2025-06-03)
+
+
+### Features
+
+* Add azp parameter verification to Confirm-EntraIDAccessToken ([62f5c52](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/62f5c52e719a4d4f69e26db2f6b14dad9225bff8))
+* Add roles parameter and validation to Confirm-EntraIDAccessToken ([ec78860](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/ec788602e5d0ae859a2dc21e3ba9d92e3137ab15))
+* Add working Confirm-EntraIDAccessToken ([f5556f0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/f5556f034b532672643446ecd76521e2fc4677ef))
+
+
+### Bug Fixes
+
+* Add verification of number of dots to Get-EntraIDAccessTokenPayload ([392a404](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/392a404ad562bd3955289221d22aa10820b7313e))
+
 ## [2.7.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.6.3...v2.7.0) (2025-04-24)
 
 
