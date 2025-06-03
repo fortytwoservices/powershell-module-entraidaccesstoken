@@ -45,6 +45,9 @@ function Confirm-EntraIDAccessToken {
         [String[]] $Wids = $null,
 
         [Parameter(Mandatory = $false)]
+        [String[]] $Roles = $null,
+
+        [Parameter(Mandatory = $false)]
         [System.Collections.Hashtable] $OtherClaims = $null,
 
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -264,6 +267,16 @@ function Confirm-EntraIDAccessToken {
             foreach ($Wid in $Wids) {
                 if ($Payload.wids -notcontains $Wid) {
                     Write-Verbose "Wid '$Wid' not found in token"
+                    $AllMatch = $false
+                }
+            }
+        }
+
+        # Check roles only if the roles parameter is provided
+        if ($PSCmdlet.MyInvocation.BoundParameters.ContainsKey("roles")) {
+            foreach ($Role in $Roles) {
+                if ($Payload.roles -notcontains $Role) {
+                    Write-Verbose "Role '$Role' not found in token"
                     $AllMatch = $false
                 }
             }
