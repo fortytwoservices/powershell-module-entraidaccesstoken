@@ -11,7 +11,10 @@ function Get-EntraIDAccessTokenPayload {
 
     Param(
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        [String] $InputObject
+        [String] $InputObject,
+
+        [Parameter(Mandatory = $false)]
+        [Switch] $AsHashTable
     )
 
     Process {
@@ -22,6 +25,6 @@ function Get-EntraIDAccessTokenPayload {
 
         $payload = $InputObject.Split(".")[1]
         $payload = $payload.PadRight($payload.Length + (4 - ($payload.Length % 4)), "=").Replace("====", "")
-        ConvertFrom-Json -InputObject ([System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($payload)))    
+        ConvertFrom-Json -InputObject ([System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($payload))) -AsHashtable:$AsHashTable
     }
 }
