@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.9.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.8.0...v2.9.0) (2025-06-04)
+
+
+### Features
+
+* Add ConvertFrom-EntraIDAccessToken and Write-EntraIDAccessToken functions for simplified output ([5a76007](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/5a760079aa7420cf99eb60bb6d8633d5ca5857f7))
+
 ## [2.8.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.7.0...v2.8.0) (2025-06-03)
 
 
