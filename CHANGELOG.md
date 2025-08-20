@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.10.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.9.0...v2.10.0) (2025-08-20)
+
+
+### Features
+
+* Add user interactive token profile ([11fdf50](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/11fdf50fcf856bb826d5d037d39ceafabc39cb96))
+
 ## [2.9.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.8.0...v2.9.0) (2025-06-04)
 
 
