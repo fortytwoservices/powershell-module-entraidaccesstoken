@@ -125,6 +125,12 @@ function Get-EntraIDAccessToken {
         elseif ($P.AuthenticationMethod -eq "azurepowershellsession") {
             
         }
+        elseif ($P.AuthenticationMethod -eq "interactiveuser") {
+            if (!$P.ClientId) {
+                Write-Error "ClientId is not set"
+                return
+            }
+        }
         else {
             Write-Error "Unknown authentication method: $($P.AuthenticationMethod)"
             return
@@ -142,6 +148,9 @@ function Get-EntraIDAccessToken {
             }
             elseif ($P.AuthenticationMethod -eq "azurepowershellsession") {
                 $result = Get-EntraIDAzurePowerShellSessionAccessToken -AccessTokenProfile $P
+            }
+            elseif ($P.AuthenticationMethod -eq "interactiveuser") {
+                $result = Get-EntraIDInteractiveUserAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "githubfederatedcredential") {
                 $result = Get-EntraIDGitHubFederatedCredentialAccessToken -AccessTokenProfile $P
