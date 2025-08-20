@@ -1093,6 +1093,161 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### NOTES
 
 ### RELATED LINKS
+## Add-EntraIDInteractiveUserAccessTokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens.
+
+### SYNTAX
+
+```
+Add-EntraIDInteractiveUserAccessTokenProfile [[-Name] <String>] [[-Scope] <String>] [[-TenantId] <String>]
+ [[-ClientId] <String>] [[-LocalhostPort] <Int32>] [[-Https] <Boolean>] [[-LaunchBrowser] <Boolean>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Add-EntraIDInteractiveUserAccessTokenProfile
+```
+
+### PARAMETERS
+
+#### -Name
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Scope
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: Https://graph.microsoft.com/.default offline_access
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TenantId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 3
+Default value: Common
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
+Default value: 14d82eec-204b-4c2f-b7e8-296a70dab67e
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -LocalhostPort
+
+
+```yaml
+Type: Int32
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 5
+Default value: -1
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Https
+
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 6
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -LaunchBrowser
+
+
+```yaml
+Type: Boolean
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 7
+Default value: True
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
 ## Confirm-EntraIDAccessToken
 
 ### SYNOPSIS
