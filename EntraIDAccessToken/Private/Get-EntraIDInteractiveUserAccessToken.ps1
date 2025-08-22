@@ -19,7 +19,7 @@ function Get-EntraIDInteractiveUserAccessToken {
             }
 
             $response = Invoke-RestMethod -Method Post -Uri $tokenUrl -Body $body -ContentType "application/x-www-form-urlencoded" -Headers @{
-                Origin = "{0}://localhost" -f ($AccessTokenProfile.Https ? "https" : "http")
+                Origin = "{0}://localhost:{1}/" -f ($AccessTokenProfile.Https ? "https" : "http"), $AccessTokenProfile.LocalhostPort
             }
 
             if ($response.refresh_token) {
