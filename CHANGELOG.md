@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.10.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.10.0...v2.10.1) (2025-08-22)
+
+
+### Bug Fixes
+
+* Add origin header to fix issue AADSTS9002327 for multi tenant apps ([19ab425](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/19ab425b012b937ebd4b1c0b6c264380c54714e4))
+* Add origin port when getting refresh token ([02fe23a](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/02fe23aeb7d8c27eabf30334b12311d10cfecac0))
+
 ## [2.10.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.9.0...v2.10.0) (2025-08-20)
 
 
