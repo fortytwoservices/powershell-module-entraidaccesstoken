@@ -8,7 +8,7 @@ function Get-EntraIDInteractiveUserAccessToken {
 
     process {
         # If we already have a refresh token, use that to get a new access token
-        if($AccessTokenProfile["RefreshToken"]) {
+        if ($AccessTokenProfile["RefreshToken"]) {
             Write-Verbose "We have a refresh token, using it to get a new access token"
             $tokenUrl = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token"
             $body = @{
@@ -18,17 +18,20 @@ function Get-EntraIDInteractiveUserAccessToken {
                 scope         = $AccessTokenProfile.Scope
             }
 
-            $response = Invoke-RestMethod -Method Post -Uri $tokenUrl -Body $body -ContentType "application/x-www-form-urlencoded"
+            $response = Invoke-RestMethod -Method Post -Uri $tokenUrl -Body $body -ContentType "application/x-www-form-urlencoded" -Headers @{
+                Origin = "{0}://localhost:{1}/" -f ($AccessTokenProfile.Https ? "https" : "http"), $AccessTokenProfile.LocalhostPort
+            }
 
-            if($response.refresh_token) {
+            if ($response.refresh_token) {
                 Write-Debug "Received new refresh token, storing it for later use"
                 $AccessTokenProfile["RefreshToken"] = $response.refresh_token
             }
             
-            if($response.access_token) {
+            if ($response.access_token) {
                 $response
                 return
-            } else {
+            }
+            else {
                 Write-Error "Failed to obtain access token, going into interactive"
             }
         }
@@ -76,13 +79,21 @@ function Get-EntraIDInteractiveUserAccessToken {
         $request = $context.Request
 
         $code = $request.QueryString["code"]
+        $errorShort = $request.QueryString["error"]
+        $errorDescription = $request.QueryString["error_description"]
+
         if ($code) {
             Write-Verbose "Writing success message back to http stream"
-            $context.Response.OutputStream.Write([System.Text.Encoding]::UTF8.GetBytes("Authorization code received. You can close this window now."))
+            $context.Response.OutputStream.Write([System.Text.Encoding]::UTF8.GetBytes("<html><body>Authorization code received. You can close this window now.</body></html>"))
         }
         else {
+            $errorHtml = "<html><body>ERROR: Authorization code not received. Go back to powershell and retry.</body></html>"
+
+            if ($errorShort -or $errorDescription) {
+                $errorHtml = "<html><body><p><b>ERROR:</b> $($errorShort)</p><p>$($errorDescription)</p><p>Go back to powershell and retry.</p></body></html>"
+            }
             Write-Verbose "Writing error message back to http stream"
-            $context.Response.OutputStream.Write([System.Text.Encoding]::UTF8.GetBytes("ERROR: Authorization code not received. Go back to powershell and retry."))
+            $context.Response.OutputStream.Write([System.Text.Encoding]::UTF8.GetBytes($errorHtml))
         }
         
         $context.Response.OutputStream.Close()
@@ -100,14 +111,26 @@ function Get-EntraIDInteractiveUserAccessToken {
             client_id     = $AccessTokenProfile.ClientId
             scope         = $AccessTokenProfile.Scope
             code          = $code
-            redirect_uri  = "http://localhost:$($AccessTokenProfile.LocalhostPort)/"
+            redirect_uri  = "{0}://localhost:{1}/" -f ($AccessTokenProfile.Https ? "https" : "http"), $AccessTokenProfile.LocalhostPort
             grant_type    = "authorization_code"
             code_verifier = $codeVerifier
         }
 
-        $response = Invoke-RestMethod -Method Post -Uri $tokenUrl -Body $body -ContentType "application/x-www-form-urlencoded"
+        $headers = @{
+            Origin = "{0}://localhost:{1}/" -f ($AccessTokenProfile.Https ? "https" : "http"), $AccessTokenProfile.LocalhostPort
+        }
 
-        if($response.refresh_token) {
+
+        Write-Debug "Preparing body for token request:"
+        $body.Keys | ForEach-Object {
+            Write-Debug " - $($_) = $($body[$_])"
+        }
+
+        Write-Debug "Preparing headers for token request: $($headers | ConvertTo-Json)"
+
+        $response = Invoke-RestMethod -Method Post -Uri $tokenUrl -Body $body -ContentType "application/x-www-form-urlencoded" -Headers $headers
+
+        if ($response.refresh_token) {
             Write-Debug "Received refresh token, storing it for later use"
             $AccessTokenProfile["RefreshToken"] = $response.refresh_token
         }
