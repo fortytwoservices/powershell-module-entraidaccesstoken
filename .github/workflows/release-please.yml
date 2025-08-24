@@ -12,7 +12,7 @@ permissions:
 
 jobs:
 
-  update-documentation:
+  update-readme:
     if: github.event_name == 'pull_request'
     name: Update psd1 and documentation
     runs-on: ubuntu-latest
@@ -22,10 +22,10 @@ jobs:
         with:
           fetch-depth: 2
           ref: ${{ github.event.pull_request.head.ref }}
-      - name: Update Documentation.md and psd1 version
+      - name: Update readme.md and psd1 version
         shell: pwsh
         run: |
-          $Path = ".\Documentation.md"
+          $Path = ".\README.md"
       
           # Load platyPS module for generating markdown documentation
           Install-Module platyPS -Scope CurrentUser -Confirm:$false -Force
@@ -55,10 +55,14 @@ jobs:
           }
           
           # Import the module
+          $RequiredModules = [ScriptBlock]::Create((Get-Content -Raw $psd1.FullName)).Invoke().RequiredModules
+          if($RequiredModules) {
+            $RequiredModules | ForEach-Object {New-Module -Name $_ -ScriptBlock {} | Import-Module}
+          }
           $ModulePath = $psd1.FullName | Split-Path -Parent
           $Module = Import-Module $ModulePath -Verbose -Force -PassThru
           
-          # Generate Documentation.md
+          # Generate README.md
           {
               "# Documentation for module $($Module.Name)"
               ""
@@ -85,13 +89,13 @@ jobs:
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git add --all
-          git commit -m "chore: Update generated content"
+          git commit --signoff -m "chore: Update generated content"
           git push origin ${{ github.event.pull_request.head.ref }}
   release-please:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
-      - uses: google-github-actions/release-please-action@e4dc86ba9405554aeba3c6bb2d169500e7d3b4ee # v4.1.1
+      - uses: googleapis/release-please-action@c2a5a2bd6a758a0937f1ddb1e8950609867ed15c # v4.3.0
         with:
           token: ${{ secrets.MARVIN_PAT }}
-          release-type: simple
+          config-file: .github/release-please-config.json
