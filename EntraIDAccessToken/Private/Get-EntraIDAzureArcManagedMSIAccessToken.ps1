@@ -25,14 +25,19 @@ function Get-EntraIDAzureArcManagedMSIAccessToken {
             Write-Verbose "Getting access token for '$($body.resource)' using Azure Arc Managed Identity"
         } 
 
+        $secret = ""
         try {
             $result = Invoke-WebRequest -Method GET -Uri $uri -Headers @{Metadata = 'True' } -UseBasicParsing
             return ($result.Content | ConvertFrom-Json -Depth 10)
         }
         catch {
+            Write-Verbose "Caught exception when getting access token, extracting www-authenticate header"
             $wwwAuthHeader = $_.Exception.Response.Headers["WWW-Authenticate"]
             if ($wwwAuthHeader -match "Basic realm=.+") {
+                Write-Verbose "Extracted basic realm from WWW-Authenticate header"
                 $secret = ($wwwAuthHeader -split "Basic realm=")[1]
+            } else {
+                Write-Verbose "Unable to get basic realm from WWW-Authenticate header"
             }
 
             $response = Invoke-WebRequest -Method GET -Uri $uri -Headers @{Metadata = 'True'; Authorization = "Basic $secret" } -UseBasicParsing
