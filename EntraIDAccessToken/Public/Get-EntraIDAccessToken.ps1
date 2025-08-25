@@ -122,6 +122,12 @@ function Get-EntraIDAccessToken {
                 return
             }
         }
+        elseif ($P.AuthenticationMethod -eq "azurearcmsi") {
+            if (!$ENV:IDENTITY_ENDPOINT) {
+                Write-Error "Missing IDENTITY_ENDPOINT environment variable when using Azure Arc Managed Service Identity as authentication method"
+                return
+            }
+        }
         elseif ($P.AuthenticationMethod -eq "azurepowershellsession") {
             
         }
@@ -167,6 +173,13 @@ function Get-EntraIDAccessToken {
             }
             elseif ($P.AuthenticationMethod -eq "functionappmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDFunctionAppMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
+                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
+            }
+            elseif ($P.AuthenticationMethod -eq "azurearcmsi" -and !$P.TrustingApplicationClientId) {
+                $result = Get-EntraIDAzureArcManagedMSIAccessToken -AccessTokenProfile $P
+            }
+            elseif ($P.AuthenticationMethod -eq "azurearcmsi" -and $P.TrustingApplicationClientId) {
+                $step1 = Get-EntraIDAzureArcManagedMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
                 $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
             }
         }
