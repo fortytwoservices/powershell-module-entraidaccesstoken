@@ -1,0 +1,69 @@
+function Get-EntraIDAzureArcManagedMSIAccessToken {
+    [CmdletBinding(DefaultParameterSetName = "default")]
+
+    Param(
+        [Parameter(Mandatory = $true)]
+        $AccessTokenProfile,
+
+        [Parameter(Mandatory = $false, ParameterSetName = "v1")]
+        [String] $Resource = $null
+    )
+
+    Process {       
+        $uri = "$($env:IDENTITY_ENDPOINT)?api-version=2020-06-01"
+
+        # Add resource
+        $_Resource = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
+        $uri = "{0}&resource={1}" -f $uri, [System.Uri]::EscapeUriString($_Resource)
+
+        # Add client_id
+        if ($AccessTokenProfile.ClientId) {
+            Write-Verbose "Getting access token for '$($body.resource)' using Azure Arc Managed Identity with client_id $($AccessTokenProfile.ClientId)"
+            $uri = "{0}&client_id={1}" -f $uri, $AccessTokenProfile.ClientId
+        }
+        else {
+            Write-Verbose "Getting access token for '$($body.resource)' using Azure Arc Managed Identity"
+        } 
+
+        $secret = ""
+        try {
+            $result = Invoke-WebRequest -Method GET -Uri $uri -Headers @{Metadata = 'True' } -UseBasicParsing
+            return ($result.Content | ConvertFrom-Json -Depth 10)
+        }
+        catch {
+            Write-Verbose "Caught expected exception when getting access token, extracting www-authenticate header"
+            $wwwAuthHeader = $_.Exception.Response.Headers["WWW-Authenticate"]
+
+            if(!$wwwAuthHeader) {
+                $_.Exception.Response.Headers | Where-Object Key -eq "WWW-Authenticate" | ForEach-Object {
+                    $wwwAuthHeader = $_.Value
+                }
+            }
+
+            if ($wwwAuthHeader -match "Basic realm=.+") {
+                Write-Verbose "Extracted basic realm from WWW-Authenticate header"
+                $secretFile = ($wwwAuthHeader -split "Basic realm=")[1]
+            } else {
+                Write-Verbose "Unable to get basic realm from WWW-Authenticate header"
+                return
+            }
+
+            if(!$secretFile) {
+                Write-Verbose "Unable to find a path to a file in the WWW-Authenticate header"
+                return
+            }
+
+            if(!(Test-path $secretFile)) {
+                Write-Verbose "Secret file not found at path: $secretFile"
+                return
+            } else {
+                Write-Verbose "Secret file is $secretFile"
+            }
+
+            $secret = Get-Content -Raw $secretFile
+
+            $response = Invoke-WebRequest -Method GET -Uri $uri -Headers @{Metadata = 'True'; Authorization = "Basic $secret" } -UseBasicParsing
+            ConvertFrom-Json -InputObject $response.Content
+        }
+    }
+}
