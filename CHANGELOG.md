@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.11.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.10.1...v2.11.0) (2025-08-25)
+
+
+### Features
+
+* Add support for Azure Arc ([e222017](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/e222017805aa436b24efe73320a525814790534c))
+* Add support for Azure Arc ([965b3e8](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/965b3e8f711102190cddf07e98caed626b45f821))
+
+
+### Bug Fixes
+
+* Error ([38d370b](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/38d370b02e17918cd668c7b86a40087523fcffbc))
+* Try new method for www-authenticate header ([750e8c3](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/750e8c3b72e35231051adbc4e426d452e33d5146))
+
 ## [2.10.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.10.0...v2.10.1) (2025-08-22)
 
 
