@@ -35,10 +35,23 @@ function Get-EntraIDAzureArcManagedMSIAccessToken {
             $wwwAuthHeader = $_.Exception.Response.Headers["WWW-Authenticate"]
             if ($wwwAuthHeader -match "Basic realm=.+") {
                 Write-Verbose "Extracted basic realm from WWW-Authenticate header"
-                $secret = ($wwwAuthHeader -split "Basic realm=")[1]
+                $secretFile = ($wwwAuthHeader -split "Basic realm=")[1]
             } else {
                 Write-Verbose "Unable to get basic realm from WWW-Authenticate header"
+                return
             }
+
+            if(!$secretFile) {
+                Write-Verbose "Unable to find a path to a file in the WWW-Authenticate header"
+                return
+            }
+
+            if(!(Test-path $secretFile)) {
+                Write-Verbose "Secret file not found at path: $secretFile"
+                return
+            }
+
+            $secret = Get-Content -Raw $secretFile
 
             $response = Invoke-WebRequest -Method GET -Uri $uri -Headers @{Metadata = 'True'; Authorization = "Basic $secret" } -UseBasicParsing
             ConvertFrom-Json -InputObject $response.Content
