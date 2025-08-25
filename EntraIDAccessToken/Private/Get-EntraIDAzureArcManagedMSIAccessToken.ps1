@@ -31,7 +31,7 @@ function Get-EntraIDAzureArcManagedMSIAccessToken {
             return ($result.Content | ConvertFrom-Json -Depth 10)
         }
         catch {
-            Write-Verbose "Caught exception when getting access token, extracting www-authenticate header"
+            Write-Verbose "Caught expected exception when getting access token, extracting www-authenticate header"
             $wwwAuthHeader = $_.Exception.Response.Headers["WWW-Authenticate"]
 
             if(!$wwwAuthHeader) {
@@ -39,7 +39,7 @@ function Get-EntraIDAzureArcManagedMSIAccessToken {
                     $wwwAuthHeader = $_.Value
                 }
             }
-            
+
             if ($wwwAuthHeader -match "Basic realm=.+") {
                 Write-Verbose "Extracted basic realm from WWW-Authenticate header"
                 $secretFile = ($wwwAuthHeader -split "Basic realm=")[1]
