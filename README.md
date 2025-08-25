@@ -4,7 +4,7 @@ A module for simplifying the process of getting an access token from Entra ID
 
 | Metadata | Information |
 | --- | --- |
-| Version | 2.10.1 |
+| Version | 2.11.0 |
 | Author | Marius Solbakken Mellum |
 | Company name | Fortytwo Technologies AS |
 | PowerShell version | 7.1 |
@@ -37,6 +37,138 @@ Add-EntraIDAutomationAccountMSIAccessTokenProfile [-Name <String>] [-Resource <S
 #### EXAMPLE 1
 ```
 Add-EntraIDAccessTokenProfile
+```
+
+### PARAMETERS
+
+#### -Name
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Resource
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TenantId
+
+
+```yaml
+Type: String
+Parameter Sets: trustingapplication
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TrustingApplicationClientId
+
+
+```yaml
+Type: String
+Parameter Sets: trustingapplication
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
+## Add-EntraIDAzureArcManagedMSITokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens.
+
+### SYNTAX
+
+#### default (Default)
+```
+Add-EntraIDAzureArcManagedMSITokenProfile [-Name <String>] [-Resource <String>] [-ClientId <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+#### trustingapplication
+```
+Add-EntraIDAzureArcManagedMSITokenProfile [-Name <String>] [-Resource <String>] -TenantId <String>
+ -TrustingApplicationClientId <String> [-ClientId <String>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Add-EntraIDAzureArcManagedIdentityAccessTokenProfile
 ```
 
 ### PARAMETERS
