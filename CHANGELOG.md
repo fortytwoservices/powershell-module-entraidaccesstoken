@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.11.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.11.0...v2.11.1) (2025-08-27)
+
+
+### Bug Fixes
+
+* add method to remove trailing slash in query param Resource, improve verbose output ([0194b16](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/0194b1695186c1e1019bd7818905bddcc2ad90e5))
+* add method to remove trailing slash in query param Resource, improvee verbose output ([5de0f95](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/5de0f95a2556ffb876258f283a18a8f7d45b2c91))
+
 ## [2.11.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.10.1...v2.11.0) (2025-08-25)
 
 
