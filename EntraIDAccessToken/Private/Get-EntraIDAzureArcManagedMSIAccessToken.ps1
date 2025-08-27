@@ -14,15 +14,16 @@ function Get-EntraIDAzureArcManagedMSIAccessToken {
 
         # Add resource
         $_Resource = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
-        $uri = "{0}&resource={1}" -f $uri, [System.Uri]::EscapeUriString($_Resource)
+        # Remove any trailing '/' as this works as 'Resource' for other profiles, just not Azure Arc Managed Identities
+        $uri = "{0}&resource={1}" -f $uri, [System.Uri]::EscapeUriString($($_Resource -replace '/$', ''))
 
         # Add client_id
         if ($AccessTokenProfile.ClientId) {
-            Write-Verbose "Getting access token for '$($body.resource)' using Azure Arc Managed Identity with client_id $($AccessTokenProfile.ClientId)"
+            Write-Verbose "Getting access token for '$($AccessTokenProfile.Resource)' using Azure Arc Managed Identity with client_id $($AccessTokenProfile.ClientId)"
             $uri = "{0}&client_id={1}" -f $uri, $AccessTokenProfile.ClientId
         }
         else {
-            Write-Verbose "Getting access token for '$($body.resource)' using Azure Arc Managed Identity"
+            Write-Verbose "Getting access token for '$($AccessTokenProfile.Resource)' using Azure Arc Managed Identity"
         } 
 
         $secret = ""
