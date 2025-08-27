@@ -1380,6 +1380,146 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### NOTES
 
 ### RELATED LINKS
+## Add-EntraIDROPCAccessTokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens using the Resource Owner Password Credentials (ROPC) flow.
+
+### SYNTAX
+
+```
+Add-EntraIDROPCAccessTokenProfile [[-Name] <String>] [[-Scope] <String>] [-TenantId] <String>
+ [-ClientId] <String> [-ClientSecret] <SecureString> [-UserCredential] <PSCredential>
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Add-EntraIDROPCAccessTokenProfile.ps1
+```
+
+### PARAMETERS
+
+#### -Name
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Scope
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: Https://graph.microsoft.com/.default offline_access
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TenantId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ClientSecret
+
+
+```yaml
+Type: SecureString
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -UserCredential
+
+
+```yaml
+Type: PSCredential
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 6
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
 ## Confirm-EntraIDAccessToken
 
 ### SYNOPSIS

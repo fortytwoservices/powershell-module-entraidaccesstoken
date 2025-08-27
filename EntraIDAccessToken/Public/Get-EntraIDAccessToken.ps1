@@ -137,6 +137,22 @@ function Get-EntraIDAccessToken {
                 return
             }
         }
+        elseif ($P.AuthenticationMethod -eq "ropc") {
+            if (!$P.ClientId) {
+                Write-Error "ClientId is not set"
+                return
+            }
+
+            if(!$P.ClientSecret) {
+                Write-Error "ClientSecret is not set"
+                return
+            }
+
+            if(!$P.UserCredential) {
+                Write-Error "UserCredential is not set"
+                return
+            }
+        }
         else {
             Write-Error "Unknown authentication method: $($P.AuthenticationMethod)"
             return
@@ -157,6 +173,9 @@ function Get-EntraIDAccessToken {
             }
             elseif ($P.AuthenticationMethod -eq "interactiveuser") {
                 $result = Get-EntraIDInteractiveUserAccessToken -AccessTokenProfile $P
+            }
+            elseif ($P.AuthenticationMethod -eq "ropc") {
+                $result = Get-EntraIDROPCAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "githubfederatedcredential") {
                 $result = Get-EntraIDGitHubFederatedCredentialAccessToken -AccessTokenProfile $P
