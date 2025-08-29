@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.12.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.11.1...v2.12.0) (2025-08-27)
+
+
+### Features
+
+* Add ROPC access token profile ([c5a6beb](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/c5a6beb6deb6d7849294a70d28e2a5d3f7c13be7))
+* Add ROPC access token profile ([af945ab](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/af945ab485621f3ea1f849fd6088a741242d7322))
+
 ## [2.11.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.11.0...v2.11.1) (2025-08-27)
 
 
