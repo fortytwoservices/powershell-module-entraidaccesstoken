@@ -1,3 +1,13 @@
+<#
+.SYNOPSIS
+Converts an Entra ID Access Token (JWT) into its components: Header, Payload, and Signature.
+
+.DESCRIPTION
+Converts an Entra ID Access Token (JWT) into its components: Header, Payload,
+
+.EXAMPLE
+    PS> Get-EntraIDAccessToken | ConvertFrom-EntraIDAccessToken
+#>
 function ConvertFrom-EntraIDAccessToken {
     [CmdletBinding()]
     

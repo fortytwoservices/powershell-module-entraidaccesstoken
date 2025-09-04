@@ -1,10 +1,15 @@
 <#
 .SYNOPSIS
-Decodes an input access token and returns the payload as a PowerShell object
+Get a boolean indicating whether the input access token has all or any of the specified roles.
+
+.DESCRIPTION
+Get a boolean indicating whether the input access token has all or any of the specified roles.
 
 .EXAMPLE
-Get-EntraIDAccessToken | Compare-EntraIDAccessTokenRoles -Roles "Group.Create","AdministrativeUnit.Read.All"
+    PS> Get-EntraIDAccessToken |Get-EntraIDAccessTokenHasRoles -Roles "Group.Create"
 
+.EXAMPLE
+    PS> Get-EntraIDAccessToken |Get-EntraIDAccessTokenHasRoles -Roles "Group.Create", "Group.ReadWrite.All" -Any
 #>
 function Get-EntraIDAccessTokenHasRoles {
     [CmdletBinding(DefaultParameterSetName = "All")]

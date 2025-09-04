@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-Decodes an input access token and returns the payload as a PowerShell object
+Decodes an input access token and returns the payload as a hash table
 
 .EXAMPLE
 Get-EntraIDAccessToken | Get-EntraIDAccessTokenPayload

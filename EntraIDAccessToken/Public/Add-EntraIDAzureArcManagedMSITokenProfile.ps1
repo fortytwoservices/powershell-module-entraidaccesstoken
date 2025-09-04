@@ -1,9 +1,17 @@
 <#
 .SYNOPSIS
-Adds a new profile for getting Entra ID access tokens.
+Adds a new profile for getting Entra ID access tokens using the system assigned identity on an Azure Arc enabled server.
+
+.DESCRIPTION
+Adds a new profile for getting Entra ID access tokens using the system assigned identity on an Azure Arc enabled server.
 
 .EXAMPLE
-Add-EntraIDAzureArcManagedIdentityAccessTokenProfile
+# Get a token for Microsoft Graph
+Add-EntraIDAzureArcManagedMSITokenProfile
+
+.EXAMPLE
+# Get a token for Microsoft Graph using an app registration with federated credentials from the system assigned identity
+Add-EntraIDAzureArcManagedMSITokenProfile -TenantId "12345678-1234-1234-1234-123456789012" -TrustingApplicationClientId "87654321-4321-4321-4321-210987654321"
 
 #>
 function Add-EntraIDAzureArcManagedMSITokenProfile {

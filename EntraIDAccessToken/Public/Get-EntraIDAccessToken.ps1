@@ -2,8 +2,14 @@
 .SYNOPSIS
 Gets an access token from Entra ID for the configured profile
 
+.DESCRIPTION
+Gets an access token from Entra ID for the configured profile. The access token is cached until it is close to expiration, and a new token will be requested automatically when needed.
+
 .EXAMPLE
 Get-EntraIDAccessToken
+
+.EXAMPLE
+Get-EntraIDAccessToken -Profile "API" -ForceRefresh
 
 #>
 function Get-EntraIDAccessToken {
@@ -13,6 +19,7 @@ function Get-EntraIDAccessToken {
         [Parameter(Mandatory = $false)]
         [String] $Profile = "Default",
 
+        # If specified, a new access token will be requested even if the cached token is still valid
         [Parameter(Mandatory = $false)]
         [switch] $ForceRefresh
     )

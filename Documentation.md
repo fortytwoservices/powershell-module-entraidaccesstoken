@@ -4,7 +4,7 @@ A module for simplifying the process of getting an access token from Entra ID
 
 | Metadata | Information |
 | --- | --- |
-| Version | 2.10.1 |
+| Version | 2.12.0 |
 | Author | Marius Solbakken Mellum |
 | Company name | Fortytwo Technologies AS |
 | PowerShell version | 7.1 |
@@ -12,7 +12,7 @@ A module for simplifying the process of getting an access token from Entra ID
 ## Add-EntraIDAutomationAccountMSIAccessTokenProfile
 
 ### SYNOPSIS
-Adds a new profile for getting Entra ID access tokens.
+Adds a new profile for getting Entra ID access tokens using automation account managed identity.
 
 ### SYNTAX
 
@@ -36,7 +36,26 @@ Add-EntraIDAutomationAccountMSIAccessTokenProfile [-Name <String>] [-Resource <S
 
 #### EXAMPLE 1
 ```
-Add-EntraIDAccessTokenProfile
+## Use the system assigned managed identity of the automation account
+Add-EntraIDAutomationAccountMSIAccessTokenProfile
+```
+
+#### EXAMPLE 2
+```
+## Use a user assigned managed identity of the automation account
+Add-EntraIDAutomationAccountMSIAccessTokenProfile -ClientId "12345678-1234-1234-1234-123456789012"
+```
+
+#### EXAMPLE 3
+```
+## Use a system assigned managed identity with a federated credential to an app registration
+Add-EntraIDAutomationAccountMSIAccessTokenProfile -TenantId "12345678-1234-1234-1234-123456789012" -TrustingApplicationClientId "87654321-4321-4321-4321-210987654321"
+```
+
+#### EXAMPLE 4
+```
+## Use a user assigned managed identity with a federated credential to an app registration
+Add-EntraIDAutomationAccountMSIAccessTokenProfile -ClientId "12345678-1234-1234-1234-123456789012" -TenantId "12345678-1234-1234-1234-123456789012" -TrustingApplicationClientId "87654321-4321-4321-4321-210987654321"
 ```
 
 ### PARAMETERS
@@ -144,7 +163,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## Add-EntraIDAzureArcManagedMSITokenProfile
 
 ### SYNOPSIS
-Adds a new profile for getting Entra ID access tokens.
+Adds a new profile for getting Entra ID access tokens using the system assigned identity on an Azure Arc enabled server.
 
 ### SYNTAX
 
@@ -162,13 +181,20 @@ Add-EntraIDAzureArcManagedMSITokenProfile [-Name <String>] [-Resource <String>] 
 ```
 
 ### DESCRIPTION
-
+Adds a new profile for getting Entra ID access tokens using the system assigned identity on an Azure Arc enabled server.
 
 ### EXAMPLES
 
 #### EXAMPLE 1
 ```
-Add-EntraIDAzureArcManagedIdentityAccessTokenProfile
+## Get a token for Microsoft Graph
+Add-EntraIDAzureArcManagedMSITokenProfile
+```
+
+#### EXAMPLE 2
+```
+## Get a token for Microsoft Graph using an app registration with federated credentials from the system assigned identity
+Add-EntraIDAzureArcManagedMSITokenProfile -TenantId "12345678-1234-1234-1234-123456789012" -TrustingApplicationClientId "87654321-4321-4321-4321-210987654321"
 ```
 
 ### PARAMETERS
@@ -1380,6 +1406,146 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### NOTES
 
 ### RELATED LINKS
+## Add-EntraIDROPCAccessTokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens using the Resource Owner Password Credentials (ROPC) flow.
+
+### SYNTAX
+
+```
+Add-EntraIDROPCAccessTokenProfile [[-Name] <String>] [[-Scope] <String>] [-TenantId] <String>
+ [-ClientId] <String> [-ClientSecret] <SecureString> [-UserCredential] <PSCredential>
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Add-EntraIDROPCAccessTokenProfile.ps1
+```
+
+### PARAMETERS
+
+#### -Name
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Scope
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: Https://graph.microsoft.com/.default offline_access
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TenantId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ClientSecret
+
+
+```yaml
+Type: SecureString
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 5
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -UserCredential
+
+
+```yaml
+Type: PSCredential
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 6
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
 ## Confirm-EntraIDAccessToken
 
 ### SYNOPSIS
@@ -1644,7 +1810,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## ConvertFrom-EntraIDAccessToken
 
 ### SYNOPSIS
-{{ Fill in the Synopsis }}
+Converts an Entra ID Access Token (JWT) into its components: Header, Payload, and Signature.
 
 ### SYNTAX
 
@@ -1654,16 +1820,14 @@ ConvertFrom-EntraIDAccessToken [-AccessToken] <String> [-AsHashTable] [-Progress
 ```
 
 ### DESCRIPTION
-
+Converts an Entra ID Access Token (JWT) into its components: Header, Payload,
 
 ### EXAMPLES
 
-#### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+#### EXAMPLE 1
 ```
-
-{{ Add example description here }}
+Get-EntraIDAccessToken | ConvertFrom-EntraIDAccessToken
+```
 
 ### PARAMETERS
 
@@ -1676,7 +1840,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 0
+Position: 1
 Default value: None
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
@@ -1692,7 +1856,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: None
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -1717,10 +1881,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### INPUTS
 
-#### System.String
 ### OUTPUTS
 
-#### System.Object
 ### NOTES
 
 ### RELATED LINKS
@@ -1737,13 +1899,19 @@ Get-EntraIDAccessToken [[-Profile] <String>] [-ForceRefresh] [-ProgressAction <A
 ```
 
 ### DESCRIPTION
-
+Gets an access token from Entra ID for the configured profile.
+The access token is cached until it is close to expiration, and a new token will be requested automatically when needed.
 
 ### EXAMPLES
 
 #### EXAMPLE 1
 ```
 Get-EntraIDAccessToken
+```
+
+#### EXAMPLE 2
+```
+Get-EntraIDAccessToken -Profile "API" -ForceRefresh
 ```
 
 ### PARAMETERS
@@ -1764,7 +1932,7 @@ Accept wildcard characters: False
 ```
 
 #### -ForceRefresh
-
+If specified, a new access token will be requested even if the cached token is still valid
 
 ```yaml
 Type: SwitchParameter
@@ -1806,7 +1974,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## Get-EntraIDAccessTokenHasRoles
 
 ### SYNOPSIS
-Decodes an input access token and returns the payload as a PowerShell object
+Get a boolean indicating whether the input access token has all or any of the specified roles.
 
 ### SYNTAX
 
@@ -1823,13 +1991,18 @@ Get-EntraIDAccessTokenHasRoles -Roles <String[]> [-Any] -AccessToken <String>
 ```
 
 ### DESCRIPTION
-
+Get a boolean indicating whether the input access token has all or any of the specified roles.
 
 ### EXAMPLES
 
 #### EXAMPLE 1
 ```
-Get-EntraIDAccessToken | Compare-EntraIDAccessTokenRoles -Roles "Group.Create","AdministrativeUnit.Read.All"
+Get-EntraIDAccessToken |Get-EntraIDAccessTokenHasRoles -Roles "Group.Create"
+```
+
+#### EXAMPLE 2
+```
+Get-EntraIDAccessToken |Get-EntraIDAccessTokenHasRoles -Roles "Group.Create", "Group.ReadWrite.All" -Any
 ```
 
 ### PARAMETERS
@@ -1907,8 +2080,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## Get-EntraIDAccessTokenHeader
 
 ### SYNOPSIS
-Uses the configured credentials for getting an access token for the Inbound Provisioning API.
-Internal helper method.
+Gets an Entra ID Access Token in a header useable by Invoke-RestMethod or Invoke-WebRequest.
 
 ### SYNTAX
 
@@ -1918,13 +2090,24 @@ Get-EntraIDAccessTokenHeader [[-Profile] <String>] [-ConsistencyLevelEventual]
 ```
 
 ### DESCRIPTION
-
+Gets an Entra ID Access Token in a header useable by Invoke-RestMethod or Invoke-WebRequest.
+Additional headers can be added using the AdditionalHeaders parameter.
 
 ### EXAMPLES
 
 #### EXAMPLE 1
 ```
-Get-EntraIDAccessTokenHeader
+Invoke-RestMethod "https://graph.microsoft.com/v1.0/users" -Headers (Get-EntraIDAccessTokenHeader)
+```
+
+#### EXAMPLE 2
+```
+Get-EntraIDAccessTokenHeader -Profile "API" -ConsistencyLevelEventual
+```
+
+#### EXAMPLE 3
+```
+Get-EntraIDAccessTokenHeader -Profile "API" -AdditionalHeaders @{"X-Custom-Header"="Value"}
 ```
 
 ### PARAMETERS
@@ -2002,7 +2185,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## Get-EntraIDAccessTokenPayload
 
 ### SYNOPSIS
-Decodes an input access token and returns the payload as a PowerShell object
+Decodes an input access token and returns the payload as a hash table
 
 ### SYNTAX
 
@@ -2081,7 +2264,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## Get-EntraIDAccessTokenProfile
 
 ### SYNOPSIS
-Gets an access token from Entra ID for the configured profile
+Gets the Entra ID Access Token profile(s).
 
 ### SYNTAX
 
@@ -2090,13 +2273,19 @@ Get-EntraIDAccessTokenProfile [[-Profile] <String>] [-ProgressAction <ActionPref
 ```
 
 ### DESCRIPTION
-
+Gets the Entra ID Access Token profile(s).
+This can be useful in order to see which resources, tenant IDs, client IDs and authentication methods are used.
 
 ### EXAMPLES
 
 #### EXAMPLE 1
 ```
 Get-EntraIDAccessTokenProfile
+```
+
+#### EXAMPLE 2
+```
+Get-EntraIDAccessTokenProfile -Profile "API"
 ```
 
 ### PARAMETERS
@@ -2144,7 +2333,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## Get-EntraIDAccessTokenSecureString
 
 ### SYNOPSIS
-Gets an access token from Entra ID for the configured profile
+Gets an access token from Entra ID for the configured profile, as a secure string
 
 ### SYNTAX
 
@@ -2154,13 +2343,18 @@ Get-EntraIDAccessTokenSecureString [[-Profile] <String>] [-ProgressAction <Actio
 ```
 
 ### DESCRIPTION
-
+Gets an access token from Entra ID for the configured profile, as a secure string
 
 ### EXAMPLES
 
 #### EXAMPLE 1
 ```
-Get-EntraIDAccessToken
+Get-EntraIDAccessTokenSecureString
+```
+
+#### EXAMPLE 2
+```
+Get-EntraIDAccessTokenSecureString -Profile "API"
 ```
 
 ### PARAMETERS
@@ -2208,7 +2402,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## Write-EntraIDAccessToken
 
 ### SYNOPSIS
-{{ Fill in the Synopsis }}
+Write an Entra ID Access Token to the console with color coding.
 
 ### SYNTAX
 
@@ -2217,16 +2411,14 @@ Write-EntraIDAccessToken [-AccessToken] <String> [-ProgressAction <ActionPrefere
 ```
 
 ### DESCRIPTION
-
+Write an Entra ID Access Token to the console with color coding.
 
 ### EXAMPLES
 
-#### Example 1
-```powershell
-PS C:\> {{ Add example code here }}
+#### EXAMPLE 1
 ```
-
-{{ Add example description here }}
+Get-EntraIDAccessToken | Write-EntraIDAccessToken
+```
 
 ### PARAMETERS
 
@@ -2239,7 +2431,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: True
-Position: 0
+Position: 1
 Default value: None
 Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
@@ -2265,10 +2457,8 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### INPUTS
 
-#### System.String
 ### OUTPUTS
 
-#### System.Object
 ### NOTES
 
 ### RELATED LINKS
