@@ -20,7 +20,7 @@ function Confirm-EntraIDAccessToken {
         [String] $Iss = $null,
 
         [Parameter(Mandatory = $false)]
-        [ValidateSet("user","app")]
+        [ValidateSet("user", "app")]
         [String] $Idtyp = $null,
 
         [Parameter(Mandatory = $false)]
@@ -56,7 +56,7 @@ function Confirm-EntraIDAccessToken {
 
     Process {
         # Remove "bearer " prefix if it exists
-        if($AccessToken -like "bearer *") {
+        if ($AccessToken -like "bearer *") {
             Write-Debug "Removing 'bearer ' prefix from the input object"
             $AccessToken = $AccessToken.Substring(7).Trim()
         }
@@ -64,14 +64,19 @@ function Confirm-EntraIDAccessToken {
         # Extract payload from the JWT token
         $Payload = $AccessToken | Get-EntraIDAccessTokenPayload -ErrorAction SilentlyContinue
 
-        if(!$Payload) {
+        if (!$Payload) {
             Write-Error "Failed to decode the access token payload. Ensure the token is valid and properly formatted."
             return
         }
         $AllMatch = $true
 
+        if ($Payload.aud -eq 'https://graph.microsoft.com') {
+            Write-Error "Microsoft is doing weird stuff to the access token used by Microsoft Graph. The signature cannot be validated."
+            return
+        }
 
-        if(
+
+        if (
             $Payload.iss -notmatch "^https://sts\.windows\.net/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/$" -and
             $Payload.iss -notmatch "^https://login\.microsoftonline\.com/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/v2\.0$"
         ) {
@@ -84,44 +89,48 @@ function Confirm-EntraIDAccessToken {
         $headerjson = $headerjson.PadRight($headerjson.Length + (4 - ($headerjson.Length % 4)), "=").Replace("====", "")
         try {
             $header = ConvertFrom-Json -InputObject ([System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($headerjson)))
-        } catch {
+        }
+        catch {
             Write-Error "Failed to decode the JWT header: $_"
             return
         }
 
-        if(!$header.kid) {
+        if (!$header.kid) {
             Write-Error "JWT header does not contain 'kid' claim"
             return
         }
 
-        if(!$Script:ConfirmEntraIDAccessTokenJWKSCache[$Payload.iss]?.ContainsKey($header.kid)) {
+        if (!$Script:ConfirmEntraIDAccessTokenJWKSCache[$Payload.iss]?.ContainsKey($header.kid)) {
             $DiscoveryUrl = $Payload.iss.TrimEnd("/") + "/.well-known/openid-configuration"
 
             Write-Debug "Fetching JWKS from discovery URL: $DiscoveryUrl"
             try {
                 $Discovery = Invoke-RestMethod -Uri $DiscoveryUrl -Method Get
-                if($Discovery.jwks_uri) {
+                if ($Discovery.jwks_uri) {
                     Write-Debug "Found JWKS URI in discovery document: $($Discovery.jwks_uri)"
                     $JwksResult = Invoke-RestMethod -Uri "$($Discovery.jwks_uri)?appid=$($Payload.appid ?? $Payload.azp)" -Method Get
                     $JwksResult.keys | ForEach-Object {
                         $Script:ConfirmEntraIDAccessTokenJWKSCache[$Payload.iss] ??= @{}
                         $Script:ConfirmEntraIDAccessTokenJWKSCache[$Payload.iss][$_.kid] = $_
                     }
-                } else {
+                }
+                else {
                     Write-Error "Discovery document does not contain 'jwks_uri' claim"
                     return
                 }
-            } catch {
+            }
+            catch {
                 Write-Error "Failed to fetch discovery document from $($DiscoveryUrl): $_"
                 return
             }
         }
         $matchingKey = $Script:ConfirmEntraIDAccessTokenJWKSCache[$Payload.iss][$header.kid]
 
-        if(!$matchingKey) {
+        if (!$matchingKey) {
             Write-Error "No matching key found in JWKS for kid '$($header.kid)'"
             return
-        } else {
+        }
+        else {
             Write-Debug "Found matching key in JWKS for kid '$($header.kid)'"
         }
 
@@ -174,7 +183,7 @@ function Confirm-EntraIDAccessToken {
             $publicKey.Dispose()
         }
 
-        if(!$SignatureVerification) {
+        if (!$SignatureVerification) {
             Write-Error "Signature verification failed for the JWT token"
             return
         }
@@ -190,7 +199,8 @@ function Confirm-EntraIDAccessToken {
                 Write-Error "Token has expired (exp: $($Payload.exp))"
                 return
             }
-        } else {
+        }
+        else {
             Write-Error "Token does not contain nbf or exp claims"
             return
         }

@@ -1,3 +1,14 @@
+<#
+.SYNOPSIS
+    Write an Entra ID Access Token to the console with color coding.
+
+.DESCRIPTION
+    Write an Entra ID Access Token to the console with color coding.
+
+.EXAMPLE
+    PS> Get-EntraIDAccessToken | Write-EntraIDAccessToken
+#>
+
 function Write-EntraIDAccessToken {
     [CmdletBinding()]
     

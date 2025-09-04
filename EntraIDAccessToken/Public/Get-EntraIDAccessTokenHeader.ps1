@@ -1,10 +1,18 @@
 <#
 .SYNOPSIS
-Uses the configured credentials for getting an access token for the Inbound Provisioning API. Internal helper method.
+Gets an Entra ID Access Token in a header useable by Invoke-RestMethod or Invoke-WebRequest.
+
+.DESCRIPTION
+Gets an Entra ID Access Token in a header useable by Invoke-RestMethod or Invoke-WebRequest. Additional headers can be added using the AdditionalHeaders parameter.
 
 .EXAMPLE
-Get-EntraIDAccessTokenHeader
+    PS> Invoke-RestMethod "https://graph.microsoft.com/v1.0/users" -Headers (Get-EntraIDAccessTokenHeader)
 
+.EXAMPLE
+    PS> Get-EntraIDAccessTokenHeader -Profile "API" -ConsistencyLevelEventual
+
+.EXAMPLE
+    PS> Get-EntraIDAccessTokenHeader -Profile "API" -AdditionalHeaders @{"X-Custom-Header"="Value"}
 #>
 function Get-EntraIDAccessTokenHeader {
     [CmdletBinding()]

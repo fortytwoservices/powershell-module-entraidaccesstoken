@@ -22,11 +22,11 @@ jobs:
         with:
           fetch-depth: 2
           ref: ${{ github.event.pull_request.head.ref }}
-      - name: Update readme.md and psd1 version
+      - name: Update documentation.md and psd1 version
         shell: pwsh
         run: |
-          $Path = ".\README.md"
-      
+          $Path = ".\Documentation.md"
+
           # Load platyPS module for generating markdown documentation
           Install-Module platyPS -Scope CurrentUser -Confirm:$false -Force
           Import-Module platyPS

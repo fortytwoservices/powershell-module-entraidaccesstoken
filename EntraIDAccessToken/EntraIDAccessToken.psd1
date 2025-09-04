@@ -8,7 +8,7 @@
     RootModule        = 'EntraIDAccessToken.psm1'
 
     # Version number of this module.
-    ModuleVersion = '2.12.0'
+    ModuleVersion     = '2.12.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
@@ -87,7 +87,9 @@
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData       = @{
-        PSData = @{}
+        PSData = @{
+            # RequireLicenseAcceptance = $true
+        }
     }
 
 }

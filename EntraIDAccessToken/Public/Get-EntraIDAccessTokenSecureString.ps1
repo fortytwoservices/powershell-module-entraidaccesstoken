@@ -1,10 +1,15 @@
 <#
 .SYNOPSIS
-Gets an access token from Entra ID for the configured profile
+Gets an access token from Entra ID for the configured profile, as a secure string
+
+.DESCRIPTION
+Gets an access token from Entra ID for the configured profile, as a secure string
 
 .EXAMPLE
-Get-EntraIDAccessToken
+    PS> Get-EntraIDAccessTokenSecureString
 
+.EXAMPLE
+    PS> Get-EntraIDAccessTokenSecureString -Profile "API"
 #>
 function Get-EntraIDAccessTokenSecureString {
     [CmdletBinding()]

@@ -1,10 +1,22 @@
 <#
 .SYNOPSIS
-Adds a new profile for getting Entra ID access tokens.
+Adds a new profile for getting Entra ID access tokens using automation account managed identity.
 
 .EXAMPLE
-Add-EntraIDAccessTokenProfile
+# Use the system assigned managed identity of the automation account
+Add-EntraIDAutomationAccountMSIAccessTokenProfile
 
+.EXAMPLE
+# Use a user assigned managed identity of the automation account
+Add-EntraIDAutomationAccountMSIAccessTokenProfile -ClientId "12345678-1234-1234-1234-123456789012"
+
+.EXAMPLE
+# Use a system assigned managed identity with a federated credential to an app registration
+Add-EntraIDAutomationAccountMSIAccessTokenProfile -TenantId "12345678-1234-1234-1234-123456789012" -TrustingApplicationClientId "87654321-4321-4321-4321-210987654321"
+
+.EXAMPLE
+# Use a user assigned managed identity with a federated credential to an app registration
+Add-EntraIDAutomationAccountMSIAccessTokenProfile -ClientId "12345678-1234-1234-1234-123456789012" -TenantId "12345678-1234-1234-1234-123456789012" -TrustingApplicationClientId "87654321-4321-4321-4321-210987654321"
 #>
 function Add-EntraIDAutomationAccountMSIAccessTokenProfile {
     [CmdletBinding(DefaultParameterSetName = "default")]

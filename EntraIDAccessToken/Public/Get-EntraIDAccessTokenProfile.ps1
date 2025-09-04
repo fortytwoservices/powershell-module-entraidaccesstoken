@@ -1,10 +1,15 @@
 <#
 .SYNOPSIS
-Gets an access token from Entra ID for the configured profile
+Gets the Entra ID Access Token profile(s).
+
+.DESCRIPTION
+Gets the Entra ID Access Token profile(s). This can be useful in order to see which resources, tenant IDs, client IDs and authentication methods are used.
 
 .EXAMPLE
-Get-EntraIDAccessTokenProfile
+    PS> Get-EntraIDAccessTokenProfile
 
+.EXAMPLE
+    PS> Get-EntraIDAccessTokenProfile -Profile "API"
 #>
 function Get-EntraIDAccessTokenProfile {
     [CmdletBinding()]
