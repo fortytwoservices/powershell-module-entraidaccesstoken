@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.13.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.12.0...v2.13.0) (2025-09-04)
+
+
+### Features
+
+* Fix back readme.md and add cmdlet descriptions ([e9c0bee](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/e9c0beea1a0f0d40a2f93b44a5702b0139a7376d))
+* Fix back readme.md and add cmdlet descriptions ([49a19aa](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/49a19aac65230cc0736d37ffb6369ae6d60d5dba))
+
 ## [2.12.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.11.1...v2.12.0) (2025-08-27)
 
 
