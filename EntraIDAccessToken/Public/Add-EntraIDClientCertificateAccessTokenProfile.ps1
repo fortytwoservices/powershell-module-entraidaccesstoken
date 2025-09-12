@@ -50,32 +50,38 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
-        if($PSCmdlet.ParameterSetName -eq "x509certificate2") {
+        $Certificate = $null;
+
+        if ($PSCmdlet.ParameterSetName -eq "x509certificate2") {
             
-        } elseif($PSCmdlet.ParameterSetName -eq "thumbprint") {
+        }
+        elseif ($PSCmdlet.ParameterSetName -eq "thumbprint") {
             $localmachine = Get-ChildItem Cert:\LocalMachine\My | Where-Object ThumbPrint -eq $Thumbprint | Select-Object -First 1
             $currentuser = Get-ChildItem Cert:\CurrentUser\My | Where-Object ThumbPrint -eq $Thumbprint | Select-Object -First 1
 
-            if($localmachine) {
+            if ($localmachine) {
                 $Certificate = $localmachine
-            } elseif($currentuser) {
+            }
+            elseif ($currentuser) {
                 $Certificate = $currentuser
-            } else {
+            }
+            else {
                 throw "Certificate with thumbprint $Thumbprint not found"
             }
-        } elseif($PSCmdlet.ParameterSetName -eq "pfx") {
-            if(!(Test-Path $Path)) {
+        }
+        elseif ($PSCmdlet.ParameterSetName -eq "pfx") {
+            if (!(Test-Path $Path)) {
                 throw "Path $Path does not exist"
             }
 
             $Certificate = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($Path, $Password)
         }
 
-        if(!$Certificate) {
+        if (!$Certificate) {
             throw "Certificate not found"
         }
 
-        if(!$Certificate.HasPrivateKey) {
+        if (!$Certificate.HasPrivateKey) {
             throw "Certificate $($Certificate.Thumbprint) does not have a private key"
         }
         
@@ -91,6 +97,7 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
             Scope                = $Scope
             TenantId             = $TenantId
             Certificate          = $Certificate
+            ThumbPrint           = $Certificate.Thumbprint
             V2Token              = $TokenVersion -eq "v2"
         }
 

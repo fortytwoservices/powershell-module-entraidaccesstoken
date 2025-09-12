@@ -17,7 +17,7 @@ function Get-EntraIDClientCertificateAccessToken {
             "aud" = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token"
             "iss" = $AccessTokenProfile.ClientId
             "sub" = $AccessTokenProfile.ClientId
-        } -Certificate $Certificate
+        } -Certificate $AccessTokenProfile.Certificate
 
         if ($AccessTokenProfile.V2Token) {
             $body = @{
