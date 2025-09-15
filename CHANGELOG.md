@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.13.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.13.0...v2.13.1) (2025-09-15)
+
+
+### Bug Fixes
+
+* Error for certain configurations (presumably) because $Certificate was handled as a global variable ([3df2dc3](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/3df2dc36da6fe95a885683761e1b82612b967ef1))
+* Error for certain configurations (presumably) because $Certificate was handled as a global variable ([db1a16c](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/db1a16c04a731467dc391eb6e5795eb7e94dfbd5))
+
 ## [2.13.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.12.0...v2.13.0) (2025-09-04)
 
 
