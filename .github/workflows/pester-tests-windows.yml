@@ -1,4 +1,4 @@
-name: Run Pester tests on Pull Requests
+name: Run Windows Pester tests on Pull Requests
 
 on:
   pull_request:

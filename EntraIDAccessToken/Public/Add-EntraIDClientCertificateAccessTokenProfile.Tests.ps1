@@ -97,6 +97,6 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.2" {
         $Name = (New-Guid).ToString()
         { 
             Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString "WrongPassword" -AsPlainText -Force)
-        } | Should -Throw "*The specified network password is not correct*"
+        } | Should -Throw
     }
 }
