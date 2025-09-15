@@ -19,7 +19,21 @@ function Get-EntraIDClientCertificateAccessToken {
             "sub" = $AccessTokenProfile.ClientId
         } -Certificate $AccessTokenProfile.Certificate
 
-        if ($AccessTokenProfile.V2Token) {
+        if ($Scope -or $AccessTokenProfile.scope) {
+            $body = @{
+                client_id             = $AccessTokenProfile.ClientId
+                client_assertion      = $AssertionJWT
+                client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
+                scope                 = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope: $Scope
+                grant_type            = "client_credentials"
+            }
+
+            Write-Verbose "Getting access token (v2) for '$($body.scope)' using Client Certificate for client_id $($AccessTokenProfile.ClientId)"
+        
+            # Get token
+            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body
+        }
+        elseif ($AccessTokenProfile.scope) {
             $body = @{
                 client_id             = $AccessTokenProfile.ClientId
                 client_assertion      = $AssertionJWT
