@@ -4,4 +4,4 @@
 .idea
 scim_artifacts/
 testing.ps1
-Pester/_EnvironmentVariables.ps1
+_EnvironmentVariables.ps1

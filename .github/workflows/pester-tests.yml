@@ -14,7 +14,7 @@ jobs:
       id: test_module
       uses: zyborg/pester-tests-report@v1
       with:
-        include_paths: Pester
+        # include_paths: Pester
         # exclude_paths: tests/powershell1,tests/powershell2
         exclude_tags: skip_ci
         report_name: module_tests
