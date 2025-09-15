@@ -11,7 +11,7 @@ BeforeAll {
 Describe "Add-EntraIDROPCAccessTokenProfile.1" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDROPCAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -UserCredential (New-Object System.Management.Automation.PSCredential($ENV:EIDATPESTERUSERNAME, (ConvertTo-SecureString $ENV:EIDATPESTERPASSWORD -AsPlainText -Force))) -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force)
+        Add-EntraIDROPCAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -UserCredential (New-Object System.Management.Automation.PSCredential($ENV:EIDATPESTERUSERNAME, (ConvertTo-SecureString $ENV:EIDATPESTERPASSWORD -AsPlainText -Force))) -ClientSecret (ConvertTo-SecureString $ENV:EIDATPESTERCLIENTSECRET -AsPlainText -Force)
     }
 
     It "Creates a profile with ROPC authentication" {

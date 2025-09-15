@@ -9,7 +9,7 @@ BeforeAll {
 Describe "Add-EntraIDClientSecretAccessTokenProfile.1" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID
+        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:EIDATPESTERCLIENTSECRET -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID
     }
 
     It "Creates a profile with client secret authentication" {
@@ -30,7 +30,7 @@ Describe "Add-EntraIDClientSecretAccessTokenProfile.1" {
 Describe "Add-EntraIDClientSecretAccessTokenProfile.2" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID -Resource "https://vault.azure.net"
+        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:EIDATPESTERCLIENTSECRET -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID -Resource "https://vault.azure.net"
     }
 
     It "Creates a profile with client secret authentication" {
