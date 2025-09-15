@@ -45,10 +45,16 @@ Add-EntraIDAutomationAccountMSIAccessTokenProfile
 Add-EntraIDAutomationAccountMSIAccessTokenProfile -ClientId "<uai clientid>" -Resource "https://vault.azure.net/"
 ```
 
-# Example 1.5 - Adding a profileusing a hard coded access token (Useful for development)
+# Example 1.5 - Adding a profile using a hard coded access token (Useful for development)
 
 ```PowerShell
 Add-EntraIDExternalAccessTokenProfile -AccessToken "ey..."
+```
+
+# Example 1.6 - Adding a profile using a a certificate
+
+```PowerShell
+Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId "..." -TenantId "..." -Thumbprint "D08A6C49E577AEB7DE4468CD49143288D6F4B003"
 ```
 
 # Example 2.1 - Getting an access token for the default profile
