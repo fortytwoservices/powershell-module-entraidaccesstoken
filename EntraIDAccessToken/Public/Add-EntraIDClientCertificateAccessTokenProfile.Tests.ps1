@@ -6,20 +6,26 @@ BeforeAll {
     #$ENV:EIDATPESTERCLIENTSECRET ??= Read-Host -Prompt "Enter client secret for $($ENV:EIDATPESTERCLIENTID)"
     $ENV:EIDATPESTERCERTIFICATETHUMBPRINT = "D08A6C49E577AEB7DE4468CD49143288D6F4B003"
 
-    if($ENV:EIDATPESTERCERTIFICATEPFX) {
+    if ($ENV:EIDATPESTERCERTIFICATEPFX) {
         $ENV:EIDATPESTERCERTIFICATEPFXPATH = Join-Path (get-item .) ("pester.pfx")
         [IO.File]::WriteAllBytes($ENV:EIDATPESTERCERTIFICATEPFXPATH, [Convert]::FromBase64String($ENV:EIDATPESTERCERTIFICATEPFX))
     }
     $ENV:EIDATPESTERCERTIFICATEPFXPATH = "./pester.pfx"
+    
     #$ENV:EIDATPESTERCERTIFICATEPFXPASSWORD ??= Read-Host -Prompt "Enter password for $($ENV:EIDATPESTERCERTIFICATEPFXPATH)"
     $ENV:EIDATPESTERUSERNAME = "pester.azurear@labs.fortytwo.io"
     #$ENV:EIDATPESTERPASSWORD ??= Read-Host -Prompt "Enter password for $($ENV:EIDATPESTERUSERNAME)"
 }
 
-Describe "Add-EntraIDClientCertificateAccessTokenProfile.1" {
+Describe "Add-EntraIDClientCertificateAccessTokenProfile.1" -Tag "WindowsOnly" {
     BeforeAll {
         $Name = (New-Guid).ToString()
         Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Thumbprint $ENV:EIDATPESTERCERTIFICATETHUMBPRINT
+
+        if (!("Cert:\CurrentUser\my", "Cert:\LocalMachine\my" | Get-ChildItem | Where-Object ThumbPrint -eq $ENV:EIDATPESTERCERTIFICATETHUMBPRINT)) {
+            Write-Host "Importing certificate with thumbprint $ENV:EIDATPESTERCERTIFICATETHUMBPRINT to CurrentUser\My store for testing purposes"
+            Import-PfxCertificate $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString -String $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -CertStoreLocation "Cert:\CurrentUser\My\"
+        }
     }
 
     It "Creates a profile with client secret authentication" {
