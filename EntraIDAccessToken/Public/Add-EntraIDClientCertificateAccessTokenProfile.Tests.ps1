@@ -19,13 +19,13 @@ BeforeAll {
 
 Describe "Add-EntraIDClientCertificateAccessTokenProfile.1" -Tag "WindowsOnly" {
     BeforeAll {
-        $Name = (New-Guid).ToString()
-        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Thumbprint $ENV:EIDATPESTERCERTIFICATETHUMBPRINT
-
         if (!("Cert:\CurrentUser\my", "Cert:\LocalMachine\my" | Get-ChildItem | Where-Object ThumbPrint -eq $ENV:EIDATPESTERCERTIFICATETHUMBPRINT)) {
             Write-Host "Importing certificate with thumbprint $ENV:EIDATPESTERCERTIFICATETHUMBPRINT to CurrentUser\My store for testing purposes"
             Import-PfxCertificate $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString -String $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -CertStoreLocation "Cert:\CurrentUser\My\"
         }
+
+        $Name = (New-Guid).ToString()
+        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Thumbprint $ENV:EIDATPESTERCERTIFICATETHUMBPRINT
     }
 
     It "Creates a profile with client secret authentication" {
