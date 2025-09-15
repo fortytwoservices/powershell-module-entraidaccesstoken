@@ -1,19 +1,33 @@
 BeforeAll {
     Import-Module ../EntraIDAccessToken -Force
+
+    $ENV:EIDATPESTERTENANTID = "bb73082a-b74c-4d39-aec0-41c77d6f4850"
+    $ENV:EIDATPESTERCLIENTID = "bad81856-fc31-47a6-8755-b42ef8025a49"
+    #$ENV:EIDATPESTERCLIENTSECRET ??= Read-Host -Prompt "Enter client secret for $($ENV:EIDATPESTERCLIENTID)"
+    $ENV:EIDATPESTERCERTIFICATETHUMBPRINT = "D08A6C49E577AEB7DE4468CD49143288D6F4B003"
+
+    if($ENV:EIDATPESTERCERTIFICATEPFX) {
+        $ENV:EIDATPESTERCERTIFICATEPFXPATH = Join-Path (get-item .) ("pester.pfx")
+        [IO.File]::WriteAllBytes($ENV:EIDATPESTERCERTIFICATEPFXPATH, [Convert]::FromBase64String($ENV:EIDATPESTERCERTIFICATEPFX))
+    }
+    $ENV:EIDATPESTERCERTIFICATEPFXPATH = "./pester.pfx"
+    #$ENV:EIDATPESTERCERTIFICATEPFXPASSWORD ??= Read-Host -Prompt "Enter password for $($ENV:EIDATPESTERCERTIFICATEPFXPATH)"
+    $ENV:EIDATPESTERUSERNAME = "pester.azurear@labs.fortytwo.io"
+    #$ENV:EIDATPESTERPASSWORD ??= Read-Host -Prompt "Enter password for $($ENV:EIDATPESTERUSERNAME)"
 }
 
 Describe "Add-EntraIDClientSecretAccessTokenProfile.1" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPesterClientId -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force) -TenantId $ENV:EIDATPesterTenantId
+        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID
     }
 
     It "Creates a profile with client secret authentication" {
         $P = Get-EntraIDAccessTokenProfile -Profile $Name 
         $P.Name | Should -Be $Name
         $P.AuthenticationMethod | Should -Be "clientsecret"
-        $P.ClientId | Should -Be $ENV:EIDATPesterClientId
-        $P.TenantId | Should -Be $ENV:EIDATPesterTenantId
+        $P.ClientId | Should -Be $ENV:EIDATPESTERCLIENTID
+        $P.TenantId | Should -Be $ENV:EIDATPESTERTENANTID
         $P.Resource | Should -Be "https://graph.microsoft.com"
     }
 
@@ -26,15 +40,15 @@ Describe "Add-EntraIDClientSecretAccessTokenProfile.1" {
 Describe "Add-EntraIDClientSecretAccessTokenProfile.2" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPesterClientId -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force) -TenantId $ENV:EIDATPesterTenantId -Resource "https://vault.azure.net"
+        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID -Resource "https://vault.azure.net"
     }
 
     It "Creates a profile with client secret authentication" {
         $P = Get-EntraIDAccessTokenProfile -Profile $Name 
         $P.Name | Should -Be $Name
         $P.AuthenticationMethod | Should -Be "clientsecret"
-        $P.ClientId | Should -Be $ENV:EIDATPesterClientId
-        $P.TenantId | Should -Be $ENV:EIDATPesterTenantId
+        $P.ClientId | Should -Be $ENV:EIDATPESTERCLIENTID
+        $P.TenantId | Should -Be $ENV:EIDATPESTERTENANTID
         $P.Resource | Should -Be "https://vault.azure.net"
     }
 
@@ -48,15 +62,15 @@ Describe "Add-EntraIDClientSecretAccessTokenProfile.2" {
 Describe "Add-EntraIDClientCertificateAccessTokenProfile.1" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPesterClientId -TenantId $ENV:EIDATPesterTenantId -Thumbprint $ENV:EIDATPesterCertificateThumbprint
+        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Thumbprint $ENV:EIDATPESTERCERTIFICATETHUMBPRINT
     }
 
     It "Creates a profile with client secret authentication" {
         $P = Get-EntraIDAccessTokenProfile -Profile $Name 
         $P.Name | Should -Be $Name
         $P.AuthenticationMethod | Should -Be "clientcertificate"
-        $P.ClientId | Should -Be $ENV:EIDATPesterClientId
-        $P.TenantId | Should -Be $ENV:EIDATPesterTenantId
+        $P.ClientId | Should -Be $ENV:EIDATPESTERCLIENTID
+        $P.TenantId | Should -Be $ENV:EIDATPESTERTENANTID
         $P.Resource | Should -Be "https://graph.microsoft.com"
     }
 
@@ -69,14 +83,14 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.1" {
     It "Fails when providing scope and resource at the same time" {
         $Name = (New-Guid).ToString()
         { 
-            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPesterClientId -TenantId $ENV:EIDATPesterTenantId -Thumbprint $ENV:EIDATPesterCertificateThumbprint -Resource "https://graph.microsoft.com" -Scope "https://management.azure.com/.default"
+            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Thumbprint $ENV:EIDATPESTERCERTIFICATETHUMBPRINT -Resource "https://graph.microsoft.com" -Scope "https://management.azure.com/.default"
         } | Should -Throw "Cannot specify both Resource and Scope"
     }
 
     It "Should fail when providing a certificate thumbprint that does not exist" {
         $Name = (New-Guid).ToString()
         { 
-            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPesterClientId -TenantId $ENV:EIDATPesterTenantId -Thumbprint "InvalidThumbprint"
+            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Thumbprint "InvalidThumbprint"
         } | Should -Throw "Certificate with thumbprint InvalidThumbprint not found"
     }
 }
@@ -84,15 +98,15 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.1" {
 Describe "Add-EntraIDClientCertificateAccessTokenProfile.2" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPesterClientId -TenantId $ENV:EIDATPesterTenantId -Path $ENV:EIDATPesterCertificatePFXPath -Password (ConvertTo-SecureString $ENV:EIDATPesterCertificatePFXPassword -AsPlainText -Force) -Scope "https://management.azure.com/.default"
+        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -Scope "https://management.azure.com/.default"
     }
 
     It "Creates a profile with client secret authentication" {
         $P = Get-EntraIDAccessTokenProfile -Profile $Name 
         $P.Name | Should -Be $Name
         $P.AuthenticationMethod | Should -Be "clientcertificate"
-        $P.ClientId | Should -Be $ENV:EIDATPesterClientId
-        $P.TenantId | Should -Be $ENV:EIDATPesterTenantId
+        $P.ClientId | Should -Be $ENV:EIDATPESTERCLIENTID
+        $P.TenantId | Should -Be $ENV:EIDATPESTERTENANTID
         $P.Scope | Should -Be "https://management.azure.com/.default"
     }
 
@@ -105,21 +119,21 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.2" {
     It "Fails when providing scope and resource at the same time" {
         $Name = (New-Guid).ToString()
         { 
-            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPesterClientId -TenantId $ENV:EIDATPesterTenantId -Path $ENV:EIDATPesterCertificatePFXPath -Password (ConvertTo-SecureString $ENV:EIDATPesterCertificatePFXPassword -AsPlainText -Force) -Resource "https://graph.microsoft.com" -Scope "https://management.azure.com/.default"
+            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -Resource "https://graph.microsoft.com" -Scope "https://management.azure.com/.default"
         } | Should -Throw "Cannot specify both Resource and Scope"
     }
 
     It "Should fail when providing a pfx that does not exist" {
         $Name = (New-Guid).ToString()
         { 
-            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPesterClientId -TenantId $ENV:EIDATPesterTenantId -Path "InvalidPath" -Password (ConvertTo-SecureString $ENV:EIDATPesterCertificatePFXPassword -AsPlainText -Force)
+            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path "InvalidPath" -Password (ConvertTo-SecureString $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force)
         } | Should -Throw "Path InvalidPath does not exist"
     }
 
     It "Should fail when provinding the wrong password" {
         $Name = (New-Guid).ToString()
         { 
-            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPesterClientId -TenantId $ENV:EIDATPesterTenantId -Path $ENV:EIDATPesterCertificatePFXPath -Password (ConvertTo-SecureString "WrongPassword" -AsPlainText -Force)
+            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString "WrongPassword" -AsPlainText -Force)
         } | Should -Throw "*The specified network password is not correct*"
     }
 }
@@ -127,15 +141,15 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.2" {
 Describe "Add-EntraIDROPCAccessTokenProfile.1" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDROPCAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPesterClientId -TenantId $ENV:EIDATPesterTenantId -UserCredential (New-Object System.Management.Automation.PSCredential($ENV:EIDATPesterUsername, (ConvertTo-SecureString $ENV:EIDATPesterPassword -AsPlainText -Force))) -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force)
+        Add-EntraIDROPCAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -UserCredential (New-Object System.Management.Automation.PSCredential($ENV:EIDATPESTERUSERNAME, (ConvertTo-SecureString $ENV:EIDATPESTERPASSWORD -AsPlainText -Force))) -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force)
     }
 
     It "Creates a profile with ROPC authentication" {
         $P = Get-EntraIDAccessTokenProfile -Profile $Name 
         $P.Name | Should -Be $Name
         $P.AuthenticationMethod | Should -Be "ropc"
-        $P.ClientId | Should -Be $ENV:EIDATPesterClientId
-        $P.TenantId | Should -Be $ENV:EIDATPesterTenantId
+        $P.ClientId | Should -Be $ENV:EIDATPESTERCLIENTID
+        $P.TenantId | Should -Be $ENV:EIDATPESTERTENANTID
         $P.Scope | Should -Be "https://graph.microsoft.com/.default offline_access"
         $P.RefreshToken | Should -Be $true
     }
@@ -144,7 +158,7 @@ Describe "Add-EntraIDROPCAccessTokenProfile.1" {
         $AT = Get-EntraIDAccessToken -Profile $Name
         $AT | Should -BeLike "ey*.ey*.*"
         ($AT | ConvertFrom-EntraIDAccessToken).Payload.aud | Should -Be "https://graph.microsoft.com"
-        ($AT | ConvertFrom-EntraIDAccessToken).Payload.upn | Should -Be $ENV:EIDATPesterUsername
+        ($AT | ConvertFrom-EntraIDAccessToken).Payload.upn | Should -Be $ENV:EIDATPESTERUSERNAME
         ($AT | ConvertFrom-EntraIDAccessToken).Payload.idtyp | Should -Be "user"
     }
 }
