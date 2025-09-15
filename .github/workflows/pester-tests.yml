@@ -12,9 +12,9 @@ jobs:
     steps:
     - name: test module
       id: test_module
-      uses: zyborg/pester-tests-report@v1
+      uses: zyborg/pester-tests-report
       with:
-        # include_paths: Pester
+        include_paths: .
         # exclude_paths: tests/powershell1,tests/powershell2
         exclude_tags: skip_ci
         report_name: module_tests
