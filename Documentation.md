@@ -604,7 +604,7 @@ Aliases:
 
 Required: False
 Position: Named
-Default value: Https://graph.microsoft.com/.default
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
