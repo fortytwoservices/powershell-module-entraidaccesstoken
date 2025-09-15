@@ -29,6 +29,6 @@ Describe "Add-EntraIDROPCAccessTokenProfile.1" {
         $AT | Should -BeLike "ey*.ey*.*"
         ($AT | ConvertFrom-EntraIDAccessToken).Payload.aud | Should -Be "https://graph.microsoft.com"
         ($AT | ConvertFrom-EntraIDAccessToken).Payload.upn | Should -Be $ENV:EIDATPESTERUSERNAME
-        ($AT | ConvertFrom-EntraIDAccessToken).Payload.idtyp | Should -Be "use2r"
+        ($AT | ConvertFrom-EntraIDAccessToken).Payload.idtyp | Should -Be "user"
     }
 }
