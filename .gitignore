@@ -4,3 +4,5 @@
 .idea
 scim_artifacts/
 testing.ps1
+_EnvironmentVariables.ps1
+**.pfx

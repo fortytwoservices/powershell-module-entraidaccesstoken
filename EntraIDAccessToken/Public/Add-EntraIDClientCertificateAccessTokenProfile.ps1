@@ -18,7 +18,7 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
         [String] $Resource = "https://graph.microsoft.com",
 
         [Parameter(Mandatory = $false)]
-        [String] $Scope = "https://graph.microsoft.com/.default",
+        [String] $Scope,
 
         [Parameter(Mandatory = $true, ParameterSetName = "x509certificate2")]
         [System.Security.Cryptography.X509Certificates.X509Certificate2] $Certificate,
@@ -50,6 +50,14 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
+        if($PSCmdlet.MyInvocation.BoundParameters.ContainsKey('TokenVersion')) {
+            Write-Warning "TokenVersion is not currently being used"
+        }
+
+        if($PSCmdlet.MyInvocation.BoundParameters['Resource'] -and $PSCmdlet.MyInvocation.BoundParameters['Scope']) {
+            throw "Cannot specify both Resource and Scope"
+        }
+
         $Certificate = $null;
 
         if ($PSCmdlet.ParameterSetName -eq "x509certificate2") {
@@ -74,7 +82,7 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
                 throw "Path $Path does not exist"
             }
 
-            $Certificate = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($Path, $Password)
+            $Certificate = [System.Security.Cryptography.X509Certificates.X509Certificate2]::new($Path, $Password, [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::UserKeySet)
         }
 
         if (!$Certificate) {
@@ -93,12 +101,12 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
         $Script:Profiles[$Name] = @{
             AuthenticationMethod = "clientcertificate"
             ClientId             = $ClientId
-            Resource             = $Resource
+            Resource             = $Scope ? $null : $Resource
             Scope                = $Scope
             TenantId             = $TenantId
             Certificate          = $Certificate
             ThumbPrint           = $Certificate.Thumbprint
-            V2Token              = $TokenVersion -eq "v2"
+            # V2Token              = $TokenVersion -eq "v2"
         }
 
         Get-EntraIDAccessToken -Profile $Name | Out-Null

@@ -23,14 +23,15 @@ function Get-EntraIDAccessTokenProfile {
         $Script:Profiles.GetEnumerator() | 
         Where-Object Key -like $Profile | 
         Select-Object `
-            @{L="Name";E={$_.Key}}, 
-            @{L="TenantId";E={$_.Value.TenantId}},
-            @{L="Resource";E={$_.Value.Resource}},
-            @{L="AuthenticationMethod";E={$_.Value.AuthenticationMethod}},
-            @{L="ClientId";E={$_.Value.ClientId}},
-            @{L="TrustingApplicationClientId";E={$_.Value.TrustingApplicationClientId}},
-            @{L="Scope";E={$_.Value.Scope}},
-            @{L="V2Token";E={$_.Value.V2Token}},
-            @{L="Thumbprint";E={$_.Value.Thumbprint}}
+        @{L = "Name"; E = { $_.Key } }, 
+        @{L = "TenantId"; E = { $_.Value.TenantId } },
+        @{L = "Resource"; E = { $_.Value.Resource } },
+        @{L = "AuthenticationMethod"; E = { $_.Value.AuthenticationMethod } },
+        @{L = "ClientId"; E = { $_.Value.ClientId } },
+        @{L = "TrustingApplicationClientId"; E = { $_.Value.TrustingApplicationClientId } },
+        @{L = "Scope"; E = { $_.Value.Scope } },
+        @{L = "V2Token"; E = { $_.Value.V2Token } },
+        @{L = "Thumbprint"; E = { $_.Value.Thumbprint } },
+        @{L = "RefreshToken"; E = { [String]::IsNullOrEmpty($_.Value.RefreshToken) ? $false : $true } }
     }
 }

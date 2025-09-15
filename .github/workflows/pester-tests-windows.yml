@@ -1,0 +1,26 @@
+name: Run Windows Pester tests on Pull Requests
+
+on:
+  pull_request:
+
+jobs:
+  build-image:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      with:
+        fetch-depth: 2
+        ref: ${{ github.event.pull_request.head.ref }}
+    - name: Pester tests
+      shell: pwsh
+      run: |
+        Invoke-Pester -ExcludeTagFilter "LinuxOnly"
+      env:
+        EIDATPESTERCERTIFICATEPFX: ${{ secrets.EIDATPESTERCERTIFICATEPFX }}
+        EIDATPESTERCERTIFICATEPFXPASSWORD: ${{ secrets.EIDATPESTERCERTIFICATEPFXPASSWORD }}
+        EIDATPESTERCLIENTSECRET: ${{ secrets.EIDATPESTERCLIENTSECRET }}
+        EIDATPESTERPASSWORD: ${{ secrets.EIDATPESTERPASSWORD }}
