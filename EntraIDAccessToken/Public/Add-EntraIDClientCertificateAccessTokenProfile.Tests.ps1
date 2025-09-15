@@ -1,5 +1,5 @@
 BeforeAll {
-    Import-Module ../EntraIDAccessToken -Force
+    Import-Module ./EntraIDAccessToken -Force
 
     $ENV:EIDATPESTERTENANTID = "bb73082a-b74c-4d39-aec0-41c77d6f4850"
     $ENV:EIDATPESTERCLIENTID = "bad81856-fc31-47a6-8755-b42ef8025a49"
@@ -14,49 +14,6 @@ BeforeAll {
     #$ENV:EIDATPESTERCERTIFICATEPFXPASSWORD ??= Read-Host -Prompt "Enter password for $($ENV:EIDATPESTERCERTIFICATEPFXPATH)"
     $ENV:EIDATPESTERUSERNAME = "pester.azurear@labs.fortytwo.io"
     #$ENV:EIDATPESTERPASSWORD ??= Read-Host -Prompt "Enter password for $($ENV:EIDATPESTERUSERNAME)"
-}
-
-Describe "Add-EntraIDClientSecretAccessTokenProfile.1" {
-    BeforeAll {
-        $Name = (New-Guid).ToString()
-        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID
-    }
-
-    It "Creates a profile with client secret authentication" {
-        $P = Get-EntraIDAccessTokenProfile -Profile $Name 
-        $P.Name | Should -Be $Name
-        $P.AuthenticationMethod | Should -Be "clientsecret"
-        $P.ClientId | Should -Be $ENV:EIDATPESTERCLIENTID
-        $P.TenantId | Should -Be $ENV:EIDATPESTERTENANTID
-        $P.Resource | Should -Be "https://graph.microsoft.com"
-    }
-
-    It "Returns an access token" {
-        $AT = Get-EntraIDAccessToken -Profile $Name
-        $AT | Should -BeLike "ey*.ey*.*"
-    }
-}
-
-Describe "Add-EntraIDClientSecretAccessTokenProfile.2" {
-    BeforeAll {
-        $Name = (New-Guid).ToString()
-        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID -Resource "https://vault.azure.net"
-    }
-
-    It "Creates a profile with client secret authentication" {
-        $P = Get-EntraIDAccessTokenProfile -Profile $Name 
-        $P.Name | Should -Be $Name
-        $P.AuthenticationMethod | Should -Be "clientsecret"
-        $P.ClientId | Should -Be $ENV:EIDATPESTERCLIENTID
-        $P.TenantId | Should -Be $ENV:EIDATPESTERTENANTID
-        $P.Resource | Should -Be "https://vault.azure.net"
-    }
-
-    It "Returns an access token for the correct audience" {
-        $AT = Get-EntraIDAccessToken -Profile $Name
-        $AT | Should -BeLike "ey*.ey*.*"
-        ($AT | ConvertFrom-EntraIDAccessToken).Payload.aud | Should -Be "cfa8b339-82a2-471a-a3c9-0fc0be7a4093"
-    }
 }
 
 Describe "Add-EntraIDClientCertificateAccessTokenProfile.1" {
@@ -135,44 +92,5 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.2" {
         { 
             Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString "WrongPassword" -AsPlainText -Force)
         } | Should -Throw "*The specified network password is not correct*"
-    }
-}
-
-Describe "Add-EntraIDROPCAccessTokenProfile.1" {
-    BeforeAll {
-        $Name = (New-Guid).ToString()
-        Add-EntraIDROPCAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -UserCredential (New-Object System.Management.Automation.PSCredential($ENV:EIDATPESTERUSERNAME, (ConvertTo-SecureString $ENV:EIDATPESTERPASSWORD -AsPlainText -Force))) -ClientSecret (ConvertTo-SecureString $ENV:EIDATPesterClientSecret -AsPlainText -Force)
-    }
-
-    It "Creates a profile with ROPC authentication" {
-        $P = Get-EntraIDAccessTokenProfile -Profile $Name 
-        $P.Name | Should -Be $Name
-        $P.AuthenticationMethod | Should -Be "ropc"
-        $P.ClientId | Should -Be $ENV:EIDATPESTERCLIENTID
-        $P.TenantId | Should -Be $ENV:EIDATPESTERTENANTID
-        $P.Scope | Should -Be "https://graph.microsoft.com/.default offline_access"
-        $P.RefreshToken | Should -Be $true
-    }
-
-    It "Returns an access token for the correct audience" {
-        $AT = Get-EntraIDAccessToken -Profile $Name
-        $AT | Should -BeLike "ey*.ey*.*"
-        ($AT | ConvertFrom-EntraIDAccessToken).Payload.aud | Should -Be "https://graph.microsoft.com"
-        ($AT | ConvertFrom-EntraIDAccessToken).Payload.upn | Should -Be $ENV:EIDATPESTERUSERNAME
-        ($AT | ConvertFrom-EntraIDAccessToken).Payload.idtyp | Should -Be "user"
-    }
-}
-
-Describe "Add-EntraIDExternalAccessTokenProfile" {
-    It "Accepts a valid access token" {
-        $Name = (New-Guid).ToString()
-        $AT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWUsImlhdCI6MTUxNjIzOTAyMn0.KMUFsIDTnFmyG3nMiGM6H9FNFUROf3wh7SmqJp-QV30"
-        Add-EntraIDExternalAccessTokenProfile -Name $Name -AccessToken $AT
-        Get-EntraIDAccessToken -Profile $Name | Should -Be $AT
-
-        (Get-EntraIDAccessToken -Profile $Name | ConvertFrom-EntraIDAccessToken).Payload.sub | Should -Be "1234567890"
-        (Get-EntraIDAccessToken -Profile $Name | ConvertFrom-EntraIDAccessToken).Payload.name | Should -Be "John Doe"
-        (Get-EntraIDAccessToken -Profile $Name | ConvertFrom-EntraIDAccessToken).Payload.admin | Should -Be $true
-        (Get-EntraIDAccessToken -Profile $Name | ConvertFrom-EntraIDAccessToken).Payload.iat | Should -Be 1516239022
     }
 }

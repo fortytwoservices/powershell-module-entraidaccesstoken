@@ -5,7 +5,7 @@ New-Variable -Scope Script -Name ConfirmEntraIDAccessTokenJWKSCache -Value @{}
 
 # Get public and private function definition files.
 $Private = (Test-Path $PSScriptRoot\Private) ? @( Get-ChildItem -Path $PSScriptRoot\Private\*.ps1 -ErrorAction SilentlyContinue ) : @()
-$Public = @( Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue )
+$Public = @( Get-ChildItem -Path $PSScriptRoot\Public\*.ps1 -ErrorAction SilentlyContinue -Exclude *.Tests.ps1 )
 
 # Dot source the files in order to define all cmdlets
 Foreach ($import in @($Public + $Private)) {
