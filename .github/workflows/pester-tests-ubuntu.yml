@@ -5,7 +5,7 @@ on:
 
 jobs:
   build-image:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -18,7 +18,7 @@ jobs:
     - name: Pester tests
       shell: pwsh
       run: |
-        Invoke-Pester -ExcludeTagFilter "LinuxOnly"
+        Invoke-Pester -ExcludeTagFilter "WindowsOnly"
       env:
         EIDATPESTERCERTIFICATEPFX: ${{ secrets.EIDATPESTERCERTIFICATEPFX }}
         EIDATPESTERCERTIFICATEPFXPASSWORD: ${{ secrets.EIDATPESTERCERTIFICATEPFXPASSWORD }}
