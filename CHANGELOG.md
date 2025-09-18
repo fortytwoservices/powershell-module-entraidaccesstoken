@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.14.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.13.1...v2.14.0) (2025-09-18)
+
+
+### Features
+
+* Feature just to trigger release (Added pester tests and bugfix for certificate based auth, but something wrong with commit messages) ([3ffa127](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/3ffa12734308af9a2b2200a2d95292a9ff3ae60f))
+* Publish to PowerShell Gallery ([05d44dc](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/05d44dc46962bea4c1b90c68eae284c8c366a3bd))
+
 ## [2.13.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.13.0...v2.13.1) (2025-09-15)
 
 
