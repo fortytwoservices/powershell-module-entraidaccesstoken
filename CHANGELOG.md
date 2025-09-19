@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.15.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.14.1...v2.15.0) (2025-09-19)
+
+
+### Features
+
+* Reworking v2token stuff to only care about resource and scope as it causes issues with using resource instead of scope. Added additional tests for these situations. ([#80](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/issues/80)) ([ca324d4](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/ca324d490168f2ba30a0d68a68b7d0f2c1a92fba))
+
 ## [2.14.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.14.0...v2.14.1) (2025-09-19)
 
 
