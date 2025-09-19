@@ -5,10 +5,10 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
         [Parameter(Mandatory = $true)]
         $AccessTokenProfile,
 
-        [Parameter(Mandatory = $false, ParameterSetName = "v1")]
+        [Parameter(Mandatory = $false, ParameterSetName = "resource")]
         [String] $Resource = $null,
 
-        [Parameter(Mandatory = $false, ParameterSetName = "v2")]
+        [Parameter(Mandatory = $false, ParameterSetName = "scope")]
         [String] $Scope = $null
     )
 
@@ -27,7 +27,7 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
             $OIDCToken = $ENV:idToken
         }
 
-        if ($AccessTokenProfile.V2Token) {
+        if ($Scope -or $AccessTokenProfile.Scope) {
             $body = @{
                 client_id             = $AccessTokenProfile.ClientId
                 scope                 = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope: $Scope
@@ -36,7 +36,7 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
                 client_assertion      = $OIDCToken
             }
 
-            Write-Verbose "Getting access token (v2) for '$($body.scope)' using Azure DevOps Federated Workload Identity for client_id $($AccessTokenProfile.ClientId)"
+            Write-Verbose "Getting access token (v2/scope) for '$($body.scope)' using Azure DevOps Federated Workload Identity for client_id $($AccessTokenProfile.ClientId)"
         
             # Get token
             Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body
@@ -50,7 +50,7 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
                 client_assertion      = $OIDCToken
             }
             
-            Write-Verbose "Getting access token (v1) for '$($body.resource)' using Azure DevOps Federated Workload Identity for client_id $($AccessTokenProfile.ClientId)"
+            Write-Verbose "Getting access token (v1/resource) for '$($body.resource)' using Azure DevOps Federated Workload Identity for client_id $($AccessTokenProfile.ClientId)"
         
             # Get token
             Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token" -Body $body -ErrorAction Stop

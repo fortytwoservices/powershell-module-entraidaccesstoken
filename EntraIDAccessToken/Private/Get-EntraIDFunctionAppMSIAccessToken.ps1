@@ -5,7 +5,7 @@ function Get-EntraIDFunctionAppMSIAccessToken {
         [Parameter(Mandatory = $true)]
         $AccessTokenProfile,
 
-        [Parameter(Mandatory = $false, ParameterSetName = "v1")]
+        [Parameter(Mandatory = $false, ParameterSetName = "resource")]
         [String] $Resource = $null
     )
 

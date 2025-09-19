@@ -40,6 +40,10 @@ function Add-EntraIDClientSecretAccessTokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
+        if($PSCmdlet.MyInvocation.BoundParameters.ContainsKey("V2Token")) {
+            Write-Warning "The V2Token parameter is deprecated and will be removed in a future release. The presence of a Scope parameter now implies a V2 token."
+        }
+
         $Script:Profiles[$Name] = @{
             AuthenticationMethod                    = "clientsecret"
             ClientId                                = $ClientId
@@ -47,7 +51,6 @@ function Add-EntraIDClientSecretAccessTokenProfile {
             Resource                                = $PSCmdlet.ParameterSetName -eq "resource" ? $Resource : $null
             Scope                                   = $PSCmdlet.ParameterSetName -eq "scope" ? $Scope : $null
             TenantId                                = $TenantId
-            V2Token                                 = $V2Token.IsPresent ? $true : $false
         }
 
         Get-EntraIDAccessToken -Profile $Name | Out-Null

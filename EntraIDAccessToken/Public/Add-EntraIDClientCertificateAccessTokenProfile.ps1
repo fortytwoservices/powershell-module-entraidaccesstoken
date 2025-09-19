@@ -7,29 +7,37 @@ Add-EntraIDAccessTokenProfile
 
 #>
 function Add-EntraIDClientCertificateAccessTokenProfile {
-    [CmdletBinding(DefaultParameterSetName = "x509certificate2")]
+    [CmdletBinding(DefaultParameterSetName = "x509certificate2-resource")]
 
     Param
     (
         [Parameter(Mandatory = $false)]
         [String] $Name = "Default",
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ParameterSetName = "x509certificate2-resource")]
+        [Parameter(Mandatory = $false, ParameterSetName = "pfx-resource")]
+        [Parameter(Mandatory = $false, ParameterSetName = "thumbprint-resource")]
         [String] $Resource = "https://graph.microsoft.com",
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $true, ParameterSetName = "x509certificate2-scope")]
+        [Parameter(Mandatory = $true, ParameterSetName = "thumbprint-scope")]
+        [Parameter(Mandatory = $true, ParameterSetName = "pfx-scope")]
         [String] $Scope,
 
-        [Parameter(Mandatory = $true, ParameterSetName = "x509certificate2")]
+        [Parameter(Mandatory = $true, ParameterSetName = "x509certificate2-resource")]
+        [Parameter(Mandatory = $true, ParameterSetName = "x509certificate2-scope")]
         [System.Security.Cryptography.X509Certificates.X509Certificate2] $Certificate,
 
-        [Parameter(Mandatory = $true, ParameterSetName = "thumbprint")]
+        [Parameter(Mandatory = $true, ParameterSetName = "thumbprint-resource")]
+        [Parameter(Mandatory = $true, ParameterSetName = "thumbprint-scope")]
         [String] $Thumbprint,
 
-        [Parameter(Mandatory = $true, ParameterSetName = "pfx")]
+        [Parameter(Mandatory = $true, ParameterSetName = "pfx-resource")]
+        [Parameter(Mandatory = $true, ParameterSetName = "pfx-scope")]
         [String] $Path,
 
-        [Parameter(Mandatory = $true, ParameterSetName = "pfx")]
+        [Parameter(Mandatory = $true, ParameterSetName = "pfx-resource")]
+        [Parameter(Mandatory = $true, ParameterSetName = "pfx-scope")]
         [SecureString] $Password,
 
         [Parameter(Mandatory = $true)]
@@ -50,20 +58,20 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
-        if($PSCmdlet.MyInvocation.BoundParameters.ContainsKey('TokenVersion')) {
-            Write-Warning "TokenVersion is not currently being used"
+        if ($PSCmdlet.MyInvocation.BoundParameters.ContainsKey('TokenVersion')) {
+            Write-Warning "TokenVersion is a deprecated parameter and will be removed in future releases"
         }
 
-        if($PSCmdlet.MyInvocation.BoundParameters['Resource'] -and $PSCmdlet.MyInvocation.BoundParameters['Scope']) {
+        if ($PSCmdlet.MyInvocation.BoundParameters['Resource'] -and $PSCmdlet.MyInvocation.BoundParameters['Scope']) {
             throw "Cannot specify both Resource and Scope"
         }
 
         $Certificate = $null;
 
-        if ($PSCmdlet.ParameterSetName -eq "x509certificate2") {
+        if ($PSCmdlet.ParameterSetName -like "x509certificate2-*") {
             
         }
-        elseif ($PSCmdlet.ParameterSetName -eq "thumbprint") {
+        elseif ($PSCmdlet.ParameterSetName -like "thumbprint-*") {
             $localmachine = Get-ChildItem Cert:\LocalMachine\My | Where-Object ThumbPrint -eq $Thumbprint | Select-Object -First 1
             $currentuser = Get-ChildItem Cert:\CurrentUser\My | Where-Object ThumbPrint -eq $Thumbprint | Select-Object -First 1
 
@@ -77,7 +85,7 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
                 throw "Certificate with thumbprint $Thumbprint not found"
             }
         }
-        elseif ($PSCmdlet.ParameterSetName -eq "pfx") {
+        elseif ($PSCmdlet.ParameterSetName -like "pfx-*") {
             if (!(Test-Path $Path)) {
                 throw "Path $Path does not exist"
             }
@@ -101,12 +109,11 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
         $Script:Profiles[$Name] = @{
             AuthenticationMethod = "clientcertificate"
             ClientId             = $ClientId
-            Resource             = $Scope ? $null : $Resource
-            Scope                = $Scope
+            Resource             = ![String]::IsNullOrEmpty($Scope) ? $null : $Resource
+            Scope                = [String]::IsNullOrEmpty($Scope) ? $null : $Scope
             TenantId             = $TenantId
             Certificate          = $Certificate
             ThumbPrint           = $Certificate.Thumbprint
-            # V2Token              = $TokenVersion -eq "v2"
         }
 
         Get-EntraIDAccessToken -Profile $Name | Out-Null

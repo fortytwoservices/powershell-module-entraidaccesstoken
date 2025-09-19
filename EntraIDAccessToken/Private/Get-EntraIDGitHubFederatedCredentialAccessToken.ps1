@@ -5,10 +5,10 @@ function Get-EntraIDGitHubFederatedCredentialAccessToken {
         [Parameter(Mandatory = $true)]
         $AccessTokenProfile,
 
-        [Parameter(Mandatory = $false, ParameterSetName = "v1")]
+        [Parameter(Mandatory = $false, ParameterSetName = "resource")]
         [String] $Resource = $null,
 
-        [Parameter(Mandatory = $false, ParameterSetName = "v2")]
+        [Parameter(Mandatory = $false, ParameterSetName = "scope")]
         [String] $Scope = $null
     )
 

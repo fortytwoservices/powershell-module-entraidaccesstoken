@@ -30,7 +30,6 @@ function Get-EntraIDAccessTokenProfile {
         @{L = "ClientId"; E = { $_.Value.ClientId } },
         @{L = "TrustingApplicationClientId"; E = { $_.Value.TrustingApplicationClientId } },
         @{L = "Scope"; E = { $_.Value.Scope } },
-        @{L = "V2Token"; E = { $_.Value.V2Token } },
         @{L = "Thumbprint"; E = { $_.Value.Thumbprint } },
         @{L = "RefreshToken"; E = { [String]::IsNullOrEmpty($_.Value.RefreshToken) ? $false : $true } }
     }

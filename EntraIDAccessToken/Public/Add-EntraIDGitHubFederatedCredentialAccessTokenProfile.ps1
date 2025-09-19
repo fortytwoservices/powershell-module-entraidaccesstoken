@@ -7,17 +7,17 @@ Add-EntraIDGitHubFederatedCredentialAccessTokenProfile
 
 #>
 function Add-EntraIDGitHubFederatedCredentialAccessTokenProfile {
-    [CmdletBinding()]
+    [CmdletBinding(DefaultParameterSetName = "scope")]
 
     Param
     (
         [Parameter(Mandatory = $false)]
         [String] $Name = "Default",
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ParameterSetName = "resource")]
         [String] $Resource = "https://graph.microsoft.com",
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ParameterSetName = "scope")]
         [String] $Scope = "https://graph.microsoft.com/.default",
 
         [Parameter(Mandatory = $true)]
@@ -28,7 +28,7 @@ function Add-EntraIDGitHubFederatedCredentialAccessTokenProfile {
         [String] $ClientId,
 
         # Specifies that we want a V2 token
-        [Parameter(Mandatory = $true, ParameterSetName = "v2")]
+        [Parameter(Mandatory = $false, ParameterSetName = "v2")]
         [Switch] $V2Token
     )
     
@@ -37,13 +37,16 @@ function Add-EntraIDGitHubFederatedCredentialAccessTokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
+        if ($PSCmdlet.MyInvocation.BoundParameters.ContainsKey("V2Token")) {
+            Write-Warning "The V2Token parameter is deprecated and will be removed in a future release. The presence of a Scope parameter now implies a V2 token."
+        }
+
         $Script:Profiles[$Name] = @{
-            AuthenticationMethod        = "githubfederatedcredential"
-            ClientId                    = $ClientId
-            Resource                    = $Resource
-            TenantId                    = $TenantId
-            Scope                       = $Scope
-            V2Token                     = $V2Token.IsPresent ? $true : $false
+            AuthenticationMethod = "githubfederatedcredential"
+            ClientId             = $ClientId
+            Resource             = $PSCmdlet.ParameterSetName -eq "resource" ? $Resource : $null
+            Scope                = $PSCmdlet.ParameterSetName -eq "scope" ? $Scope : $null
+            TenantId             = $TenantId
         }
 
         Get-EntraIDAccessToken -Profile $Name | Out-Null
