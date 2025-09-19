@@ -31,7 +31,7 @@ function Add-EntraIDClientSecretAccessTokenProfile {
         [String] $ClientId,
 
         # Specifies that we want a V2 token
-        [Parameter(Mandatory = $true, ParameterSetName = "v2")]
+        [Parameter(Mandatory = $false, ParameterSetName = "v2")]
         [Switch] $V2Token
     )
     
