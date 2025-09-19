@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.14.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.14.0...v2.14.1) (2025-09-19)
+
+
+### Bug Fixes
+
+* Remove V2Token as mandatory parameter from Add-EntraIDClientSecretAccessTokenProfile when providing scope ([12ed760](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/12ed760e9b7326d20314b2e76f89db9fd46f22c4))
+* Remove V2Token as mandatory parameter from Add-EntraIDClientSecretAccessTokenProfile when providing scope ([260ab66](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/260ab66d641727a368923ca57f7728c607c07083))
+
 ## [2.14.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.13.1...v2.14.0) (2025-09-18)
 
 
