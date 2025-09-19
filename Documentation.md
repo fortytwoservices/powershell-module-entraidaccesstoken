@@ -746,13 +746,13 @@ Adds a new profile for getting Entra ID access tokens.
 
 ### SYNTAX
 
-#### v1 (Default)
+#### resource (Default)
 ```
 Add-EntraIDClientSecretAccessTokenProfile [-Name <String>] [-Resource <String>] -TenantId <String>
  -ClientSecret <SecureString> -ClientId <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
-#### v2
+#### scope
 ```
 Add-EntraIDClientSecretAccessTokenProfile [-Name <String>] [-Scope <String>] -TenantId <String>
  -ClientSecret <SecureString> -ClientId <String> [-V2Token] [-ProgressAction <ActionPreference>]
@@ -791,7 +791,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: v1
+Parameter Sets: resource
 Aliases:
 
 Required: False
@@ -806,7 +806,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: v2
+Parameter Sets: scope
 Aliases:
 
 Required: False
@@ -866,7 +866,7 @@ Specifies that we want a V2 token
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: v2
+Parameter Sets: scope
 Aliases:
 
 Required: False
