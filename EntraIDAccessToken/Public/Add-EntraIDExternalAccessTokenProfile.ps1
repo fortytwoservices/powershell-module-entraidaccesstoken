@@ -7,20 +7,27 @@ Add-EntraIDExternalAccessTokenProfile
 
 #>
 function Add-EntraIDExternalAccessTokenProfile {
-    [CmdletBinding(DefaultParameterSetName = "v1")]
+    [CmdletBinding(DefaultParameterSetName = "string")]
 
     Param
     (
         [Parameter(Mandatory = $false)]
         [String] $Name = "Default",
 
-        [Parameter(Mandatory = $true)]
-        [String] $AccessToken
+        [Parameter(Mandatory = $true, ParameterSetName = "string")]
+        [String] $AccessToken,
+
+        [Parameter(Mandatory = $true, ParameterSetName = "securestring")]
+        [SecureString] $SecureStringAccessToken
     )
     
     Process {
         if ($Script:Profiles.ContainsKey($Name)) {
             Write-Warning "Profile $Name already exists, overwriting"
+        }
+
+        if( $PSCmdlet.ParameterSetName -eq "securestring") {
+            $AccessToken = [pscredential]::new("123", $SecureStringAccessToken).GetNetworkCredential().Password
         }
 
         $Script:Profiles[$Name] = @{

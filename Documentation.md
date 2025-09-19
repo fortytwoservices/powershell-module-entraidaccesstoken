@@ -306,13 +306,13 @@ Adds a new profile for getting Entra ID access tokens.
 
 ### SYNTAX
 
-#### Default (Default)
+#### resource (Default)
 ```
 Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile [-Name <String>] [-Resource <String>]
  [-TenantId <String>] [-ClientId <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
-#### v2
+#### scope
 ```
 Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile [-Name <String>] [-Scope <String>]
  [-TenantId <String>] [-ClientId <String>] [-V2Token] [-ProgressAction <ActionPreference>] [<CommonParameters>]
@@ -350,7 +350,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: Default
+Parameter Sets: resource
 Aliases:
 
 Required: False
@@ -365,7 +365,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: v2
+Parameter Sets: scope
 Aliases:
 
 Required: False
@@ -410,10 +410,10 @@ Specifies that we want a V2 token
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: v2
+Parameter Sets: scope
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: False
 Accept pipeline input: False
@@ -531,25 +531,46 @@ Adds a new profile for getting Entra ID access tokens.
 
 ### SYNTAX
 
-#### x509certificate2 (Default)
+#### x509certificate2-resource (Default)
 ```
-Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>] [-Scope <String>]
+Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>]
  -Certificate <X509Certificate2> -ClientId <String> -TenantId <String> [-TokenVersion <String>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
-#### thumbprint
+#### thumbprint-resource
 ```
-Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>] [-Scope <String>]
- -Thumbprint <String> -ClientId <String> -TenantId <String> [-TokenVersion <String>]
+Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>] -Thumbprint <String>
+ -ClientId <String> -TenantId <String> [-TokenVersion <String>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+#### pfx-resource
+```
+Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>] -Path <String>
+ -Password <SecureString> -ClientId <String> -TenantId <String> [-TokenVersion <String>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
-#### pfx
+#### pfx-scope
 ```
-Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] [-Resource <String>] [-Scope <String>]
- -Path <String> -Password <SecureString> -ClientId <String> -TenantId <String> [-TokenVersion <String>]
+Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] -Scope <String> -Path <String>
+ -Password <SecureString> -ClientId <String> -TenantId <String> [-TokenVersion <String>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+#### thumbprint-scope
+```
+Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] -Scope <String> -Thumbprint <String>
+ -ClientId <String> -TenantId <String> [-TokenVersion <String>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+#### x509certificate2-scope
+```
+Add-EntraIDClientCertificateAccessTokenProfile [-Name <String>] -Scope <String> -Certificate <X509Certificate2>
+ -ClientId <String> -TenantId <String> [-TokenVersion <String>] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
 ```
 
 ### DESCRIPTION
@@ -584,7 +605,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: x509certificate2-resource, thumbprint-resource, pfx-resource
 Aliases:
 
 Required: False
@@ -599,10 +620,10 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: pfx-scope, thumbprint-scope, x509certificate2-scope
 Aliases:
 
-Required: False
+Required: True
 Position: Named
 Default value: None
 Accept pipeline input: False
@@ -614,7 +635,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: X509Certificate2
-Parameter Sets: x509certificate2
+Parameter Sets: x509certificate2-resource, x509certificate2-scope
 Aliases:
 
 Required: True
@@ -629,7 +650,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: thumbprint
+Parameter Sets: thumbprint-resource, thumbprint-scope
 Aliases:
 
 Required: True
@@ -644,7 +665,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: pfx
+Parameter Sets: pfx-resource, pfx-scope
 Aliases:
 
 Required: True
@@ -659,7 +680,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: SecureString
-Parameter Sets: pfx
+Parameter Sets: pfx-resource, pfx-scope
 Aliases:
 
 Required: True
@@ -746,13 +767,13 @@ Adds a new profile for getting Entra ID access tokens.
 
 ### SYNTAX
 
-#### v1 (Default)
+#### resource (Default)
 ```
 Add-EntraIDClientSecretAccessTokenProfile [-Name <String>] [-Resource <String>] -TenantId <String>
  -ClientSecret <SecureString> -ClientId <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
-#### v2
+#### scope
 ```
 Add-EntraIDClientSecretAccessTokenProfile [-Name <String>] [-Scope <String>] -TenantId <String>
  -ClientSecret <SecureString> -ClientId <String> [-V2Token] [-ProgressAction <ActionPreference>]
@@ -791,7 +812,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: v1
+Parameter Sets: resource
 Aliases:
 
 Required: False
@@ -806,7 +827,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: v2
+Parameter Sets: scope
 Aliases:
 
 Required: False
@@ -866,7 +887,7 @@ Specifies that we want a V2 token
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: v2
+Parameter Sets: scope
 Aliases:
 
 Required: False
@@ -908,8 +929,15 @@ Adds a new profile for getting Entra ID access tokens.
 
 ### SYNTAX
 
+#### string (Default)
 ```
-Add-EntraIDExternalAccessTokenProfile [[-Name] <String>] [-AccessToken] <String>
+Add-EntraIDExternalAccessTokenProfile [-Name <String>] -AccessToken <String>
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+#### securestring
+```
+Add-EntraIDExternalAccessTokenProfile [-Name <String>] -SecureStringAccessToken <SecureString>
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -934,7 +962,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
 Default value: Default
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -945,11 +973,26 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: string
 Aliases:
 
 Required: True
-Position: 2
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -SecureStringAccessToken
+
+
+```yaml
+Type: SecureString
+Parameter Sets: securestring
+Aliases:
+
+Required: True
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -1119,9 +1162,22 @@ Adds a new profile for getting Entra ID access tokens.
 
 ### SYNTAX
 
+#### scope (Default)
 ```
-Add-EntraIDGitHubFederatedCredentialAccessTokenProfile [-Name <String>] [-Resource <String>] [-Scope <String>]
- -TenantId <String> -ClientId <String> [-V2Token] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Add-EntraIDGitHubFederatedCredentialAccessTokenProfile [-Name <String>] [-Scope <String>] -TenantId <String>
+ -ClientId <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+#### resource
+```
+Add-EntraIDGitHubFederatedCredentialAccessTokenProfile [-Name <String>] [-Resource <String>] -TenantId <String>
+ -ClientId <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+#### v2
+```
+Add-EntraIDGitHubFederatedCredentialAccessTokenProfile [-Name <String>] -TenantId <String> -ClientId <String>
+ [-V2Token] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DESCRIPTION
@@ -1156,7 +1212,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: resource
 Aliases:
 
 Required: False
@@ -1171,7 +1227,7 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: scope
 Aliases:
 
 Required: False
@@ -1216,10 +1272,10 @@ Specifies that we want a V2 token
 
 ```yaml
 Type: SwitchParameter
-Parameter Sets: (All)
+Parameter Sets: v2
 Aliases:
 
-Required: True
+Required: False
 Position: Named
 Default value: False
 Accept pipeline input: False

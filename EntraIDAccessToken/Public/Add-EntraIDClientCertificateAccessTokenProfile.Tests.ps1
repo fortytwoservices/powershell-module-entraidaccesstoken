@@ -47,7 +47,7 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.1" -Tag "WindowsOnly" {
         $Name = (New-Guid).ToString()
         { 
             Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Thumbprint $ENV:EIDATPESTERCERTIFICATETHUMBPRINT -Resource "https://graph.microsoft.com" -Scope "https://management.azure.com/.default"
-        } | Should -Throw "Cannot specify both Resource and Scope"
+        } | Should -Throw "*Parameter set cannot be resolved using the specified named parameters*"
     }
 
     It "Should fail when providing a certificate thumbprint that does not exist" {
@@ -83,7 +83,7 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.2" {
         $Name = (New-Guid).ToString()
         { 
             Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -Resource "https://graph.microsoft.com" -Scope "https://management.azure.com/.default"
-        } | Should -Throw "Cannot specify both Resource and Scope"
+        } | Should -Throw "*Parameter set cannot be resolved using the specified named parameters*"
     }
 
     It "Should fail when providing a pfx that does not exist" {
@@ -98,5 +98,61 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.2" {
         { 
             Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString "WrongPassword" -AsPlainText -Force)
         } | Should -Throw
+    }
+}
+
+Describe "Add-EntraIDClientCertificateAccessTokenProfile.3" {
+    BeforeAll {
+        $Name = (New-Guid).ToString()
+        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -Scope "https://api.fortytwo.io/.default"
+    }
+
+    It "Creates a profile with client secret authentication" {
+        $P = Get-EntraIDAccessTokenProfile -Profile $Name 
+        $P.Name | Should -Be $Name
+        $P.AuthenticationMethod | Should -Be "clientcertificate"
+        $P.ClientId | Should -Be $ENV:EIDATPESTERCLIENTID
+        $P.TenantId | Should -Be $ENV:EIDATPESTERTENANTID
+        $P.Scope | Should -Be "https://api.fortytwo.io/.default"
+    }
+
+    It "Returns an access token for the correct audience" {
+        $AT = Get-EntraIDAccessToken -Profile $Name
+        $AT | Should -BeLike "ey*.ey*.*"
+        ($AT | ConvertFrom-EntraIDAccessToken).Payload.aud | Should -Be "2808f963-7bba-4e66-9eee-82d0b178f408"
+    }
+
+    It "Returns an access token for the correct version" {
+        $AT = Get-EntraIDAccessToken -Profile $Name
+        $AT | Should -BeLike "ey*.ey*.*"
+        ($AT | ConvertFrom-EntraIDAccessToken).Payload.ver | Should -Be "2.0"
+    }
+}
+
+Describe "Add-EntraIDClientCertificateAccessTokenProfile.4" {
+    BeforeAll {
+        $Name = (New-Guid).ToString()
+        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -Resource "2808f963-7bba-4e66-9eee-82d0b178f408"
+    }
+
+    It "Creates a profile with client secret authentication" {
+        $P = Get-EntraIDAccessTokenProfile -Profile $Name 
+        $P.Name | Should -Be $Name
+        $P.AuthenticationMethod | Should -Be "clientcertificate"
+        $P.ClientId | Should -Be $ENV:EIDATPESTERCLIENTID
+        $P.TenantId | Should -Be $ENV:EIDATPESTERTENANTID
+        $P.Resource | Should -Be "2808f963-7bba-4e66-9eee-82d0b178f408"
+    }
+
+    It "Returns an access token for the correct audience" {
+        $AT = Get-EntraIDAccessToken -Profile $Name
+        $AT | Should -BeLike "ey*.ey*.*"
+        ($AT | ConvertFrom-EntraIDAccessToken).Payload.aud | Should -Be "2808f963-7bba-4e66-9eee-82d0b178f408"
+    }
+
+    It "Returns an access token for the correct version" {
+        $AT = Get-EntraIDAccessToken -Profile $Name
+        $AT | Should -BeLike "ey*.ey*.*"
+        ($AT | ConvertFrom-EntraIDAccessToken).Payload.ver | Should -Be "2.0" # Apparently always 2.0 when using certificated based?
     }
 }

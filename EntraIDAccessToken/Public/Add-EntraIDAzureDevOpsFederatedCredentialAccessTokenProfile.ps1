@@ -7,17 +7,17 @@ Add-EntraIDAccessTokenProfile
 
 #>
 function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
-    [CmdletBinding(DefaultParameterSetName="Default")]
+    [CmdletBinding(DefaultParameterSetName="resource")]
 
     Param
     (
         [Parameter(Mandatory = $false)]
         [String] $Name = "Default",
 
-        [Parameter(Mandatory = $false, ParameterSetName = "Default")]
+        [Parameter(Mandatory = $false, ParameterSetName = "resource")]
         [String] $Resource = "https://graph.microsoft.com",
 
-        [Parameter(Mandatory = $false, ParameterSetName = "v2")]
+        [Parameter(Mandatory = $false, ParameterSetName = "scope")]
         [String] $Scope = "https://graph.microsoft.com/.default",
 
         [Parameter(Mandatory = $false)]
@@ -28,7 +28,7 @@ function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
         [String] $ClientId = $ENV:AZURESUBSCRIPTION_CLIENT_ID,
 
         # Specifies that we want a V2 token
-        [Parameter(Mandatory = $true, ParameterSetName = "v2")]
+        [Parameter(Mandatory = $false, ParameterSetName = "scope")]
         [Switch] $V2Token
     )
     
@@ -37,13 +37,16 @@ function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
+        if($PSCmdlet.MyInvocation.BoundParameters.ContainsKey("V2Token")) {
+            Write-Warning "The V2Token parameter is deprecated and will be removed in a future release. The presence of a Scope parameter now implies a V2 token."
+        }
+
         $Script:Profiles[$Name] = @{
             AuthenticationMethod        = "azuredevopsfederatedcredential"
             ClientId                    = $ClientId
-            Resource                    = $Resource
+            Resource                    = $PSCmdlet.ParameterSetName -eq "resource" ? $Resource : $null
+            Scope                       = $PSCmdlet.ParameterSetName -eq "scope" ? $Scope : $null
             TenantId                    = $TenantId
-            Scope                       = $Scope
-            V2Token                     = $V2Token.IsPresent ? $true : $false
         }
 
         Get-EntraIDAccessToken -Profile $Name | Out-Null

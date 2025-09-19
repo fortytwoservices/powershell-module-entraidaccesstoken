@@ -5,10 +5,10 @@ function Get-EntraIDClientCertificateAccessToken {
         [Parameter(Mandatory = $true)]
         $AccessTokenProfile,
 
-        [Parameter(Mandatory = $false, ParameterSetName = "v1")]
+        [Parameter(Mandatory = $false, ParameterSetName = "resource")]
         [String] $Resource = $null,
 
-        [Parameter(Mandatory = $false, ParameterSetName = "v2")]
+        [Parameter(Mandatory = $false, ParameterSetName = "scope")]
         [String] $Scope = $null
     )
 
@@ -28,21 +28,7 @@ function Get-EntraIDClientCertificateAccessToken {
                 grant_type            = "client_credentials"
             }
 
-            Write-Verbose "Getting access token (v2) for '$($body.scope)' using Client Certificate for client_id $($AccessTokenProfile.ClientId)"
-        
-            # Get token
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body
-        }
-        elseif ($AccessTokenProfile.scope) {
-            $body = @{
-                client_id             = $AccessTokenProfile.ClientId
-                client_assertion      = $AssertionJWT
-                client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
-                scope                 = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope: $Scope
-                grant_type            = "client_credentials"
-            }
-
-            Write-Verbose "Getting access token (v2) for '$($body.scope)' using Client Certificate for client_id $($AccessTokenProfile.ClientId)"
+            Write-Verbose "Getting access token (v2/scope) for '$($body.scope)' using Client Certificate for client_id $($AccessTokenProfile.ClientId)"
         
             # Get token
             Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body
@@ -56,7 +42,7 @@ function Get-EntraIDClientCertificateAccessToken {
                 grant_type            = "client_credentials"
             }
 
-            Write-Verbose "Getting access token (v1) for '$($body.resource)' using Client Certificate for client_id $($AccessTokenProfile.ClientId)"
+            Write-Verbose "Getting access token (v1/resource) for '$($body.resource)' using Client Certificate for client_id $($AccessTokenProfile.ClientId)"
         
             # Get token
             Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token" -Body $body
