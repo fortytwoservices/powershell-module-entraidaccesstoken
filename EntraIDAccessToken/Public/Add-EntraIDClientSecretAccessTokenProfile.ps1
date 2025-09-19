@@ -7,17 +7,17 @@ Add-EntraIDAccessTokenProfile
 
 #>
 function Add-EntraIDClientSecretAccessTokenProfile {
-    [CmdletBinding(DefaultParameterSetName = "v1")]
+    [CmdletBinding(DefaultParameterSetName = "resource")]
 
     Param
     (
         [Parameter(Mandatory = $false)]
         [String] $Name = "Default",
 
-        [Parameter(Mandatory = $false, ParameterSetName = "v1")]
+        [Parameter(Mandatory = $false, ParameterSetName = "resource")]
         [String] $Resource = "https://graph.microsoft.com",
 
-        [Parameter(Mandatory = $false, ParameterSetName = "v2")]
+        [Parameter(Mandatory = $false, ParameterSetName = "scope")]
         [String] $Scope = "https://graph.microsoft.com/.default",
 
         [Parameter(Mandatory = $true)]
@@ -31,7 +31,7 @@ function Add-EntraIDClientSecretAccessTokenProfile {
         [String] $ClientId,
 
         # Specifies that we want a V2 token
-        [Parameter(Mandatory = $false, ParameterSetName = "v2")]
+        [Parameter(Mandatory = $false, ParameterSetName = "scope")]
         [Switch] $V2Token
     )
     
@@ -44,8 +44,8 @@ function Add-EntraIDClientSecretAccessTokenProfile {
             AuthenticationMethod                    = "clientsecret"
             ClientId                                = $ClientId
             ClientSecret                            = $ClientSecret
-            Resource                                = $Resource
-            Scope                                   = $Scope
+            Resource                                = $PSCmdlet.ParameterSetName -eq "resource" ? $Resource : $null
+            Scope                                   = $PSCmdlet.ParameterSetName -eq "scope" ? $Scope : $null
             TenantId                                = $TenantId
             V2Token                                 = $V2Token.IsPresent ? $true : $false
         }

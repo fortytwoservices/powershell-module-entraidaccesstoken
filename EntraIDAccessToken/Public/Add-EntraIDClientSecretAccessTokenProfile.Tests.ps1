@@ -67,7 +67,7 @@ Describe "Add-EntraIDClientSecretAccessTokenProfile.3" {
     It "Returns an access token for the correct audience" {
         $AT = Get-EntraIDAccessToken -Profile $Name
         $AT | Should -BeLike "ey*.ey*.*"
-        ($AT | ConvertFrom-EntraIDAccessToken).Payload.aud | Should -Be "https://api.fortytwo.io"
+        ($AT | ConvertFrom-EntraIDAccessToken).Payload.aud | Should -Be "2808f963-7bba-4e66-9eee-82d0b178f408"
         ($AT | ConvertFrom-EntraIDAccessToken).Payload.ver | Should -Be "1.0"
     }
 }
@@ -90,7 +90,7 @@ Describe "Add-EntraIDClientSecretAccessTokenProfile.4" {
     It "Returns an access token for the correct audience" {
         $AT = Get-EntraIDAccessToken -Profile $Name
         $AT | Should -BeLike "ey*.ey*.*"
-        ($AT | ConvertFrom-EntraIDAccessToken).Payload.aud | Should -Be "https://api.fortytwo.io"
+        ($AT | ConvertFrom-EntraIDAccessToken).Payload.aud | Should -Be "2808f963-7bba-4e66-9eee-82d0b178f408"
         ($AT | ConvertFrom-EntraIDAccessToken).Payload.ver | Should -Be "2.0"
     }
 }
