@@ -33,43 +33,87 @@ $ClientSecret = Read-Host -AsSecureString
 Add-EntraIDClientSecretAccessTokenProfile -Profile "Pegasus" -ClientSecret $ClientSecret -TenantId "237098ae-0798-4cf9-a3a5-208374d2dcfd" -ClientId "179ba868-8e81-4bcb-b8e4-a3268fe8b13d" -Resource "https://vault.azure.net/"
 ```
 
-# Example 1.3 - Adding a profile using an Automation Account System Assigned Identity and the Microsoft Graph resource
+## Example 1.3 - Adding a profile using an Automation Account System Assigned Identity and the Microsoft Graph resource
 
 ```PowerShell
 Add-EntraIDAutomationAccountMSIAccessTokenProfile
 ```
 
-# Example 1.4 - Adding a profile using an Automation Account User Assigned Identity and Key Vault as resource
+## Example 1.4 - Adding a profile using an Automation Account User Assigned Identity and Key Vault as resource
 
 ```PowerShell
 Add-EntraIDAutomationAccountMSIAccessTokenProfile -ClientId "<uai clientid>" -Resource "https://vault.azure.net/"
 ```
 
-# Example 1.5 - Adding a profile using a hard coded access token (Useful for development)
+## Example 1.5 - Adding a profile using a hard coded access token (Useful for development)
 
 ```PowerShell
 Add-EntraIDExternalAccessTokenProfile -AccessToken "ey..."
 ```
 
-# Example 1.6 - Adding a profile using a a certificate
+## Example 1.6 - Adding a profile using a certificate
 
 ```PowerShell
 Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId "..." -TenantId "..." -Thumbprint "D08A6C49E577AEB7DE4468CD49143288D6F4B003"
 ```
 
-# Example 2.1 - Getting an access token for the default profile
+## Example 1.7 - Adding a profile using Azure Arc Managed Identity and Microsoft Graph resource
+
+```PowerShell
+Add-EntraIDAzureArcManagedMSITokenProfile
+```
+
+## Example 1.8 - Adding a profile using Azure DevOps Federated Credential
+
+```PowerShell
+Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile -TenantId "237098ae-0798-4cf9-a3a5-208374d2dcfd" -ClientId "179ba868-8e81-4bcb-b8e4-a3268fe8b13d"
+```
+
+## Example 1.9 - Adding a profile using Azure PowerShell Session Token
+
+```PowerShell
+Add-EntraIDAzurePowerShellSessionTokenProfile
+```
+
+## Example 1.10 - Adding a profile using Function App Managed Identity
+
+```PowerShell
+Add-EntraIDFunctionAppMSIAccessTokenProfile
+```
+
+## Example 1.11 - Adding a profile using GitHub Federated Credential
+
+```PowerShell
+Add-EntraIDGitHubFederatedCredentialAccessTokenProfile -TenantId "237098ae-0798-4cf9-a3a5-208374d2dcfd" -ClientId "179ba868-8e81-4bcb-b8e4-a3268fe8b13d"
+```
+
+## Example 1.12 - Adding a profile using Interactive User Authentication
+
+```PowerShell
+Add-EntraIDInteractiveUserAccessTokenProfile
+```
+
+## Example 1.13 - Adding a profile using Resource Owner Password Credentials (ROPC)
+
+```PowerShell
+$UserCredential = Get-Credential
+$ClientSecret = Read-Host -AsSecureString
+Add-EntraIDROPCAccessTokenProfile -TenantId "237098ae-0798-4cf9-a3a5-208374d2dcfd" -ClientId "179ba868-8e81-4bcb-b8e4-a3268fe8b13d" -ClientSecret $ClientSecret -UserCredential $UserCredential
+```
+
+## Example 2.1 - Getting an access token for the default profile
 
 ```PowerShell
 Get-EntraIDAccessToken
 ```
 
-# Example 2.2 - Getting a refreshed access token for a certain profile
+## Example 2.2 - Getting a refreshed access token for a certain profile
 
 ```PowerShell
 Get-EntraIDAccessToken -ForceRefresh -Profile "Pegasus"
 ```
 
-# Example 2.3 - Use Invoke-RestMethod
+## Example 2.3 - Use Invoke-RestMethod
 
 ```PowerShell
 Invoke-RestMethod -Uri "https://graph.microsoft.com/v1.0/users" -Headers (Get-EntraIDAccessTokenHeader)
