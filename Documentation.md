@@ -4,7 +4,7 @@ A module for simplifying the process of getting an access token from Entra ID
 
 | Metadata | Information |
 | --- | --- |
-| Version | 2.15.0 |
+| Version | 2.16.0 |
 | Author | Marius Solbakken Mellum |
 | Company name | Fortytwo Technologies AS |
 | PowerShell version | 7.1 |
