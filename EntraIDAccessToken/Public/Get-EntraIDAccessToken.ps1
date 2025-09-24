@@ -85,7 +85,6 @@ function Get-EntraIDAccessToken {
         SYSTEM_ACCESSTOKEN: $(System.AccessToken)'
                 Write-Warning "Example task: `n$Example"
                 throw "Missing idToken environment variable, did you forget addSpnToEnvironment?"
-                return
             }
 
             if (!$P.TenantId) {
