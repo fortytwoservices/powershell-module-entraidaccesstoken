@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.16.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.15.0...v2.16.0) (2025-09-24)
+
+
+### Features
+
+* Improve error handling for Get-EntraIDAzureDevOpsFederatedCredentialAccessToken ([b60820e](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/b60820eb0037a46e36b014ad1102013aa72179a4))
+
 ## [2.15.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.14.1...v2.15.0) (2025-09-19)
 
 
