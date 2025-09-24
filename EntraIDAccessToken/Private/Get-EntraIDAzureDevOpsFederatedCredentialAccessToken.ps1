@@ -13,18 +13,42 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
     )
 
     Process {
-        $OIDCToken = $null
-        if(![String]::ISNullOrEmpty($ENV:SYSTEM_ACCESSTOKEN)) {
-            $OIDCToken = Invoke-RestMethod `
-                        -Uri "$($ENV:SYSTEM_OIDCREQUESTURI)?api-version=7.1&serviceConnectionId=$($ENV:AZURESUBSCRIPTION_SERVICE_CONNECTION_ID)" `
-                        -Method Post `
-                        -Headers @{
-                            Authorization  = "Bearer $ENV:SYSTEM_ACCESSTOKEN"
-                            'Content-Type' = 'application/json'
-                        } | Select-Object -ExpandProperty oidcToken
-        } else {
-            Write-Warning "Please add SYSTEM_ACCESSTOKEN in order for Azure DevOps to work with Federated Workload Identity for long running tasks"
-            $OIDCToken = $ENV:idToken
+        $Example = '- task: AzureCLI@2
+    displayName: Example task
+    inputs:
+        azureSubscription: example-service-connection
+        scriptLocation: scriptPath
+        scriptPath: "$(Build.SourcesDirectory)/Example.ps1"
+        azurePowerShellVersion: "LatestVersion"
+        scriptType: pscore
+        addSpnToEnvironment: true
+    env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)'
+        $OIDCToken = $ENV:idToken
+        if ([String]::ISNullOrEmpty($ENV:SYSTEM_ACCESSTOKEN)) {
+            Write-Warning "Please add SYSTEM_ACCESSTOKEN in order for Azure DevOps to work with Federated Workload Identity for long running tasks. `n`nExample task: `n$Example"
+        }
+        elseif ($ENV:SYSTEM_ACCESSTOKEN -notlike "ey*.ey*.*") {
+            Write-Warning "Please add SYSTEM_ACCESSTOKEN in order for Azure DevOps to work with Federated Workload Identity for long running tasks. `n`nExample task: `n$Example"
+        }
+        elseif ([String]::ISNullOrEmpty($ENV:SYSTEM_OIDCREQUESTURI)) {
+            Write-Warning "Please add 'addSpnToEnvironment: true' in order for Azure DevOps to work with Federated Workload Identity for long running tasks. `n`nExample task: `n$Example"
+        }
+        else {
+            $Result = Invoke-RestMethod `
+                -Uri "$($ENV:SYSTEM_OIDCREQUESTURI)?api-version=7.1&serviceConnectionId=$($ENV:AZURESUBSCRIPTION_SERVICE_CONNECTION_ID)" `
+                -Method Post `
+                -Headers @{
+                Authorization  = "Bearer $ENV:SYSTEM_ACCESSTOKEN"
+                'Content-Type' = 'application/json'
+            }
+            
+            if ($Result.oidcToken -notlike "ey*.ey*.*") {
+                throw "The OIDC token received from Azure DevOps does not appear to be valid."
+            }
+            else {
+                $OIDCToken = $Result.oidcToken
+            }
         }
 
         if ($Scope -or $AccessTokenProfile.Scope) {
