@@ -72,12 +72,19 @@ function Get-EntraIDAccessToken {
         }
         elseif ($P.AuthenticationMethod -eq "azuredevopsfederatedcredential") {
             if (!$ENV:idToken) {
-                Write-Error "Missing idToken environment variable (forgot addSpnToEnvironment?) when using Azure DevOps Federated Workload Identity as authentication method"
-                return
-            }
-
-            if (!$ENV:SYSTEM_OIDCREQUESTURI -and !$ENV:AZURESUBSCRIPTION_SERVICE_CONNECTION_ID) {
-                Write-Error "Missing SYSTEM_OIDCREQUESTURI or AZURESUBSCRIPTION_SERVICE_CONNECTION_ID environment variable when using Azure DevOps Federated Workload Identity as authentication method"
+                $Example = '- task: AzureCLI@2
+    displayName: Example task
+    inputs:
+        azureSubscription: example-service-connection
+        scriptLocation: scriptPath
+        scriptPath: "$(Build.SourcesDirectory)/Example.ps1"
+        azurePowerShellVersion: "LatestVersion"
+        scriptType: pscore
+        addSpnToEnvironment: true
+    env:
+        SYSTEM_ACCESSTOKEN: $(System.AccessToken)'
+                Write-Warning "Example task: `n$Example"
+                throw "Missing idToken environment variable, did you forget addSpnToEnvironment?"
                 return
             }
 
