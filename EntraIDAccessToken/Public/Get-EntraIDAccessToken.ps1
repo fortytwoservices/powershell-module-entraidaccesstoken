@@ -135,6 +135,12 @@ function Get-EntraIDAccessToken {
                 return
             }
         }
+        elseif ($P.AuthenticationMethod -eq "azurevmmsi") {
+            if($P.Scope -and !$P.TrustingApplicationClientId) {
+                Write-Error "Scope is only supported when using a trusting application with Azure VM Managed Service Identity"
+                return
+            }
+        }
         elseif ($P.AuthenticationMethod -eq "azurepowershellsession") {
             
         }
@@ -206,6 +212,13 @@ function Get-EntraIDAccessToken {
             }
             elseif ($P.AuthenticationMethod -eq "azurearcmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDAzureArcManagedMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
+                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
+            }
+            elseif ($P.AuthenticationMethod -eq "azurevmmsi" -and !$P.TrustingApplicationClientId) {
+                $result = Get-EntraIDAzureVMMSIAccessToken -AccessTokenProfile $P
+            }
+            elseif ($P.AuthenticationMethod -eq "azurevmmsi" -and $P.TrustingApplicationClientId) {
+                $step1 = Get-EntraIDAzureVMMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
                 $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
             }
         }
