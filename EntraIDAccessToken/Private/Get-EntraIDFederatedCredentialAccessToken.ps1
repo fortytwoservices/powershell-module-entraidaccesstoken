@@ -29,7 +29,7 @@ function Get-EntraIDFederatedCredentialAccessToken {
             }
 
             Write-Verbose "Getting access token (v2/scope) for $($body.scope) with federated credentials for client_id $($ClientId)"
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body  -ErrorAction Stop
+            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body -ErrorAction Stop
         }
         else {
             $body = @{
