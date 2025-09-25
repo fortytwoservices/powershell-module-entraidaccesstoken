@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.17.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.16.0...v2.17.0) (2025-09-25)
+
+
+### Features
+
+* Add Add-EntraIDAzureVMMSIAccessTokenProfile ([b3c081e](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/b3c081e3b9281e30abbecf6d4d700abacaa7fb69))
+
+
+### Bug Fixes
+
+* Get-EntraIDFederatedCredentialAccessToken was missing body for scope ([7f31ceb](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/7f31cebc995f35b6b662583615ed6e91d14c5e64))
+
 ## [2.16.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.15.0...v2.16.0) (2025-09-24)
 
 
