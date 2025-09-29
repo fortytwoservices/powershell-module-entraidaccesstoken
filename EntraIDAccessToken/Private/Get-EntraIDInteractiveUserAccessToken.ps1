@@ -37,7 +37,11 @@ function Get-EntraIDInteractiveUserAccessToken {
         }
 
         # Create listener
-        if ($AccessTokenProfile.Https) {
+        $listener = $null
+        if($AccessTokenProfile["Listener"]) {
+            Write-Verbose "Using existing listener"
+            $listener = $AccessTokenProfile["Listener"]
+        } elseif ($AccessTokenProfile.Https) {
             Write-Verbose "Creating HTTPS listener on port $($AccessTokenProfile.LocalhostPort)"
             $listener = New-Object System.Net.HttpListener
             $listener.Prefixes.Add("https://localhost:$($AccessTokenProfile.LocalhostPort)/")
@@ -75,7 +79,15 @@ function Get-EntraIDInteractiveUserAccessToken {
 
         # Wait for incoming requests
         Write-Verbose "Wait for incoming request"
-        $context = $listener.GetContext()
+        $contextTask = $listener.GetContextAsync()
+        $counter = 0
+        while (-not $contextTask.AsyncWaitHandle.WaitOne(100)) { 
+            $counter += 1
+            if($counter % 30 -eq 0) {
+                Write-Verbose "Waiting for authorization response..."
+            }
+        }
+        $context = $contextTask.GetAwaiter().GetResult()
         $request = $context.Request
 
         $code = $request.QueryString["code"]
@@ -97,7 +109,7 @@ function Get-EntraIDInteractiveUserAccessToken {
         }
         
         $context.Response.OutputStream.Close()
-        $listener.Stop()
+        # $listener.Stop()
 
         if (!$code) {
             Write-Error "Unable to get authorization code"
