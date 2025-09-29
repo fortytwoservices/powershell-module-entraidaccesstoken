@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.17.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.17.0...v2.17.1) (2025-09-29)
+
+
+### Bug Fixes
+
+* Allow cltr+c for Get-EntraIDInteractiveUserAccessToken ([31ac654](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/31ac654e648cc5813d8b2ac06c4a267e096a3f67))
+
 ## [2.17.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.16.0...v2.17.0) (2025-09-25)
 
 
