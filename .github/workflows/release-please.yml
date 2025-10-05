@@ -18,15 +18,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           fetch-depth: 2
           ref: ${{ github.event.pull_request.head.ref }}
-      - name: Update documentation.md and psd1 version
+      - name: Update readme.md and psd1 version
         shell: pwsh
         run: |
-          $Path = ".\Documentation.md"
-
+          $Path = ".\README.md"
+      
           # Load platyPS module for generating markdown documentation
           Install-Module platyPS -Scope CurrentUser -Confirm:$false -Force
           Import-Module platyPS
