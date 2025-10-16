@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.18.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.17.1...v2.18.0) (2025-10-16)
+
+
+### Features
+
+* Fix auto load of module by populating CmdletsToExport ([c03f06e](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/c03f06ea13d20378099fe06fe3d486429db251ee))
+* Fix auto load of module by populating CmdletsToExport ([13ce65a](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/13ce65a55a15cb67734e7b9a7e959745423cdb26))
+* Replace arrays too (as long as they are on one line) ([77bf013](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/77bf0138e6172ea8a1019952403d91df672a53a8))
+
 ## [2.17.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.17.0...v2.17.1) (2025-09-29)
 
 
