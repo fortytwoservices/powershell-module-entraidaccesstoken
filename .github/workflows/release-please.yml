@@ -38,8 +38,16 @@ jobs:
               Write-Error "Wrong number of psd1 files found ($count)"
               exit 1
           }
+          
+          # Import the module
+          $RequiredModules = [ScriptBlock]::Create((Get-Content -Raw $psd1.FullName)).Invoke().RequiredModules
+          if($RequiredModules) {
+            $RequiredModules | ForEach-Object {New-Module -Name $_ -ScriptBlock {} | Import-Module}
+          }
+          $ModulePath = $psd1.FullName | Split-Path -Parent
+          $Module = Import-Module $ModulePath -Verbose -Force -PassThru
       
-          # Update the psd1 file with the release-please version
+          # Update the psd1 file with the release-please version and public cmdlets
           if((Test-Path ".release-please-manifest.json")) {
               $releasePleaseVersion = (Get-Content ".release-please-manifest.json" | ConvertFrom-Json -AsHashTable)."."
               if($releasePleaseVersion -notlike "*.*.*") {
@@ -50,17 +58,10 @@ jobs:
               # Replace the ModuleVersion line in the psd1 file
               (Get-Content $psd1.FullName | 
               ForEach-Object {if($_ -like "*ModuleVersion*=*"){"    ModuleVersion = '$releasePleaseVersion'"} else {$_}} | 
+              ForEach-Object {if($_ -like "*CmdletsToExport*'`*'*"){"    CmdletsToExport = @('{0}')" -f ($module.ExportedFunctions.Keys -join "','")} else {$_}} | 
               Out-String).Trim() | 
               Set-Content $psd1.FullName
           }
-          
-          # Import the module
-          $RequiredModules = [ScriptBlock]::Create((Get-Content -Raw $psd1.FullName)).Invoke().RequiredModules
-          if($RequiredModules) {
-            $RequiredModules | ForEach-Object {New-Module -Name $_ -ScriptBlock {} | Import-Module}
-          }
-          $ModulePath = $psd1.FullName | Split-Path -Parent
-          $Module = Import-Module $ModulePath -Verbose -Force -PassThru
           
           # Generate README.md
           {
