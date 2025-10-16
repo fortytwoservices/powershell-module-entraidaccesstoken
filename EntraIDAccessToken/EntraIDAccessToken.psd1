@@ -8,7 +8,7 @@
     RootModule        = 'EntraIDAccessToken.psm1'
 
     # Version number of this module.
-    ModuleVersion = '2.17.1'
+    ModuleVersion = '2.18.0'
 
     # Supported PSEditions
     # CompatiblePSEditions = @()
