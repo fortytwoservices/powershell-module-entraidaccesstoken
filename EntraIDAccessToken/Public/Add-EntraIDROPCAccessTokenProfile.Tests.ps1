@@ -3,15 +3,15 @@ BeforeAll {
 
     $ENV:EIDATPESTERTENANTID = "bb73082a-b74c-4d39-aec0-41c77d6f4850"
     $ENV:EIDATPESTERCLIENTID = "bad81856-fc31-47a6-8755-b42ef8025a49"
-    #$ENV:EIDATPESTERCLIENTSECRET ??= Read-Host -Prompt "Enter client secret for $($ENV:EIDATPESTERCLIENTID)"
+    #$ENV:PESTERSECRET3 ??= Read-Host -Prompt "Enter client secret for $($ENV:EIDATPESTERCLIENTID)"
     $ENV:EIDATPESTERUSERNAME = "pester.azurear@labs.fortytwo.io"
-    #$ENV:EIDATPESTERPASSWORD ??= Read-Host -Prompt "Enter password for $($ENV:EIDATPESTERUSERNAME)"
+    #$ENV:PESTERSECRET4 ??= Read-Host -Prompt "Enter password for $($ENV:EIDATPESTERUSERNAME)"
 }
 
 Describe "Add-EntraIDROPCAccessTokenProfile.1" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDROPCAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -UserCredential (New-Object System.Management.Automation.PSCredential($ENV:EIDATPESTERUSERNAME, (ConvertTo-SecureString $ENV:EIDATPESTERPASSWORD -AsPlainText -Force))) -ClientSecret (ConvertTo-SecureString $ENV:EIDATPESTERCLIENTSECRET -AsPlainText -Force)
+        Add-EntraIDROPCAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -UserCredential (New-Object System.Management.Automation.PSCredential($ENV:EIDATPESTERUSERNAME, (ConvertTo-SecureString $ENV:PESTERSECRET4 -AsPlainText -Force))) -ClientSecret (ConvertTo-SecureString $ENV:PESTERSECRET3 -AsPlainText -Force)
     }
 
     It "Creates a profile with ROPC authentication" {
