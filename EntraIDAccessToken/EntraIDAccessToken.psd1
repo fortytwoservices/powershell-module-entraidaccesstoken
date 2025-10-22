@@ -68,7 +68,7 @@
     FunctionsToExport = '*'
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-    CmdletsToExport   = '*'
+    CmdletsToExport = @('Add-EntraIDAutomationAccountMSIAccessTokenProfile','Add-EntraIDAzureArcManagedMSITokenProfile','Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile','Add-EntraIDAzurePowerShellSessionTokenProfile','Add-EntraIDClientCertificateAccessTokenProfile','Add-EntraIDClientSecretAccessTokenProfile','Add-EntraIDExternalAccessTokenProfile','Add-EntraIDFunctionAppMSIAccessTokenProfile','Add-EntraIDGitHubFederatedCredentialAccessTokenProfile','Add-EntraIDInteractiveUserAccessTokenProfile','Add-EntraIDROPCAccessTokenProfile','Confirm-EntraIDAccessToken','ConvertFrom-EntraIDAccessToken','Get-EntraIDAccessToken','Get-EntraIDAccessTokenHasRoles','Get-EntraIDAccessTokenHeader','Get-EntraIDAccessTokenPayload','Get-EntraIDAccessTokenProfile','Get-EntraIDAccessTokenSecureString','Write-EntraIDAccessToken')
 
     # Variables to export from this module
     VariablesToExport = '*'
