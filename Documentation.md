@@ -4,7 +4,7 @@ A module for simplifying the process of getting an access token from Entra ID
 
 | Metadata | Information |
 | --- | --- |
-| Version | 2.16.0 |
+| Version | 2.18.0 |
 | Author | Marius Solbakken Mellum |
 | Company name | Fortytwo Technologies AS |
 | PowerShell version | 7.1 |
@@ -495,6 +495,185 @@ Aliases:
 Required: False
 Position: 2
 Default value: Https://graph.microsoft.com
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
+## Add-EntraIDAzureVMMSIAccessTokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens using the system assigned or user assigned identity on an Azure VM.
+
+### SYNTAX
+
+#### resource (Default)
+```
+Add-EntraIDAzureVMMSIAccessTokenProfile [-Name <String>] [-Resource <String>]
+ [-UserAssignedIdentityClientId <String>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+#### resource+trustingapplication
+```
+Add-EntraIDAzureVMMSIAccessTokenProfile [-Name <String>] [-Resource <String>] -TenantId <String>
+ -TrustingApplicationClientId <String> [-UserAssignedIdentityClientId <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+#### scope+trustingapplication
+```
+Add-EntraIDAzureVMMSIAccessTokenProfile [-Name <String>] -Scope <String> -TenantId <String>
+ -TrustingApplicationClientId <String> [-UserAssignedIdentityClientId <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+Adds a new profile for getting Entra ID access tokens using the system assigned or user assigned identity on an Azure VM.
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+## Get a token for Microsoft Graph using the system assigned identity
+Add-EntraIDAzureVMMSIAccessTokenProfile
+```
+
+#### EXAMPLE 2
+```
+## Get a token for Microsoft Graph using a user assigned assigned identity
+Add-EntraIDAzureVMMSIAccessTokenProfile -UserAssignedIdentityClientId "87654321-4321-4321-4321-210987654321"
+```
+
+#### EXAMPLE 3
+```
+## Get a token for Microsoft Graph using an app registration with federated credentials from the system assigned identity
+Add-EntraIDAzureVMAccessTokenProfile -TenantId "12345678-1234-1234-1234-123456789012" -TrustingApplicationClientId "87654321-4321-4321-4321-210987654321"
+```
+
+#### EXAMPLE 4
+```
+## Get a token for Microsoft Graph using an app registration with federated credentials from a user assigned identity
+Add-EntraIDAzureVMAccessTokenProfile -TenantId "12345678-1234-1234-1234-123456789012" -TrustingApplicationClientId "87654321-4321-4321-4321-210987654321" -UserAssignedIdentityClientId "87654321-4321-4321-4321-210987654321"
+```
+
+#### EXAMPLE 5
+```
+## Get a token for Fortytwo Universe using an app registration with federated credentials from the system assigned identity
+Add-EntraIDAzureVMAccessTokenProfile -TenantId "12345678-1234-1234-1234-123456789012" -TrustingApplicationClientId "87654321-4321-4321-4321-210987654321" -Scope "https://api.fortytwo.io/.default"
+```
+
+### PARAMETERS
+
+#### -Name
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Resource
+
+
+```yaml
+Type: String
+Parameter Sets: resource, resource+trustingapplication
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Scope
+
+
+```yaml
+Type: String
+Parameter Sets: scope+trustingapplication
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TenantId
+
+
+```yaml
+Type: String
+Parameter Sets: resource+trustingapplication, scope+trustingapplication
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TrustingApplicationClientId
+
+
+```yaml
+Type: String
+Parameter Sets: resource+trustingapplication, scope+trustingapplication
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -UserAssignedIdentityClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```

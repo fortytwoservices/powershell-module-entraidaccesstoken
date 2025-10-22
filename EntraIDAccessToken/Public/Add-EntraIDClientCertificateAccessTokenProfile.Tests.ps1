@@ -3,25 +3,25 @@ BeforeAll {
 
     $ENV:EIDATPESTERTENANTID = "bb73082a-b74c-4d39-aec0-41c77d6f4850"
     $ENV:EIDATPESTERCLIENTID = "bad81856-fc31-47a6-8755-b42ef8025a49"
-    #$ENV:EIDATPESTERCLIENTSECRET ??= Read-Host -Prompt "Enter client secret for $($ENV:EIDATPESTERCLIENTID)"
+    #$ENV:PESTERSECRET3 ??= Read-Host -Prompt "Enter client secret for $($ENV:EIDATPESTERCLIENTID)"
     $ENV:EIDATPESTERCERTIFICATETHUMBPRINT = "D08A6C49E577AEB7DE4468CD49143288D6F4B003"
 
-    if ($ENV:EIDATPESTERCERTIFICATEPFX) {
-        $ENV:EIDATPESTERCERTIFICATEPFXPATH = Join-Path (get-item .) ("pester.pfx")
-        [IO.File]::WriteAllBytes($ENV:EIDATPESTERCERTIFICATEPFXPATH, [Convert]::FromBase64String($ENV:EIDATPESTERCERTIFICATEPFX))
+    if ($ENV:PESTERSECRET1) {
+        $ENV:PESTERSECRET1PATH = Join-Path (get-item .) ("pester.pfx")
+        [IO.File]::WriteAllBytes($ENV:PESTERSECRET1PATH, [Convert]::FromBase64String($ENV:PESTERSECRET1))
     }
-    $ENV:EIDATPESTERCERTIFICATEPFXPATH = "./pester.pfx"
+    $ENV:PESTERSECRET1PATH = "./pester.pfx"
     
-    #$ENV:EIDATPESTERCERTIFICATEPFXPASSWORD ??= Read-Host -Prompt "Enter password for $($ENV:EIDATPESTERCERTIFICATEPFXPATH)"
+    #$ENV:PESTERSECRET2 ??= Read-Host -Prompt "Enter password for $($ENV:PESTERSECRET1PATH)"
     $ENV:EIDATPESTERUSERNAME = "pester.azurear@labs.fortytwo.io"
-    #$ENV:EIDATPESTERPASSWORD ??= Read-Host -Prompt "Enter password for $($ENV:EIDATPESTERUSERNAME)"
+    #$ENV:PESTERSECRET4 ??= Read-Host -Prompt "Enter password for $($ENV:EIDATPESTERUSERNAME)"
 }
 
 Describe "Add-EntraIDClientCertificateAccessTokenProfile.1" -Tag "WindowsOnly" {
     BeforeAll {
         if (!("Cert:\CurrentUser\my", "Cert:\LocalMachine\my" | Get-ChildItem | Where-Object ThumbPrint -eq $ENV:EIDATPESTERCERTIFICATETHUMBPRINT)) {
             Write-Host "Importing certificate with thumbprint $ENV:EIDATPESTERCERTIFICATETHUMBPRINT to CurrentUser\My store for testing purposes"
-            Import-PfxCertificate $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString -String $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -CertStoreLocation "Cert:\CurrentUser\My\"
+            Import-PfxCertificate $ENV:PESTERSECRET1PATH -Password (ConvertTo-SecureString -String $ENV:PESTERSECRET2 -AsPlainText -Force) -CertStoreLocation "Cert:\CurrentUser\My\"
         }
 
         $Name = (New-Guid).ToString()
@@ -61,7 +61,7 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.1" -Tag "WindowsOnly" {
 Describe "Add-EntraIDClientCertificateAccessTokenProfile.2" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -Scope "https://management.azure.com/.default"
+        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:PESTERSECRET1PATH -Password (ConvertTo-SecureString $ENV:PESTERSECRET2 -AsPlainText -Force) -Scope "https://management.azure.com/.default"
     }
 
     It "Creates a profile with client secret authentication" {
@@ -82,21 +82,21 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.2" {
     It "Fails when providing scope and resource at the same time" {
         $Name = (New-Guid).ToString()
         { 
-            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -Resource "https://graph.microsoft.com" -Scope "https://management.azure.com/.default"
+            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:PESTERSECRET1PATH -Password (ConvertTo-SecureString $ENV:PESTERSECRET2 -AsPlainText -Force) -Resource "https://graph.microsoft.com" -Scope "https://management.azure.com/.default"
         } | Should -Throw "*Parameter set cannot be resolved using the specified named parameters*"
     }
 
     It "Should fail when providing a pfx that does not exist" {
         $Name = (New-Guid).ToString()
         { 
-            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path "InvalidPath" -Password (ConvertTo-SecureString $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force)
+            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path "InvalidPath" -Password (ConvertTo-SecureString $ENV:PESTERSECRET2 -AsPlainText -Force)
         } | Should -Throw "Path InvalidPath does not exist"
     }
 
     It "Should fail when provinding the wrong password" {
         $Name = (New-Guid).ToString()
         { 
-            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString "WrongPassword" -AsPlainText -Force)
+            Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:PESTERSECRET1PATH -Password (ConvertTo-SecureString "WrongPassword" -AsPlainText -Force)
         } | Should -Throw
     }
 }
@@ -104,7 +104,7 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.2" {
 Describe "Add-EntraIDClientCertificateAccessTokenProfile.3" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -Scope "https://api.fortytwo.io/.default"
+        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:PESTERSECRET1PATH -Password (ConvertTo-SecureString $ENV:PESTERSECRET2 -AsPlainText -Force) -Scope "https://api.fortytwo.io/.default"
     }
 
     It "Creates a profile with client secret authentication" {
@@ -132,7 +132,7 @@ Describe "Add-EntraIDClientCertificateAccessTokenProfile.3" {
 Describe "Add-EntraIDClientCertificateAccessTokenProfile.4" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:EIDATPESTERCERTIFICATEPFXPATH -Password (ConvertTo-SecureString $ENV:EIDATPESTERCERTIFICATEPFXPASSWORD -AsPlainText -Force) -Resource "2808f963-7bba-4e66-9eee-82d0b178f408"
+        Add-EntraIDClientCertificateAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -TenantId $ENV:EIDATPESTERTENANTID -Path $ENV:PESTERSECRET1PATH -Password (ConvertTo-SecureString $ENV:PESTERSECRET2 -AsPlainText -Force) -Resource "2808f963-7bba-4e66-9eee-82d0b178f408"
     }
 
     It "Creates a profile with client secret authentication" {
