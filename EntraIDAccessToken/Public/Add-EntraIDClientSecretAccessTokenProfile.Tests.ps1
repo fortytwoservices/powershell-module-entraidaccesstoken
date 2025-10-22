@@ -3,13 +3,13 @@ BeforeAll {
 
     $ENV:EIDATPESTERTENANTID = "bb73082a-b74c-4d39-aec0-41c77d6f4850"
     $ENV:EIDATPESTERCLIENTID = "bad81856-fc31-47a6-8755-b42ef8025a49"
-    #$ENV:EIDATPESTERCLIENTSECRET ??= Read-Host -Prompt "Enter client secret for $($ENV:EIDATPESTERCLIENTID)"
+    #$ENV:PESTERSECRET3 ??= Read-Host -Prompt "Enter client secret for $($ENV:EIDATPESTERCLIENTID)"
 }
 
 Describe "Add-EntraIDClientSecretAccessTokenProfile.1" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:EIDATPESTERCLIENTSECRET -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID
+        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:PESTERSECRET3 -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID
     }
 
     It "Creates a profile with client secret authentication" {
@@ -30,7 +30,7 @@ Describe "Add-EntraIDClientSecretAccessTokenProfile.1" {
 Describe "Add-EntraIDClientSecretAccessTokenProfile.2" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:EIDATPESTERCLIENTSECRET -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID -Resource "https://vault.azure.net"
+        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:PESTERSECRET3 -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID -Resource "https://vault.azure.net"
     }
 
     It "Creates a profile with client secret authentication" {
@@ -52,7 +52,7 @@ Describe "Add-EntraIDClientSecretAccessTokenProfile.2" {
 Describe "Add-EntraIDClientSecretAccessTokenProfile.3" {
     BeforeAll {
         $Name = (New-Guid).ToString()
-        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:EIDATPESTERCLIENTSECRET -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID -Scope "https://api.fortytwo.io/.default"
+        Add-EntraIDClientSecretAccessTokenProfile -Name $Name -ClientId $ENV:EIDATPESTERCLIENTID -ClientSecret (ConvertTo-SecureString $ENV:PESTERSECRET3 -AsPlainText -Force) -TenantId $ENV:EIDATPESTERTENANTID -Scope "https://api.fortytwo.io/.default"
     }
 
     It "Creates a profile with client secret authentication" {
