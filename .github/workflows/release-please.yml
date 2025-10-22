@@ -42,7 +42,10 @@ jobs:
           # Import the module
           $RequiredModules = [ScriptBlock]::Create((Get-Content -Raw $psd1.FullName)).Invoke().RequiredModules
           if($RequiredModules) {
-            $RequiredModules | ForEach-Object {New-Module -Name $_ -ScriptBlock {} | Import-Module}
+            $RequiredModules | ForEach-Object {
+              Write-Host "Installing required module $_"
+              Install-Module -Name $_ -Scope CurrentUser -Confirm:$false -Force
+            }
           }
           $ModulePath = $psd1.FullName | Split-Path -Parent
           $Module = Import-Module $ModulePath -Verbose -Force -PassThru
@@ -58,7 +61,7 @@ jobs:
               # Replace the ModuleVersion line in the psd1 file
               (Get-Content $psd1.FullName | 
               ForEach-Object {if($_ -like "*ModuleVersion*=*"){"    ModuleVersion = '$releasePleaseVersion'"} else {$_}} | 
-              ForEach-Object {if($_ -like "*CmdletsToExport*'`*'*" -and $_ -like "*CmdletsToExport*@(*)*"){"    CmdletsToExport = @('{0}')" -f ($module.ExportedFunctions.Keys -join "','")} else {$_}} | 
+              ForEach-Object {if($_ -like "*CmdletsToExport*'`*'*" -or $_ -like "*CmdletsToExport*@(*)*"){"    CmdletsToExport = @('{0}')" -f ($module.ExportedFunctions.Keys -join "','")} else {$_}} | 
               Out-String).Trim() | 
               Set-Content $psd1.FullName
           }
