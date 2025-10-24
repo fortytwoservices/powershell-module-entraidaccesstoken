@@ -4,7 +4,7 @@ This module was created in order to eliminate the need to build authentication i
 
 The overall approach to using the module is:
 
-1. Load the module (duh...)
+1. Install / load the module (duh...)
 2. Add profiles using one or more of the following profiles (examples 1.*):
     - Add-EntraIDAutomationAccountMSIAccessTokenProfile
     - Add-EntraIDAzureArcManagedMSITokenProfile
@@ -18,6 +18,8 @@ The overall approach to using the module is:
     - Add-EntraIDInteractiveUserAccessTokenProfile
     - Add-EntraIDROPCAccessTokenProfile
 3. Utilize ```Get-EntraIDAccessToken -Profile "Name"``` in your scripts and modules to get the token (examples 2.*)
+
+This way you can have essentially 0 lines of code for handling authentication in your modules.
 
 ## Example 1.1 - Adding a default profile using client secret authentication and the Microsoft Graph resource
 
