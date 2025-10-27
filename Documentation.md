@@ -4,7 +4,7 @@ A module for simplifying the process of getting an access token from Entra ID
 
 | Metadata | Information |
 | --- | --- |
-| Version | 2.18.0 |
+| Version | 2.19.0 |
 | Author | Marius Solbakken Mellum |
 | Company name | Fortytwo Technologies AS |
 | PowerShell version | 7.1 |
@@ -2312,6 +2312,112 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### NOTES
 
 ### RELATED LINKS
+## Get-EntraIDAccessTokenHasScopes
+
+### SYNOPSIS
+Get a boolean indicating whether the input access token has all or any of the specified roles.
+
+### SYNTAX
+
+#### All (Default)
+```
+Get-EntraIDAccessTokenHasScopes -Scopes <String[]> -AccessToken <String> [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+#### Any
+```
+Get-EntraIDAccessTokenHasScopes -Scopes <String[]> [-Any] -AccessToken <String>
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+Get a boolean indicating whether the input access token has all or any of the specified roles.
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Get-EntraIDAccessToken |Get-EntraIDAccessTokenHasScopes -Scopes "Group.Read.All"
+```
+
+#### EXAMPLE 2
+```
+Get-EntraIDAccessToken |Get-EntraIDAccessTokenHasScopes -Scopes "Group.Read.All", "Group.ReadWrite.All" -Any
+```
+
+### PARAMETERS
+
+#### -Scopes
+
+
+```yaml
+Type: String[]
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Any
+
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: Any
+Aliases:
+
+Required: True
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -AccessToken
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: True (ByValue)
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
 ## Get-EntraIDAccessTokenHeader
 
 ### SYNOPSIS
@@ -2606,6 +2712,69 @@ Required: False
 Position: 1
 Default value: Default
 Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
+## Get-EntraIDAccessTokenType
+
+### SYNOPSIS
+Returns whether the access token is for a user or an app
+
+### SYNTAX
+
+```
+Get-EntraIDAccessTokenType [-AccessToken] <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+Returns whether the access token is for a user or an app
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Get-EntraIDAccessToken |Get-EntraIDAccessTokenType
+```
+
+### PARAMETERS
+
+#### -AccessToken
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByValue)
 Accept wildcard characters: False
 ```
 
