@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.20.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.19.0...v2.20.0) (2025-10-27)
+
+
+### Features
+
+* Add Get-EntraIDAccessTokenHasScopes ([7fbe98f](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/7fbe98f292554d8477ff1e6eb1bdd8c195d9c51b))
+* Add Get-EntraIDAccessTokenType ([6ea8a25](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/6ea8a255f0eb31a87b3ebb01743e9e4f88b0b31f))
+* Add tests for Get-EntraIDAccessTokenHasRoles ([038e23e](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/038e23e0f8cd5e2f652a07f9e83df7ffc7263d03))
+
 ## [2.19.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.18.0...v2.19.0) (2025-10-27)
 
 
