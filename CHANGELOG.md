@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.19.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.18.0...v2.19.0) (2025-10-27)
+
+
+### Features
+
+* Add mock tests for Add-EntraIDAzureVMMSIAccessTokenProfile ([924b883](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/924b88351bf21db60defd5ee91968ee9d9bacecc))
+* Add test for Add-EntraIDAzureVMMSIAccessTokenProfile ([fae53ec](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/fae53eca1d16d6b7e880cf1425c6684c02152ed1))
+
+
+### Bug Fixes
+
+* Add missing support for user assigned identity ([2575ba0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/2575ba06a33d812e60425b9b525a4eb8d7235c94))
+
 ## [2.18.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.17.1...v2.18.0) (2025-10-16)
 
 
