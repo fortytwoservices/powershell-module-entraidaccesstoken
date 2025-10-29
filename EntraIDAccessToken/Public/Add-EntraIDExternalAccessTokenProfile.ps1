@@ -18,7 +18,10 @@ function Add-EntraIDExternalAccessTokenProfile {
         [String] $AccessToken,
 
         [Parameter(Mandatory = $true, ParameterSetName = "securestring")]
-        [SecureString] $SecureStringAccessToken
+        [SecureString] $SecureStringAccessToken,
+
+        [Parameter(Mandatory = $true, ParameterSetName = "clipboard")]
+        [Switch] $Clipboard
     )
     
     Process {
@@ -28,6 +31,20 @@ function Add-EntraIDExternalAccessTokenProfile {
 
         if( $PSCmdlet.ParameterSetName -eq "securestring") {
             $AccessToken = [pscredential]::new("123", $SecureStringAccessToken).GetNetworkCredential().Password
+        }
+
+        if( $PSCmdlet.ParameterSetName -eq "clipboard") {
+            $_Clipboard = Get-Clipboard
+            if($_Clipboard -like "Bearer *") {
+                $_Clipboard = $_Clipboard.Substring(7)
+            }
+
+            if($_Clipboard -like "ey*.ey*.*") {
+                $AccessToken = $_Clipboard
+            }
+            else {
+                Write-Error "Clipboard does not contain a valid access token"
+            }
         }
 
         $Script:Profiles[$Name] = @{
