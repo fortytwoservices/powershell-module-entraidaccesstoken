@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.21.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.20.0...v2.21.0) (2025-10-29)
+
+
+### Features
+
+* Add get from clipboard feature to Add-EntraIDExternalAccessTokenProfile ([#113](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/issues/113)) ([bb812bb](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/bb812bba84f063b5befbfdd0df2eb14804b237cb))
+
 ## [2.20.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.19.0...v2.20.0) (2025-10-27)
 
 
