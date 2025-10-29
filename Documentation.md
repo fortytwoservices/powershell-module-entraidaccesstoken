@@ -1120,6 +1120,12 @@ Add-EntraIDExternalAccessTokenProfile [-Name <String>] -SecureStringAccessToken 
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
+#### clipboard
+```
+Add-EntraIDExternalAccessTokenProfile [-Name <String>] [-Clipboard] [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
 ### DESCRIPTION
 
 
@@ -1173,6 +1179,21 @@ Aliases:
 Required: True
 Position: Named
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Clipboard
+
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: clipboard
+Aliases:
+
+Required: True
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
