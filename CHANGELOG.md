@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.23.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.23.0...v2.23.1) (2025-10-30)
+
+
+### Bug Fixes
+
+* Fix tags that contains spaces, in order to be able to publish to PS Gallery ([a90ee45](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/a90ee4570e156690a185a62f56a4124f277e04c5))
+* Fix tags that contains spaces, in order to be able to publish to PS Gallery ([6c4f581](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/6c4f5811c29265b032fc1ddae83995e3642aa079))
+
 ## [2.23.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.22.0...v2.23.0) (2025-10-30)
 
 
