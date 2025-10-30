@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.22.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.21.0...v2.22.0) (2025-10-30)
+
+
+### Features
+
+* Add ProjectUri to show GitHub repo on PS Gallery ([8167f06](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/8167f06a85dafea8b0425f4b14b48c938bc2eb75))
+* Add ProjectUri to show GitHub repo on PS Gallery ([df04c48](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/df04c4888e06e813d4e116a3274131dc881c4d23))
+
 ## [2.21.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.20.0...v2.21.0) (2025-10-29)
 
 
