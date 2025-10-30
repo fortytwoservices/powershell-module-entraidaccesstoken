@@ -11,7 +11,7 @@
     ModuleVersion = '2.22.0'
 
     # Supported PSEditions
-    # CompatiblePSEditions = @()
+    CompatiblePSEditions = @('Core')
 
     # ID used to uniquely identify this module
     GUID              = 'ec9c83fe-9226-424a-ba04-0e4904745e15'
@@ -88,8 +88,16 @@
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
     PrivateData       = @{
         PSData = @{
+            Tags = @(
+                "Microsoft"
+                "Entra ID"
+                "Authentication"
+                "Access Token"
+                "MSAL" # Well...
+            )
             ProjectUri = "https://github.com/fortytwoservices/powershell-module-entraidaccesstoken"
+            LicenseUri = "https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/tree/main?tab=MIT-1-ov-file"
+            ReleaseNotes = "https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/releases"
         }
     }
-
 }
