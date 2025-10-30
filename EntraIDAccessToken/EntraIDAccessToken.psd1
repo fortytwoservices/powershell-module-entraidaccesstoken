@@ -90,9 +90,9 @@
         PSData = @{
             Tags = @(
                 "Microsoft"
-                "Entra ID"
+                "Microsoft365"
+                "EntraID"
                 "Authentication"
-                "Access Token"
                 "MSAL" # Well...
             )
             ProjectUri = "https://github.com/fortytwoservices/powershell-module-entraidaccesstoken"
