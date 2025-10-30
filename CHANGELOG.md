@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.23.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.22.0...v2.23.0) (2025-10-30)
+
+
+### Features
+
+* Add tests for Get-EntraIDAutomationAccountMSIAccessToken ([470a71d](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/470a71dd11cc68f6ff7404ee3d4de4ee7690f864))
+
 ## [2.22.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.21.0...v2.22.0) (2025-10-30)
 
 
