@@ -22,7 +22,7 @@ function Get-EntraIDAutomationAccountMSIAccessToken {
             Write-Verbose "Getting access token for '$($body.resource)' using Automation Account System Assigned Identity"
         }
             
-        Invoke-RestMethod $env:IDENTITY_ENDPOINT -Method 'POST' -Headers @{
+        Invoke-RestMethod -Uri $env:IDENTITY_ENDPOINT -Method 'POST' -Headers @{
             'Metadata'          = 'true'
             'X-IDENTITY-HEADER' = $env:IDENTITY_HEADER
         } -ContentType 'application/x-www-form-urlencoded' -Body $body       

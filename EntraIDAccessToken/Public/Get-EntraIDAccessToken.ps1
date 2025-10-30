@@ -50,24 +50,20 @@ function Get-EntraIDAccessToken {
         } 
         elseif ($P.AuthenticationMethod -eq "clientsecret") {
             if (!$P.ClientSecret) {
-                Write-Error "ClientSecretCredential must be specified when using clientsecret as authentication method"
-                return
+                throw "ClientSecretCredential must be specified when using clientsecret as authentication method"
             }
 
             if (!$P.TenantId) {
-                Write-Error "TenantId is not set"
-                return
+                throw "TenantId is not set"
             }
         }
         elseif ($P.AuthenticationMethod -eq "clientcertificate") {
             if (!$P.Certificate) {
-                Write-Error "No certificate specificed for clientcertificate auth method"
-                return
+                throw "No certificate specificed for clientcertificate auth method"
             }
 
             if (!$P.TenantId) {
-                Write-Error "TenantId is not set"
-                return
+                throw "TenantId is not set"
             }
         }
         elseif ($P.AuthenticationMethod -eq "azuredevopsfederatedcredential") {
@@ -88,63 +84,52 @@ function Get-EntraIDAccessToken {
             }
 
             if (!$P.TenantId) {
-                Write-Error "TenantId is not set"
-                return
+                throw "TenantId is not set"
             }
         }
         elseif ($P.AuthenticationMethod -eq "githubfederatedcredential") {
             if (!$ENV:ACTIONS_ID_TOKEN_REQUEST_URL) {
-                Write-Error "Missing ACTIONS_ID_TOKEN_REQUEST_URL environment variable when using GitHub Federated Credential as authentication method"
-                return
+                throw "Missing ACTIONS_ID_TOKEN_REQUEST_URL environment variable when using GitHub Federated Credential as authentication method"
             }
 
             if (!$ENV:ACTIONS_ID_TOKEN_REQUEST_TOKEN) {
-                Write-Error "Missing ACTIONS_ID_TOKEN_REQUEST_TOKEN environment variable when using GitHub Federated Credential as authentication method"
-                return
+                throw "Missing ACTIONS_ID_TOKEN_REQUEST_TOKEN environment variable when using GitHub Federated Credential as authentication method"
             }
 
             if (!$P.TenantId) {
-                Write-Error "TenantId is not set"
-                return
+                throw "TenantId is not set"
             }
 
             if (!$P.ClientId) {
-                Write-Error "TenantId is not set"
-                return
+                throw "ClientId is not set"
             }
         }
         elseif ($P.AuthenticationMethod -eq "automationaccountmsi") {
             if (!$ENV:IDENTITY_HEADER) {
-                Write-Error "Missing IDENTITY_HEADER environment variable when using Automation Acocunt Managed Service Identity as authentication method"
-                return
+                throw "Missing IDENTITY_HEADER environment variable when using Automation Account Managed Service Identity as authentication method"
             }
 
             if (!$ENV:IDENTITY_ENDPOINT) {
-                Write-Error "Missing IDENTITY_ENDPOINT environment variable when using Automation Acocunt Managed Service Identity as authentication method"
-                return
+                throw "Missing IDENTITY_ENDPOINT environment variable when using Automation Account Managed Service Identity as authentication method"
             }
         }
         elseif ($P.AuthenticationMethod -eq "functionappmsi") {
             if (!$ENV:IDENTITY_HEADER) {
-                Write-Error "Missing IDENTITY_HEADER environment variable when using Function App Managed Service Identity as authentication method"
-                return
+                throw "Missing IDENTITY_HEADER environment variable when using Function App Managed Service Identity as authentication method"
             }
 
             if (!$ENV:IDENTITY_ENDPOINT) {
-                Write-Error "Missing IDENTITY_ENDPOINT environment variable when using Function App Managed Service Identity as authentication method"
-                return
+                throw "Missing IDENTITY_ENDPOINT environment variable when using Function App Managed Service Identity as authentication method"
             }
         }
         elseif ($P.AuthenticationMethod -eq "azurearcmsi") {
             if (!$ENV:IDENTITY_ENDPOINT) {
-                Write-Error "Missing IDENTITY_ENDPOINT environment variable when using Azure Arc Managed Service Identity as authentication method"
-                return
+                throw "Missing IDENTITY_ENDPOINT environment variable when using Azure Arc Managed Service Identity as authentication method"
             }
         }
         elseif ($P.AuthenticationMethod -eq "azurevmmsi") {
             if($P.Scope -and !$P.TrustingApplicationClientId) {
-                Write-Error "Scope is only supported when using a trusting application with Azure VM Managed Service Identity"
-                return
+                throw "Scope is only supported when using a trusting application with Azure VM Managed Service Identity"
             }
         }
         elseif ($P.AuthenticationMethod -eq "azurepowershellsession") {
@@ -152,29 +137,24 @@ function Get-EntraIDAccessToken {
         }
         elseif ($P.AuthenticationMethod -eq "interactiveuser") {
             if (!$P.ClientId) {
-                Write-Error "ClientId is not set"
-                return
+                throw "ClientId is not set"
             }
         }
         elseif ($P.AuthenticationMethod -eq "ropc") {
             if (!$P.ClientId) {
-                Write-Error "ClientId is not set"
-                return
+                throw "ClientId is not set"
             }
 
             if(!$P.ClientSecret) {
-                Write-Error "ClientSecret is not set"
-                return
+                throw "ClientSecret is not set"
             }
 
             if(!$P.UserCredential) {
-                Write-Error "UserCredential is not set"
-                return
+                throw "UserCredential is not set"
             }
         }
         else {
-            Write-Error "Unknown authentication method: $($P.AuthenticationMethod)"
-            return
+            throw "Unknown authentication method: $($P.AuthenticationMethod)"
         }
         
         try {
