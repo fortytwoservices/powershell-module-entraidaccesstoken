@@ -36,7 +36,10 @@ function Get-EntraIDAzureArcManagedMSIAccessToken {
             $wwwAuthHeader = $_.Exception.Response.Headers["WWW-Authenticate"]
 
             if(!$wwwAuthHeader) {
-                $wwwAuthHeader = ($_.Exception.Response.Headers | Where-Object Key -eq "WWW-Authenticate" | Select-Object -First 1).Value
+                $header = $_.Exception.Response.Headers | Where-Object Key -eq "WWW-Authenticate" | Select-Object -First 1
+                if($header) {
+                    $wwwAuthHeader = $header.Value
+                }
             }
 
             if ($wwwAuthHeader -match "Basic realm=.+") {
