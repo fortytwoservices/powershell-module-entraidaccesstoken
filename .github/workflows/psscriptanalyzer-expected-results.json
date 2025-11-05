@@ -1,0 +1,7 @@
+[
+    {
+        "RuleName": "PSAvoidGlobalVars",
+        "ScriptName": "EntraIDAccessToken.psm1",
+        "Line": 24
+    }
+]

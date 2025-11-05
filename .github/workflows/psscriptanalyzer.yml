@@ -1,0 +1,48 @@
+name: Run PowerShell Script Analyzer
+
+on:
+  pull_request:
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+      with:
+        fetch-depth: 2
+        ref: ${{ github.event.pull_request.head.ref }}
+    - name: PowerShell Script Analyzer
+      shell: pwsh
+      run: |
+        Install-Module PSScriptAnalyzer -Scope CurrentUser -Force -Confirm:$false
+        $ExpectedResults = @()
+        if((Test-Path "$PSScriptRoot/psscriptanalyzer-expected-results.json")) {
+            $ExpectedResults = Get-Content "$PSScriptRoot/psscriptanalyzer-expected-results.json" | ConvertFrom-Json
+        }
+
+        $Results = Get-ChildItem -Recurse -Include *.psd1 | 
+        ForEach-Object {Invoke-ScriptAnalyzer -Path ($_.FullName | Split-Path -Parent) -Recurse -ExcludeRule "PSAvoidTrailingWhitespace"} |
+        Where-Object ScriptName -notlike "*.tests.*" # Ignore test files, as these do all kinds of crazy things that trigger warnings
+
+        $IssuesFound = $false
+        $Results | 
+        Where-Object {!($ExpectedResults | Where-Object RuleName -eq $_.RuleName | Where-Object ScriptName -eq $_.ScriptName | Where-Object Line -eq $_.Line)} |
+        ForEach-Object -Begin {"The following results were found that were not expected, and must either be fixed or added to psscriptanalyzer-expected-results.json:`n"} -Process {
+            $IssuesFound = $true
+            $_
+        }
+
+        $ExpectedResults | 
+        Where-Object {!($Results | Where-Object RuleName -eq $_.RuleName | Where-Object ScriptName -eq $_.ScriptName | Where-Object Line -eq $_.Line)} |
+        ForEach-Object -Begin {"The following results were expected, but not found, and should therefore be removed from psscriptanalyzer-expected-results.json:`n"} -Process {
+            $IssuesFound = $true
+            $_
+        }
+
+        if($IssuesFound) {
+            throw "PowerShell Script Analyzer found unexpected results."
+        }
