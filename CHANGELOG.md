@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.25.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.25.0...v2.25.1) (2025-11-05)
+
+
+### Bug Fixes
+
+* Color of version update notification ([99bd842](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/99bd8426c17e69c6792fb9d052cc02d323088ee5))
+* Color of version update notification ([a0b2324](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/a0b2324b8eb086ea826372a2bae4407443cadd92))
+
 ## [2.25.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.24.0...v2.25.0) (2025-11-05)
 
 
