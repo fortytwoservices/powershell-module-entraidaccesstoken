@@ -38,6 +38,9 @@ function Get-EntraIDAzureArcManagedMSIAccessToken {
             if(!$wwwAuthHeader) {
                 $_.Exception.Response.Headers | Where-Object Key -eq "WWW-Authenticate" | ForEach-Object {
                     $wwwAuthHeader = $_.Value
+
+                    # Useless if to avoid warning about unused variable - https://learn.microsoft.com/en-us/powershell/utility-modules/psscriptanalyzer/rules/usedeclaredvarsmorethanassignments?view=ps-modules#special-cases
+                    if($wwwAuthHeader) {}
                 }
             }
 
