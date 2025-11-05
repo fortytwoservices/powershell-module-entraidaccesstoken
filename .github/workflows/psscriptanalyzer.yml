@@ -20,7 +20,7 @@ jobs:
       run: |
         Install-Module PSScriptAnalyzer -Scope CurrentUser -Force -Confirm:$false
         $ExpectedResults = @()
-        $file = "$PSScriptRoot/.github/workflows/psscriptanalyzer-expected-results.json"
+        $file = "./.github/workflows/psscriptanalyzer-expected-results.json"
         if((Test-Path $file)) {
             $ExpectedResults = Get-Content $file | ConvertFrom-Json
         } else {
