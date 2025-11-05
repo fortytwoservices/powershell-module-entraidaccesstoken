@@ -19,3 +19,28 @@ Foreach ($import in @($Public + $Private)) {
 
 # Export all functions
 Export-ModuleMember -Function $Public.Basename
+
+# Check version
+if ($GLOBAL:EntraIDAccessTokenVersionCheck -ne 'disabled' -and $ENV:EntraIDAccessTokenVersionCheck -ne 'disabled') {
+    Write-Verbose "Checking for newer version..."
+    try {
+        $packages = Invoke-RestMethod "https://www.powershellgallery.com/api/v2/FindPackagesById()?id='EntraIDAccessToken'" -ErrorAction SilentlyContinue -OperationTimeoutSeconds 3
+        $latestVersion = $packages.properties | 
+        Where-Object id -eq 'EntraIDAccessToken' | 
+        Where-Object version -like "*.*.*" | 
+        ForEach-Object { [semver]$_.version } | 
+        Sort-Object |
+        Select-Object -Last 1
+
+        Write-Verbose "Latest version on PSGallery: $latestVersion"
+
+        $psd = Import-PowerShellDataFile "$PSScriptRoot/EntraIDAccessToken.psd1"
+        Write-Verbose "Current module version: $($psd.ModuleVersion)"
+
+        if ($latestVersion -gt [semver]$psd.ModuleVersion) {
+            Write-Verbose "Newer version available"
+            Write-Host "$($PSStyle.Foreground.BrightYellow)A newer version of the EntraIDAccessToken module is available. Current version: $($psd.ModuleVersion), New version: $($latestVersion). Please consider updating to the latest version from the PowerShell Gallery using the below cmdlet:`n`n    Update-Module EntraIDAccessToken$($PSStyle.Reset)`n`nThis check can be disabled by setting the environment variable `EntraIDAccessTokenVersionCheck` or the global variable `EntraIDAccessTokenVersionCheck` to 'disabled' before loading the module." -ForegroundColor Yellow
+        }
+    }
+    catch {}
+}
