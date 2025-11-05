@@ -20,8 +20,8 @@ jobs:
       run: |
         Install-Module PSScriptAnalyzer -Scope CurrentUser -Force -Confirm:$false
         $ExpectedResults = @()
-        if((Test-Path "$PSScriptRoot/psscriptanalyzer-expected-results.json")) {
-            $ExpectedResults = Get-Content "$PSScriptRoot/psscriptanalyzer-expected-results.json" | ConvertFrom-Json
+        if((Test-Path "$PSScriptRoot/.github/workflows/psscriptanalyzer-expected-results.json")) {
+            $ExpectedResults = Get-Content "$PSScriptRoot/.github/workflows/psscriptanalyzer-expected-results.json" | ConvertFrom-Json
         }
 
         $Results = Get-ChildItem -Recurse -Include *.psd1 | 
