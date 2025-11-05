@@ -10,6 +10,7 @@ Converts an Entra ID Access Token (JWT) into its components: Header, Payload,
 #>
 function ConvertFrom-EntraIDAccessToken {
     [CmdletBinding()]
+    [OutputType([System.Collections.Hashtable])]
     
     Param(
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]

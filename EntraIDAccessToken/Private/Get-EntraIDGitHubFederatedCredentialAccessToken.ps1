@@ -3,13 +3,13 @@ function Get-EntraIDGitHubFederatedCredentialAccessToken {
 
     Param(
         [Parameter(Mandatory = $true)]
-        $AccessTokenProfile,
+        $AccessTokenProfile
 
-        [Parameter(Mandatory = $false, ParameterSetName = "resource")]
-        [String] $Resource = $null,
+        # [Parameter(Mandatory = $false, ParameterSetName = "resource")]
+        # [String] $Resource = $null,
 
-        [Parameter(Mandatory = $false, ParameterSetName = "scope")]
-        [String] $Scope = $null
+        # [Parameter(Mandatory = $false, ParameterSetName = "scope")]
+        # [String] $Scope = $null
     )
 
     Process {

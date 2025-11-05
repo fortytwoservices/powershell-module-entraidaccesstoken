@@ -20,8 +20,11 @@ jobs:
       run: |
         Install-Module PSScriptAnalyzer -Scope CurrentUser -Force -Confirm:$false
         $ExpectedResults = @()
-        if((Test-Path "$PSScriptRoot/.github/workflows/psscriptanalyzer-expected-results.json")) {
-            $ExpectedResults = Get-Content "$PSScriptRoot/.github/workflows/psscriptanalyzer-expected-results.json" | ConvertFrom-Json
+        $file = "$PSScriptRoot/.github/workflows/psscriptanalyzer-expected-results.json"
+        if((Test-Path $file)) {
+            $ExpectedResults = Get-Content $file | ConvertFrom-Json
+        } else {
+            Write-Host "No psscriptanalyzer-expected-results.json file found, assuming no expected results. File: $file" 
         }
 
         $Results = Get-ChildItem -Recurse -Include *.psd1 | 
@@ -34,6 +37,7 @@ jobs:
         ForEach-Object -Begin {"=================================`nThe following results were found that were not expected, and must either be fixed or added to psscriptanalyzer-expected-results.json:`n"} -Process {
             $IssuesFound = $true
             "$($PSStyle.Foreground.Yellow)============== " + $_.Severity + " ==============$($PSStyle.Reset)"
+            $_.ScriptName + " (Line " + $_.Line + "):"
             $_.Message
             ""
             "If this issue is acceptable, add the following entry to psscriptanalyzer-expected-results.json:`n"

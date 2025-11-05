@@ -8,6 +8,7 @@ Add-EntraIDAccessTokenProfile
 #>
 function Add-EntraIDAzurePowerShellSessionTokenProfile {
     [CmdletBinding()]
+    [OutputType([System.Collections.Hashtable])]
 
     Param
     (

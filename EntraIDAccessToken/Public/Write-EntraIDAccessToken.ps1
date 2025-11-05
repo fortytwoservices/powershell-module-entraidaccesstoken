@@ -25,7 +25,7 @@ function Write-EntraIDAccessToken {
         
         $Decoded = $AccessToken | ConvertFrom-EntraIDAccessToken -AsHashTable
 
-        Write-Host "$($PSStyle.Foreground.BrightYellow)$($Decoded.Header | ConvertTo-Json)$($PSStyle.Reset).$($PSStyle.Foreground.BrightGreen)$($Decoded.Payload | ConvertTo-Json)$($PSStyle.Reset)"
+        "$($PSStyle.Foreground.BrightYellow)$($Decoded.Header | ConvertTo-Json)$($PSStyle.Reset).$($PSStyle.Foreground.BrightGreen)$($Decoded.Payload | ConvertTo-Json)$($PSStyle.Reset)"
         
     }
 }

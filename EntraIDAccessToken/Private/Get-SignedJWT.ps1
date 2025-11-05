@@ -26,7 +26,7 @@ function Get-SignedJWT {
             $Payload["exp"] = [int] ((Get-Date).AddHours(1).ToUniversalTime() - [datetime]'1970-01-01T00:00:00Z').TotalSeconds # Unixtime + 3600
         }
         elseif ($Payload["exp"].GetType().Name -eq "DateTime") {
-            $Payload["exp"] = [int] ((Get-Date($Payload["exp"]).ToUniversalTime() - [datetime]'1970-01-01T00:00:00Z').TotalSeconds) # Unixtime
+            $Payload["exp"] = [int] ((Get-Date -Date ($Payload["exp"]).ToUniversalTime() - [datetime]'1970-01-01T00:00:00Z').TotalSeconds) # Unixtime
         }
         else {
             $Payload["exp"] = [int] ((Get-Date).AddHours(1).ToUniversalTime() - [datetime]'1970-01-01T00:00:00Z').TotalSeconds # Unixtime + 3600
@@ -37,7 +37,7 @@ function Get-SignedJWT {
             $Payload["nbf"] = [int] ((Get-Date).ToUniversalTime() - [datetime]'1970-01-01T00:00:00Z').TotalSeconds # Unixtime
         }
         elseif ($Payload["nbf"].GetType().Name -eq "DateTime") {
-            $Payload["nbf"] = [int] (Get-Date($Payload["nbf"]).ToUniversalTime()  - [datetime]'1970-01-01T00:00:00Z') # Unixtime
+            $Payload["nbf"] = [int] (Get-Date -Date ($Payload["nbf"]).ToUniversalTime()  - [datetime]'1970-01-01T00:00:00Z') # Unixtime
         }
         else {
             $Payload["nbf"] = [int] ((Get-Date).ToUniversalTime() - [datetime]'1970-01-01T00:00:00Z').TotalSeconds # Unixtime
