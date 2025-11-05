@@ -33,14 +33,21 @@ jobs:
         Where-Object {!($ExpectedResults | Where-Object RuleName -eq $_.RuleName | Where-Object ScriptName -eq $_.ScriptName | Where-Object Line -eq $_.Line)} |
         ForEach-Object -Begin {"=================================`nThe following results were found that were not expected, and must either be fixed or added to psscriptanalyzer-expected-results.json:`n"} -Process {
             $IssuesFound = $true
-            $_
-        } -End {"================================="}
+            "$($PSStyle.Foreground.Yellow)============== " + $_.Severity + " ==============$($PSStyle.Reset)"
+            $_.Message
+            ""
+            "If this issue is acceptable, add the following entry to psscriptanalyzer-expected-results.json:`n"
+            [ordered] @{RuleName=$_.RuleName; ScriptName=$_.ScriptName; Line=$_.Line} | ConvertTo-Json -Depth 3
+            ""
+
+        } -End {}
 
         $ExpectedResults | 
         Where-Object {!($Results | Where-Object RuleName -eq $_.RuleName | Where-Object ScriptName -eq $_.ScriptName | Where-Object Line -eq $_.Line)} |
         ForEach-Object -Begin {"=================================`nThe following results were expected, but not found, and should therefore be removed from psscriptanalyzer-expected-results.json:`n"} -Process {
             $IssuesFound = $true
-            $_
+            [ordered] @{RuleName=$_.RuleName; ScriptName=$_.ScriptName; Line=$_.Line} | ConvertTo-Json -Depth 3
+            ""
         } -End {"================================="}
 
         if($IssuesFound) {

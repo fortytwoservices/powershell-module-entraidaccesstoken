@@ -13,6 +13,7 @@ Get a boolean indicating whether the input access token has all or any of the sp
 #>
 function Get-EntraIDAccessTokenHasScopes {
     [CmdletBinding(DefaultParameterSetName = "All")]
+    [OutputType([System.Boolean])]
 
     Param(
         [Parameter(Mandatory = $true)]

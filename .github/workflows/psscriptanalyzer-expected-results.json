@@ -3,5 +3,15 @@
         "RuleName": "PSAvoidGlobalVars",
         "ScriptName": "EntraIDAccessToken.psm1",
         "Line": 24
+    },
+    {
+        "RuleName": "PSAvoidUsingWriteHost",
+        "ScriptName": "EntraIDAccessToken.psm1",
+        "Line": 42
+    },
+    {
+        "RuleName": "PSUseSingularNouns",
+        "ScriptName": "Get-EntraIDAccessTokenHasRoles.ps1",
+        "Line": 14
     }
 ]
