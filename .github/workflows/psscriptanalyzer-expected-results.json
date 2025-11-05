@@ -1,0 +1,47 @@
+[
+    {
+        "RuleName": "PSUseToExportFieldsInManifest",
+        "ScriptName": "EntraIDAccessToken.psd1",
+        "Line": 68
+    },
+    {
+        "RuleName": "PSAvoidGlobalVars",
+        "ScriptName": "EntraIDAccessToken.psm1",
+        "Line": 24
+    },
+    {
+        "RuleName": "PSAvoidUsingWriteHost",
+        "ScriptName": "EntraIDAccessToken.psm1",
+        "Line": 42
+    },
+    {
+        "RuleName": "PSUseSingularNouns",
+        "ScriptName": "Get-EntraIDAccessTokenHasRoles.ps1",
+        "Line": 14
+    },
+    {
+        "RuleName": "PSUseSingularNouns",
+        "ScriptName": "Get-EntraIDAccessTokenHasRoles.ps1",
+        "Line": 14
+    },
+    {
+        "RuleName": "PSUseSingularNouns",
+        "ScriptName": "Get-EntraIDAccessTokenHasScopes.ps1",
+        "Line": 14
+    },
+    {
+        "RuleName": "PSAvoidUsingConvertToSecureStringWithPlainText",
+        "ScriptName": "Get-EntraIDAccessTokenSecureString.ps1",
+        "Line": 23
+    },
+    {
+        "RuleName": "PSUseShouldProcessForStateChangingFunctions",
+        "ScriptName": "New-DummyJWT.ps1",
+        "Line": 1
+    },
+    {
+        "RuleName": "PSAvoidUsingWriteHost",
+        "ScriptName": "Get-EntraIDInteractiveUserAccessToken.ps1",
+        "Line": 77
+    }
+]

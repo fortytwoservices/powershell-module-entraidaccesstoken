@@ -33,7 +33,7 @@ function Add-EntraIDExternalAccessTokenProfile {
             $AccessToken = [pscredential]::new("123", $SecureStringAccessToken).GetNetworkCredential().Password
         }
 
-        if( $PSCmdlet.ParameterSetName -eq "clipboard") {
+        if( $PSCmdlet.ParameterSetName -eq "clipboard" -and $Clipboard.IsPresent) {
             $_Clipboard = Get-Clipboard
             if($_Clipboard -like "Bearer *") {
                 $_Clipboard = $_Clipboard.Substring(7)

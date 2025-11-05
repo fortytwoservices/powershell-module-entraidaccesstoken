@@ -1,5 +1,6 @@
 function Get-EntraIDAzurePowerShellSessionAccessToken {
     [CmdletBinding(DefaultParameterSetName = "default")]
+    [OutputType([System.Collections.Hashtable])]
 
     Param(
         [Parameter(Mandatory = $true)]

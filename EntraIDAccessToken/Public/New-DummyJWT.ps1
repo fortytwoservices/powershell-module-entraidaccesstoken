@@ -1,5 +1,6 @@
 function New-DummyJWT {
     [CmdletBinding()]
+    [OutputType([System.String])]
 
     Param(
         [Parameter(Mandatory = $false)]

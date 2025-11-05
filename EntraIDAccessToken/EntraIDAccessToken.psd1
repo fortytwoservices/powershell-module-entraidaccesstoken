@@ -71,10 +71,10 @@
     CmdletsToExport = @('Add-EntraIDAutomationAccountMSIAccessTokenProfile','Add-EntraIDAzureArcManagedMSITokenProfile','Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile','Add-EntraIDAzurePowerShellSessionTokenProfile','Add-EntraIDAzureVMMSIAccessTokenProfile','Add-EntraIDClientCertificateAccessTokenProfile','Add-EntraIDClientSecretAccessTokenProfile','Add-EntraIDExternalAccessTokenProfile','Add-EntraIDFunctionAppMSIAccessTokenProfile','Add-EntraIDGitHubFederatedCredentialAccessTokenProfile','Add-EntraIDInteractiveUserAccessTokenProfile','Add-EntraIDROPCAccessTokenProfile','Confirm-EntraIDAccessToken','ConvertFrom-EntraIDAccessToken','Get-EntraIDAccessToken','Get-EntraIDAccessTokenHasRoles','Get-EntraIDAccessTokenHasScopes','Get-EntraIDAccessTokenHeader','Get-EntraIDAccessTokenPayload','Get-EntraIDAccessTokenProfile','Get-EntraIDAccessTokenSecureString','Get-EntraIDAccessTokenType','New-DummyJWT','Write-EntraIDAccessToken')
 
     # Variables to export from this module
-    VariablesToExport = '*'
+    VariablesToExport = @()
 
     # Aliases to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no aliases to export.
-    AliasesToExport   = '*'
+    AliasesToExport   = @()
 
     # DSC resources to export from this module
     # DscResourcesToExport = @()
