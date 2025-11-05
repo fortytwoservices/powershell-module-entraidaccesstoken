@@ -11,6 +11,7 @@
 
 function Write-EntraIDAccessToken {
     [CmdletBinding()]
+    [OutputType([System.String])]
     
     Param(
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
