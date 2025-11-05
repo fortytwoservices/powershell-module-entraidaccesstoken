@@ -39,7 +39,7 @@ if ($GLOBAL:EntraIDAccessTokenVersionCheck -ne 'disabled' -and $ENV:EntraIDAcces
 
         if ($latestVersion -gt [semver]$psd.ModuleVersion) {
             Write-Verbose "Newer version available"
-            Write-Host "$($PSStyle.Foreground.BrightYellow)A newer version of the EntraIDAccessToken module is available. Current version: $($psd.ModuleVersion), New version: $($latestVersion). Please consider updating to the latest version from the PowerShell Gallery using the below cmdlet:`n`n    Update-Module EntraIDAccessToken$($PSStyle.Reset)`n`nThis check can be disabled by setting the environment variable `EntraIDAccessTokenVersionCheck` or the global variable `EntraIDAccessTokenVersionCheck` to 'disabled' before loading the module." -ForegroundColor Yellow
+            Write-Host "$($PSStyle.Foreground.BrightYellow)A newer version of the EntraIDAccessToken module is available. Current version: $($psd.ModuleVersion), New version: $($latestVersion). Please consider updating to the latest version from the PowerShell Gallery using the below cmdlet:`n`n    Update-Module EntraIDAccessToken`n`nThis check can be disabled by setting the environment variable `EntraIDAccessTokenVersionCheck` or the global variable `EntraIDAccessTokenVersionCheck` to 'disabled' before loading the module.$($PSStyle.Reset)"
         }
     }
     catch {
