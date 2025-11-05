@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.24.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.23.1...v2.24.0) (2025-11-05)
+
+
+### Features
+
+* Add version check when loading module ([95d3aaf](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/95d3aaf86e8c1093449714eab9e45593d9934c09))
+
+
+### Bug Fixes
+
+* Get rid of warning about unused variable in Get-EntraIDAzureArcManagedMSIAccessToken ([4567eea](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/4567eea033e3f15499b3f1002644d1f152b07f73))
+
 ## [2.23.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.23.0...v2.23.1) (2025-10-30)
 
 
