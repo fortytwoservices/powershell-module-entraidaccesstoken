@@ -4,7 +4,7 @@ A module for simplifying the process of getting an access token from Entra ID
 
 | Metadata | Information |
 | --- | --- |
-| Version | 2.23.1 |
+| Version | 2.24.0 |
 | Author | Marius Solbakken Mellum |
 | Company name | Fortytwo Technologies AS |
 | PowerShell version | 7.1 |
@@ -2330,6 +2330,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### OUTPUTS
 
+#### System.Boolean
 ### NOTES
 
 ### RELATED LINKS
@@ -2436,6 +2437,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### OUTPUTS
 
+#### System.Boolean
 ### NOTES
 
 ### RELATED LINKS
@@ -3009,7 +3011,7 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 #### None
 ### OUTPUTS
 
-#### System.Object
+#### System.String
 ### NOTES
 
 ### RELATED LINKS
