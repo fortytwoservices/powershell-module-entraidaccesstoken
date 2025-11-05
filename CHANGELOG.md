@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.25.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.24.0...v2.25.0) (2025-11-05)
+
+
+### Features
+
+* Add ps script analyzer workflow ([525a1c9](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/525a1c988a08efe9f491cbbc91f82b9da464657e))
+* Improve ps script analyzer output ([839df95](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/839df9545e71126bf29fd9b57f76723b03f3a4c3))
+
+
+### Bug Fixes
+
+* Fix some warnings from PS Script Analyzer ([2020b68](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/2020b688fa4f32c211908f269c47ab0837728f1d))
+* Small fixes to make script analyzer happy ([1c51e8e](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/1c51e8e2efe9405d793692baba52f99b6eff0cdb))
+
 ## [2.24.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.23.1...v2.24.0) (2025-11-05)
 
 
