@@ -51,6 +51,7 @@ jobs:
           $Module = Import-Module $ModulePath -Verbose -Force -PassThru
       
           # Update the psd1 file with the release-please version and public cmdlets
+          $releasePleaseVersion = $null
           if((Test-Path ".release-please-manifest.json")) {
               $releasePleaseVersion = (Get-Content ".release-please-manifest.json" | ConvertFrom-Json -AsHashTable)."."
               if($releasePleaseVersion -notlike "*.*.*") {
@@ -74,7 +75,7 @@ jobs:
               ""
               "| Metadata | Information |"
               "| --- | --- |"
-              "| Version | $($Module.Version) |"
+              "| Version | {0} |" -f ($releasePleaseVersion ?? $Module.Version)
               if($Module.RequiredModules) {"| Required modules | $($Module.RequiredModules) |"}
               if($Module.Author) {"| Author | $($Module.Author) |"}
               if($Module.CompanyName) {"| Company name | $($Module.CompanyName) |"}
