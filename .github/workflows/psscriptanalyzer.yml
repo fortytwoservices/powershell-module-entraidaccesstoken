@@ -31,6 +31,7 @@ jobs:
         ForEach-Object {Invoke-ScriptAnalyzer -Path ($_.FullName | Split-Path -Parent) -Recurse -ExcludeRule @(
           "PSAvoidTrailingWhitespace"
           "PSUseToExportFieldsInManifest"
+          "PSAvoidUsingWriteHost"
         )} |
         Where-Object ScriptName -notlike "*.tests.*" # Ignore test files, as these do all kinds of crazy things that trigger warnings
 
