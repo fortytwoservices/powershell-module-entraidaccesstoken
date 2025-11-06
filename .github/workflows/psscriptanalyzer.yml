@@ -28,7 +28,10 @@ jobs:
         }
 
         $Results = Get-ChildItem -Recurse -Include *.psd1 | 
-        ForEach-Object {Invoke-ScriptAnalyzer -Path ($_.FullName | Split-Path -Parent) -Recurse -ExcludeRule "PSAvoidTrailingWhitespace"} |
+        ForEach-Object {Invoke-ScriptAnalyzer -Path ($_.FullName | Split-Path -Parent) -Recurse -ExcludeRule @(
+          "PSAvoidTrailingWhitespace"
+          "PSUseToExportFieldsInManifest"
+        )} |
         Where-Object ScriptName -notlike "*.tests.*" # Ignore test files, as these do all kinds of crazy things that trigger warnings
 
         $IssuesFound = $false

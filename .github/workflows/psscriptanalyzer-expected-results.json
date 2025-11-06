@@ -1,10 +1,5 @@
 [
     {
-        "RuleName": "PSUseToExportFieldsInManifest",
-        "ScriptName": "EntraIDAccessToken.psd1",
-        "Line": 68
-    },
-    {
         "RuleName": "PSAvoidGlobalVars",
         "ScriptName": "EntraIDAccessToken.psm1",
         "Line": 24
