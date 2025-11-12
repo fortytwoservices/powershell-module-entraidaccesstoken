@@ -15,14 +15,20 @@ function Write-EntraIDAccessToken {
     
     Param(
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        [String] $AccessToken
+        $AccessToken
     )
 
     Process {
+        if($AccessToken.Authorization -like "bearer *") {
+            $AccessToken = $AccessToken.Authorization
+        }
+
         if($AccessToken -notlike "*.*.*") {
             Write-Error "AccessToken is not a valid JWT token. Expected format: header.payload.signature"
             return
         }
+
+        $AccessToken = $AccessToken -ireplace "^bearer "
         
         $Decoded = $AccessToken | ConvertFrom-EntraIDAccessToken -AsHashTable
 
