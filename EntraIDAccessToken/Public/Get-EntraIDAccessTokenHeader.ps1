@@ -26,12 +26,15 @@ function Get-EntraIDAccessTokenHeader {
         [Switch] $ConsistencyLevelEventual,
 
         [Parameter(Mandatory = $false)]
-        [System.Collections.Hashtable] $AdditionalHeaders = $null
+        [System.Collections.Hashtable] $AdditionalHeaders = $null,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $ForceRefresh
     )
 
     Process {
         $headers = @{
-            Authorization = "Bearer $(Get-EntraIDAccessToken -Profile $Profile)"
+            Authorization = "Bearer $(Get-EntraIDAccessToken -Profile $Profile -ForceRefresh:$ForceRefresh)"
         }
 
         if($AdditionalHeaders) {
