@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.26.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.25.1...v2.26.0) (2025-11-12)
+
+
+### Features
+
+* Add ForceRefresh to Get-EntraIDAccessTokenHeader ([6a16da2](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/6a16da2b693c110785edeaff95edd115a6e93b37))
+* Add support for pipelining Get-EntraIDAccessTokenHeader into Write-EntraIDAccessToken ([7250d1c](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/7250d1c7f38c0b1c54867379c369120fde2f952d))
+
 ## [2.25.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.25.0...v2.25.1) (2025-11-05)
 
 
