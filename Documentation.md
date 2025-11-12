@@ -2452,7 +2452,7 @@ Gets an Entra ID Access Token in a header useable by Invoke-RestMethod or Invoke
 
 ```
 Get-EntraIDAccessTokenHeader [[-Profile] <String>] [-ConsistencyLevelEventual]
- [[-AdditionalHeaders] <Hashtable>] [-ProgressAction <ActionPreference>] [<CommonParameters>]
+ [[-AdditionalHeaders] <Hashtable>] [-ForceRefresh] [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DESCRIPTION
@@ -2519,6 +2519,21 @@ Aliases:
 Required: False
 Position: 2
 Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ForceRefresh
+
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -3026,7 +3041,7 @@ Write an Entra ID Access Token to the console with color coding.
 ### SYNTAX
 
 ```
-Write-EntraIDAccessToken [-AccessToken] <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+Write-EntraIDAccessToken [-AccessToken] <Object> [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DESCRIPTION
@@ -3045,7 +3060,7 @@ Get-EntraIDAccessToken | Write-EntraIDAccessToken
 
 
 ```yaml
-Type: String
+Type: Object
 Parameter Sets: (All)
 Aliases:
 
