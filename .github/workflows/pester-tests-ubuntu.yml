@@ -18,6 +18,7 @@ jobs:
     - name: Pester tests
       shell: pwsh
       run: |
+        Get-ChildItem -Recurse -Include *.psd1 | Import-PowerShellDataFile | Where-Object RequiredModules | Select-Object -ExpandProperty RequiredModules | Sort-Object -Unique | ForEach-Object {Install-Module -Scope CurrentUser -Force -Confirm:$false -Name $_}
         Invoke-Pester -ExcludeTagFilter "WindowsOnly"
       env:
         PESTERSECRET1: ${{ secrets.PESTERSECRET1 }}
