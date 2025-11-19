@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.27.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.26.0...v2.27.0) (2025-11-19)
+
+
+### Features
+
+* Add pester tests for Get-EntraIDAccessToken and Get-EntraIDAccessTokenHeader ([b1353f4](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/b1353f4a468452ff93b9aeb6a3d8a6bb266bb00f))
+* Add very short aliases to most used cmdlets ([d1998e3](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/d1998e346105576feb3685b897a50d0cfa1b2ec4))
+
+
+### Bug Fixes
+
+* Fix back cmdlet exporting after a change that exported all private functions by mistake ([eaef3b3](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/eaef3b39f907a9a3b6802507a90f8c2a42854f24))
+
 ## [2.26.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.25.1...v2.26.0) (2025-11-12)
 
 
