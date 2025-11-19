@@ -16,6 +16,7 @@ Gets an Entra ID Access Token in a header useable by Invoke-RestMethod or Invoke
 #>
 function Get-EntraIDAccessTokenHeader {
     [CmdletBinding()]
+    [Alias("GH")]
     [OutputType([System.Collections.Hashtable])]
 
     Param(

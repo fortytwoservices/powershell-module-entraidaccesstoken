@@ -17,9 +17,6 @@ Foreach ($import in @($Public + $Private)) {
     }
 }
 
-# Export all functions
-Export-ModuleMember -Function $Public.Basename
-
 # Check version
 if ($GLOBAL:EntraIDAccessTokenVersionCheck -ne 'disabled' -and $ENV:EntraIDAccessTokenVersionCheck -ne 'disabled') {
     Write-Verbose "Checking for newer version..."
