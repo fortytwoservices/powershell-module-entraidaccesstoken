@@ -2,7 +2,7 @@
     {
         "RuleName": "PSAvoidGlobalVars",
         "ScriptName": "EntraIDAccessToken.psm1",
-        "Line": 24
+        "Line": 21
     },
     {
         "RuleName": "PSUseSingularNouns",
