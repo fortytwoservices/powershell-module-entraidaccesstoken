@@ -27,8 +27,7 @@ function Get-EntraIDAccessToken {
 
     Process {
         if (!$Script:Profiles.ContainsKey($Profile)) {
-            Write-Error "Profile $Profile does not exist"
-            return
+            throw "Profile $Profile does not exist"
         }
 
         $P = $Script:Profiles[$Profile]
