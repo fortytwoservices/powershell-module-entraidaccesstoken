@@ -14,6 +14,7 @@ Get-EntraIDAccessToken -Profile "API" -ForceRefresh
 #>
 function Get-EntraIDAccessToken {
     [CmdletBinding()]
+    [Alias("GAT")]
 
     Param(
         [Parameter(Mandatory = $false)]

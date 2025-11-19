@@ -11,6 +11,7 @@
 
 function Write-EntraIDAccessToken {
     [CmdletBinding()]
+    [Alias("WAT")]
     [OutputType([System.String])]
     
     Param(
