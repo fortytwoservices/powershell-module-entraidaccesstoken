@@ -22,7 +22,7 @@
     {
         "RuleName": "PSAvoidUsingConvertToSecureStringWithPlainText",
         "ScriptName": "Get-EntraIDAccessTokenSecureString.ps1",
-        "Line": 23
+        "Line": 24
     },
     {
         "RuleName": "PSUseShouldProcessForStateChangingFunctions",
