@@ -17,7 +17,7 @@ Foreach ($import in @($Public + $Private)) {
     }
 }
 
-Export-ModuleMember -Function $Public.Basename -Alias "GAT","WAT","GH"
+Export-ModuleMember -Function $Public.Basename -Alias "GAT", "WAT", "GH", "GATSS"
 
 # Check version
 if ($GLOBAL:EntraIDAccessTokenVersionCheck -ne 'disabled' -and $ENV:EntraIDAccessTokenVersionCheck -ne 'disabled') {
