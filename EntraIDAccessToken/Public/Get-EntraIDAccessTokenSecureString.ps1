@@ -13,6 +13,7 @@ Gets an access token from Entra ID for the configured profile, as a secure strin
 #>
 function Get-EntraIDAccessTokenSecureString {
     [CmdletBinding()]
+    [Alias("GATSS")]
 
     Param(
         [Parameter(Mandatory = $false)]
