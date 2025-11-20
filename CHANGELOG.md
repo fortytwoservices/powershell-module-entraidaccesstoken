@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.28.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.27.0...v2.28.0) (2025-11-20)
+
+
+### Features
+
+* Add cmdlet New-EntraIDGraphPermission ([0d3d88b](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/0d3d88b1c1cb72603c7329c12af909379ea2ea54))
+
 ## [2.27.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.26.0...v2.27.0) (2025-11-19)
 
 
