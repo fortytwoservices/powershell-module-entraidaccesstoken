@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.28.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.28.0...v2.28.1) (2025-11-20)
+
+
+### Bug Fixes
+
+* Request correct scope for New-EntraIDGraphPermission when using interactive sign-in ([8a8348e](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/8a8348eba51ff12c2af0ebd9dd6be1d27e55a830))
+* Request correct scope for New-EntraIDGraphPermission when using interactive sign-in ([0b87780](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/0b877802f9f751ce7b7a1bf7a2011e2b358735e7))
+
 ## [2.28.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.27.0...v2.28.0) (2025-11-20)
 
 
