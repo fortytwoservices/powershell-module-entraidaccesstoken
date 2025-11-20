@@ -25,7 +25,7 @@ function New-EntraIDGraphPermission {
     Process {
         if (!(Get-EntraIDAccessTokenProfile -Profile $AccessTokenProfile)) {
             Write-Output "No access token profile found. Starting interactive sign-in."
-            Add-EntraIDInteractiveUserAccessTokenProfile -Name $AccessTokenProfile
+            Add-EntraIDInteractiveUserAccessTokenProfile -Name $AccessTokenProfile -Scope "https://graph.microsoft.com/application.read.all approleassignment.readwrite.all"
         }
         
         # Ensure permissions
