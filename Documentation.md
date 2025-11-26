@@ -2476,6 +2476,26 @@ Get-EntraIDAccessTokenHeader -Profile "API" -ConsistencyLevelEventual
 Get-EntraIDAccessTokenHeader -Profile "API" -AdditionalHeaders @{"X-Custom-Header"="Value"}
 ```
 
+#### EXAMPLE 4
+```
+$PSDefaultParameterValues["Invoke-RestMethod:Headers"] = {if($Uri -like "https://graph.microsoft.com/*") {Get-EntraIDAccessTokenHeader}}
+Invoke-RestMethod "https://graph.microsoft.com/v1.0/users"
+```
+
+#### EXAMPLE 5
+```
+$PSDefaultParameterValues["Invoke-WebRequest:Headers"] = {
+    if($Uri -like "https://graph.microsoft.com/*") {Get-EntraIDAccessTokenHeader}
+    if($Uri -like "https://api.fortytwo.io/*") {Get-EntraIDAccessTokenHeader -Profile "fortytwo"}
+}
+```
+
+## Authenticated using the "default" profile
+Invoke-WebRequest "https://graph.microsoft.com/v1.0/users"
+
+## Authenticated using the "fortytwo" profile
+Invoke-WebRequest "https://api.fortytwo.io/something"
+
 ### PARAMETERS
 
 #### -Profile
