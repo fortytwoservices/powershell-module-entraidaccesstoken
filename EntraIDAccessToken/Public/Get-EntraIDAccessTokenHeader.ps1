@@ -6,13 +6,29 @@ Gets an Entra ID Access Token in a header useable by Invoke-RestMethod or Invoke
 Gets an Entra ID Access Token in a header useable by Invoke-RestMethod or Invoke-WebRequest. Additional headers can be added using the AdditionalHeaders parameter.
 
 .EXAMPLE
-    PS> Invoke-RestMethod "https://graph.microsoft.com/v1.0/users" -Headers (Get-EntraIDAccessTokenHeader)
+    Invoke-RestMethod "https://graph.microsoft.com/v1.0/users" -Headers (Get-EntraIDAccessTokenHeader)
 
 .EXAMPLE
-    PS> Get-EntraIDAccessTokenHeader -Profile "API" -ConsistencyLevelEventual
+    Get-EntraIDAccessTokenHeader -Profile "API" -ConsistencyLevelEventual
 
 .EXAMPLE
-    PS> Get-EntraIDAccessTokenHeader -Profile "API" -AdditionalHeaders @{"X-Custom-Header"="Value"}
+    Get-EntraIDAccessTokenHeader -Profile "API" -AdditionalHeaders @{"X-Custom-Header"="Value"}
+
+.EXAMPLE
+    $PSDefaultParameterValues["Invoke-RestMethod:Headers"] = {if($Uri -like "https://graph.microsoft.com/*") {Get-EntraIDAccessTokenHeader}}
+    Invoke-RestMethod "https://graph.microsoft.com/v1.0/users"
+
+.EXAMPLE
+    $PSDefaultParameterValues["Invoke-WebRequest:Headers"] = {
+        if($Uri -like "https://graph.microsoft.com/*") {Get-EntraIDAccessTokenHeader}
+        if($Uri -like "https://api.fortytwo.io/*") {Get-EntraIDAccessTokenHeader -Profile "fortytwo"}
+    }
+
+    # Authenticated using the "default" profile
+    Invoke-WebRequest "https://graph.microsoft.com/v1.0/users"
+
+    # Authenticated using the "fortytwo" profile
+    Invoke-WebRequest "https://api.fortytwo.io/something"
 #>
 function Get-EntraIDAccessTokenHeader {
     [CmdletBinding()]
