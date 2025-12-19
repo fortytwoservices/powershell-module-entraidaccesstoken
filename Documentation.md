@@ -3053,31 +3053,37 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### NOTES
 
 ### RELATED LINKS
-## New-EntraIDGraphPermission
+## New-EntraIDAppPermission
 
 ### SYNOPSIS
-Creates new Microsoft Graph permissions for an application.
+Assigns new permissions to a service principal
 
 ### SYNTAX
 
 ```
-New-EntraIDGraphPermission [-GraphPermission] <String[]> [-ObjectId] <String> [[-AccessTokenProfile] <String>]
- [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm] [<CommonParameters>]
+New-EntraIDAppPermission [-Permission] <String[]> [-ObjectId] <String> [[-ResourceApplicationId] <String>]
+ [[-AccessTokenProfile] <String>] [-ProgressAction <ActionPreference>] [-WhatIf] [-Confirm]
+ [<CommonParameters>]
 ```
 
 ### DESCRIPTION
-Creates new Microsoft Graph permissions for an application by assigning app roles from the Microsoft Graph service principal to the specified application object.
+Assigns new permissions to a service principal, such as assigning the user.read.all Graph permission to an enterprise application.
 
 ### EXAMPLES
 
 #### EXAMPLE 1
 ```
-New-EntraIDGraphPermission -GraphPermission "User.Read.All","Group.Read.All" -ObjectId "your-enterprise-application-object-id"
+New-EntraIDAppPermission -Permission "User.Read.All","Group.Read.All" -ObjectId "your-enterprise-application-object-id"
+```
+
+#### EXAMPLE 2
+```
+New-EntraIDAppPermission -Permission "User.Read.All","Group.Read.All" -ObjectId "your-enterprise-application-object-id" -ResourceApplicationId "2808f963-7bba-4e66-9eee-82d0b178f408"
 ```
 
 ### PARAMETERS
 
-#### -GraphPermission
+#### -Permission
 
 
 ```yaml
@@ -3107,7 +3113,7 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
-#### -AccessTokenProfile
+#### -ResourceApplicationId
 
 
 ```yaml
@@ -3117,6 +3123,21 @@ Aliases:
 
 Required: False
 Position: 3
+Default value: 00000003-0000-0000-c000-000000000000
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -AccessTokenProfile
+Microsoft Graph
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 4
 Default value: Default
 Accept pipeline input: False
 Accept wildcard characters: False
