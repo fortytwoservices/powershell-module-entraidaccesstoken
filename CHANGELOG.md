@@ -1,5 +1,24 @@
 # Changelog
 
+## [3.0.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.28.1...v3.0.0) (2025-12-19)
+
+
+### ⚠ BREAKING CHANGES
+
+* also change the export
+* Change alias due to conflict with GitHub Cli tools
+
+### Features
+
+* Add check for null to Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile ([9dd120e](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/9dd120ee98dd50b5ec5148f8de538d6d8193deb0))
+* Improve and rename cmdlet New-EntraIDAppPermission ([5d18739](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/5d18739847ca825643358a630d3d89a97cb3eda0))
+
+
+### Bug Fixes
+
+* also change the export ([8a638cd](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/8a638cd88956d1e79b0bd110fdc46271dec7e4b4))
+* Change alias due to conflict with GitHub Cli tools ([9b81326](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/9b8132620864ece82a4fabd8662f5e6688d996c0))
+
 ## [2.28.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.28.0...v2.28.1) (2025-11-20)
 
 
