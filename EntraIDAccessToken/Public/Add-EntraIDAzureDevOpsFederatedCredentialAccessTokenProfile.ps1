@@ -7,7 +7,7 @@ Add-EntraIDAccessTokenProfile
 
 #>
 function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
-    [CmdletBinding(DefaultParameterSetName="resource")]
+    [CmdletBinding(DefaultParameterSetName = "resource")]
 
     Param
     (
@@ -37,16 +37,24 @@ function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
-        if($PSCmdlet.MyInvocation.BoundParameters.ContainsKey("V2Token")) {
+        if ($PSCmdlet.MyInvocation.BoundParameters.ContainsKey("V2Token")) {
             Write-Warning "The V2Token parameter is deprecated and will be removed in a future release. The presence of a Scope parameter now implies a V2 token."
         }
 
+        if ($PSCmdlet.ParameterSetName -eq "resource" -and [String]::IsNullOrEmpty($Resource)) {
+            throw "When using the 'resource' parameter set, the Resource parameter must be specified."
+        }
+
+        if ($PSCmdlet.ParameterSetName -eq "scope" -and [String]::IsNullOrEmpty($Scope)) {
+            throw "When using the 'scope' parameter set, the Scope parameter must be specified."
+        }
+
         $Script:Profiles[$Name] = @{
-            AuthenticationMethod        = "azuredevopsfederatedcredential"
-            ClientId                    = $ClientId
-            Resource                    = $PSCmdlet.ParameterSetName -eq "resource" ? $Resource : $null
-            Scope                       = $PSCmdlet.ParameterSetName -eq "scope" ? $Scope : $null
-            TenantId                    = $TenantId
+            AuthenticationMethod = "azuredevopsfederatedcredential"
+            ClientId             = $ClientId
+            Resource             = $PSCmdlet.ParameterSetName -eq "resource" ? $Resource : $null
+            Scope                = $PSCmdlet.ParameterSetName -eq "scope" ? $Scope : $null
+            TenantId             = $TenantId
         }
 
         Get-EntraIDAccessToken -Profile $Name | Out-Null
