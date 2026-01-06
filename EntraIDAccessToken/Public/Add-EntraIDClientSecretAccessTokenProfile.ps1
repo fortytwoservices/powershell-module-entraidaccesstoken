@@ -32,7 +32,10 @@ function Add-EntraIDClientSecretAccessTokenProfile {
 
         # Specifies that we want a V2 token
         [Parameter(Mandatory = $false, ParameterSetName = "scope")]
-        [Switch] $V2Token
+        [Switch] $V2Token,
+
+        [Parameter(Mandatory = $false, ParameterSetName = "scope")]
+        [String] $FMIPath
     )
     
     Process {
@@ -40,17 +43,18 @@ function Add-EntraIDClientSecretAccessTokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
-        if($PSCmdlet.MyInvocation.BoundParameters.ContainsKey("V2Token")) {
+        if ($PSCmdlet.MyInvocation.BoundParameters.ContainsKey("V2Token")) {
             Write-Warning "The V2Token parameter is deprecated and will be removed in a future release. The presence of a Scope parameter now implies a V2 token."
         }
 
         $Script:Profiles[$Name] = @{
-            AuthenticationMethod                    = "clientsecret"
-            ClientId                                = $ClientId
-            ClientSecret                            = $ClientSecret
-            Resource                                = $PSCmdlet.ParameterSetName -eq "resource" ? $Resource : $null
-            Scope                                   = $PSCmdlet.ParameterSetName -eq "scope" ? $Scope : $null
-            TenantId                                = $TenantId
+            AuthenticationMethod = "clientsecret"
+            ClientId             = $ClientId
+            ClientSecret         = $ClientSecret
+            Resource             = $PSCmdlet.ParameterSetName -eq "resource" ? $Resource : $null
+            Scope                = $PSCmdlet.ParameterSetName -eq "scope" ? $Scope : $null
+            TenantId             = $TenantId
+            FMIPath              = $PSCmdlet.MyInvocation.BoundParameters.ContainsKey("FMIPath") ? $FMIPath : $null
         }
 
         Get-EntraIDAccessToken -Profile $Name | Out-Null

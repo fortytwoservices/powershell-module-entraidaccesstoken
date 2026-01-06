@@ -24,6 +24,11 @@ function Get-EntraIDClientSecretAccessToken {
             }
 
             Write-Verbose "Getting access token (v2/scope) for '$($body.scope)' using Client Secret for client_id $($AccessTokenProfile.ClientId)"
+
+            if($AccessTokenProfile.FMIPath) {
+                $body["fmi_path"] = $AccessTokenProfile.FMIPath
+                Write-Verbose " - With FMI Path: $($AccessTokenProfile.FMIPath)"
+            }
         
             # Get token
             Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body

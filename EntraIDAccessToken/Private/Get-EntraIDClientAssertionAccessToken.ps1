@@ -1,39 +1,28 @@
-function Get-EntraIDClientCertificateAccessToken {
-    [CmdletBinding(DefaultParameterSetName = "default")]
-
+function Get-EntraIDClientAssertionAccessToken {
+    [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $true)]
-        $AccessTokenProfile,
-
-        [Parameter(Mandatory = $false, ParameterSetName = "resource")]
-        [String] $Resource = $null,
-
-        [Parameter(Mandatory = $false, ParameterSetName = "scope")]
-        [String] $Scope = $null
+        $AccessTokenProfile
     )
 
     Process {
-        $AssertionJWT = Get-SignedJWT -Payload @{
-            "aud" = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token"
-            "iss" = $AccessTokenProfile.ClientId
-            "sub" = $AccessTokenProfile.ClientId
-        } -Certificate $AccessTokenProfile.Certificate
+        # Get the assertion profile
+        if (-not $Script:Profiles.ContainsKey($AccessTokenProfile.ClientAssertionProfile)) {
+            throw "Assertion profile $($AccessTokenProfile.ClientAssertionProfile) does not exist"
+        }
+
+        $assertion = Get-EntraIDAccessToken -Profile $AccessTokenProfile.ClientAssertionProfile
 
         if ($Scope -or $AccessTokenProfile.scope) {
             $body = @{
                 client_id             = $AccessTokenProfile.ClientId
-                client_assertion      = $AssertionJWT
+                client_assertion      = $assertion
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
                 scope                 = [String]::IsNullOrEmpty($Scope) ? $AccessTokenProfile.Scope: $Scope
                 grant_type            = "client_credentials"
             }
 
             Write-Verbose "Getting access token (v2/scope) for '$($body.scope)' using Client Certificate for client_id $($AccessTokenProfile.ClientId)"
-
-            if ($AccessTokenProfile.FMIPath) {
-                $body["fmi_path"] = $AccessTokenProfile.FMIPath
-                Write-Verbose " - With FMI Path: $($AccessTokenProfile.FMIPath)"
-            }
         
             # Get token
             Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body
@@ -41,7 +30,7 @@ function Get-EntraIDClientCertificateAccessToken {
         else {
             $body = @{
                 client_id             = $AccessTokenProfile.ClientId
-                client_assertion      = $AssertionJWT
+                client_assertion      = $assertion
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
                 resource              = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
                 grant_type            = "client_credentials"
@@ -51,6 +40,6 @@ function Get-EntraIDClientCertificateAccessToken {
         
             # Get token
             Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token" -Body $body
-        }        
+        }
     }
 }

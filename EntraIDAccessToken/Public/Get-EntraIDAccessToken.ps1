@@ -19,6 +19,9 @@ function Get-EntraIDAccessToken {
     Param(
         [Parameter(Mandatory = $false)]
         [String] $Profile = "Default",
+        
+        [Parameter(Mandatory = $false)]
+        [String] $FMIPath = $null,
 
         # If specified, a new access token will be requested even if the cached token is still valid
         [Parameter(Mandatory = $false)]
@@ -128,7 +131,7 @@ function Get-EntraIDAccessToken {
             }
         }
         elseif ($P.AuthenticationMethod -eq "azurevmmsi") {
-            if($P.Scope -and !$P.TrustingApplicationClientId) {
+            if ($P.Scope -and !$P.TrustingApplicationClientId) {
                 throw "Scope is only supported when using a trusting application with Azure VM Managed Service Identity"
             }
         }
@@ -145,13 +148,19 @@ function Get-EntraIDAccessToken {
                 throw "ClientId is not set"
             }
 
-            if(!$P.ClientSecret) {
+            if (!$P.ClientSecret) {
                 throw "ClientSecret is not set"
             }
 
-            if(!$P.UserCredential) {
+            if (!$P.UserCredential) {
                 throw "UserCredential is not set"
             }
+        }
+        elseif ($P.AuthenticationMethod -eq "clientassertion") {
+            
+        }
+        elseif ($P.AuthenticationMethod -eq "userfederatedidentitycredential") {
+            
         }
         else {
             throw "Unknown authentication method: $($P.AuthenticationMethod)"
@@ -206,6 +215,12 @@ function Get-EntraIDAccessToken {
             elseif ($P.AuthenticationMethod -eq "azurevmmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDAzureVMMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
                 $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
+            }
+            elseif ($P.AuthenticationMethod -eq "clientassertion") {
+                $result = Get-EntraIDClientAssertionAccessToken -AccessTokenProfile $P
+            }
+            elseif ($P.AuthenticationMethod -eq "userfederatedidentitycredential") {
+                $result = Get-EntraIDUserFederatedIdentityCredentialAccessToken -AccessTokenProfile $P
             }
         }
         catch {

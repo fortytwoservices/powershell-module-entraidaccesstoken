@@ -50,7 +50,12 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
         
         [Parameter(Mandatory = $false)]
         [ValidateSet("v1", "v2")]
-        [String] $TokenVersion = "v1"
+        [String] $TokenVersion = "v1",
+
+        [Parameter(Mandatory = $false, ParameterSetName = "pfx-scope")]
+        [Parameter(Mandatory = $false, ParameterSetName = "thumbprint-scope")]
+        [Parameter(Mandatory = $false, ParameterSetName = "x509certificate2-scope")]
+        [String] $FMIPath
     )
     
     Process {
@@ -114,6 +119,7 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
             TenantId             = $TenantId
             Certificate          = $Certificate
             ThumbPrint           = $Certificate.Thumbprint
+            FMIPath              = $PSCmdlet.MyInvocation.BoundParameters.ContainsKey("FMIPath") ? $FMIPath : $null
         }
 
         Get-EntraIDAccessToken -Profile $Name | Out-Null
