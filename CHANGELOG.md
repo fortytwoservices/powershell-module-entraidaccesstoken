@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.1.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.0.0...v3.1.0) (2026-01-08)
+
+
+### Features
+
+* Add wellknownclientid parameter to Add-EntraIDInteractiveUserAccessTokenProfile ([a54a674](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/a54a67456fa56dfe58832a185216f239405cd93e))
+* Add wellknownclientid parameter to Add-EntraIDInteractiveUserAccessTokenProfile ([04d31ef](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/04d31efd764a4e37c2755f4ef6358139984fbfed))
+
 ## [3.0.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v2.28.1...v3.0.0) (2025-12-19)
 
 
