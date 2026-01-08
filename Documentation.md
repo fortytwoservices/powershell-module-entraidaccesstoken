@@ -1515,9 +1515,17 @@ Adds a new profile for getting Entra ID access tokens.
 
 ### SYNTAX
 
+#### clientid (Default)
 ```
-Add-EntraIDInteractiveUserAccessTokenProfile [[-Name] <String>] [[-Scope] <String>] [[-TenantId] <String>]
- [[-ClientId] <String>] [[-LocalhostPort] <Int32>] [[-Https] <Boolean>] [[-LaunchBrowser] <Boolean>]
+Add-EntraIDInteractiveUserAccessTokenProfile [-Name <String>] [-Scope <String>] [-TenantId <String>]
+ [-ClientId <String>] [-LocalhostPort <Int32>] [-Https <Boolean>] [-LaunchBrowser <Boolean>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+#### wellknownclientid
+```
+Add-EntraIDInteractiveUserAccessTokenProfile [-Name <String>] [-Scope <String>] [-TenantId <String>]
+ -WellKnownClientId <String> [-LocalhostPort <Int32>] [-Https <Boolean>] [-LaunchBrowser <Boolean>]
  [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
@@ -1542,7 +1550,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 1
+Position: Named
 Default value: Default
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -1557,7 +1565,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 2
+Position: Named
 Default value: Https://graph.microsoft.com/.default offline_access
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -1572,7 +1580,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 3
+Position: Named
 Default value: Common
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -1583,12 +1591,27 @@ Accept wildcard characters: False
 
 ```yaml
 Type: String
-Parameter Sets: (All)
+Parameter Sets: clientid
 Aliases:
 
 Required: False
-Position: 4
+Position: Named
 Default value: 14d82eec-204b-4c2f-b7e8-296a70dab67e
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -WellKnownClientId
+
+
+```yaml
+Type: String
+Parameter Sets: wellknownclientid
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
@@ -1602,7 +1625,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 5
+Position: Named
 Default value: -1
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -1617,7 +1640,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 6
+Position: Named
 Default value: False
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -1632,7 +1655,7 @@ Parameter Sets: (All)
 Aliases:
 
 Required: False
-Position: 7
+Position: Named
 Default value: True
 Accept pipeline input: False
 Accept wildcard characters: False

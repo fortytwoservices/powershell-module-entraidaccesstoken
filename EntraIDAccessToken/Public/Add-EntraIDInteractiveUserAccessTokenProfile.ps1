@@ -7,7 +7,7 @@ Add-EntraIDInteractiveUserAccessTokenProfile
 
 #>
 function Add-EntraIDInteractiveUserAccessTokenProfile {
-    [CmdletBinding(DefaultParameterSetName="clientsecret")]
+    [CmdletBinding(DefaultParameterSetName = "clientid")]
 
     Param
     (
@@ -20,9 +20,13 @@ function Add-EntraIDInteractiveUserAccessTokenProfile {
         [Parameter(Mandatory = $false)]
         [String] $TenantId = "common",
 
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $false, ParameterSetName = "clientid")]
         [ValidatePattern("^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$")]
         [String] $ClientId = "14d82eec-204b-4c2f-b7e8-296a70dab67e",
+
+        [Parameter(Mandatory = $true, ParameterSetName = "wellknownclientid")]
+        [ValidateSet("Microsoft Graph PowerShell", "Azure CLI", "Azure PowerShell")]
+        [String] $WellKnownClientId,
 
         [Parameter(Mandatory = $false)]
         [ValidateRange(1024, 65535)]
@@ -36,12 +40,20 @@ function Add-EntraIDInteractiveUserAccessTokenProfile {
     )
     
     Process {
-        if($LocalhostPort -eq -1) {
+        if ($LocalhostPort -eq -1) {
             $LocalhostPort = Get-Random -Minimum 1024 -Maximum 65535
         }
         
         if ($Script:Profiles.ContainsKey($Name)) {
             Write-Warning "Profile $Name already exists, overwriting"
+        }
+
+        if ($PSCmdlet.ParameterSetName -eq "wellknownclientid") {
+            switch ($WellKnownClientId) {
+                "Microsoft Graph PowerShell" { $ClientId = "14d82eec-204b-4c2f-b7e8-296a70dab67e" }
+                "Azure CLI" { $ClientId = "04b07795-8ddb-461a-bbee-02f9e1bf7b46" }
+                "Azure PowerShell" { $ClientId = "1950a258-227b-4e31-a9cf-717495945fc2" }
+            }
         }
 
         $Script:Profiles[$Name] = @{
