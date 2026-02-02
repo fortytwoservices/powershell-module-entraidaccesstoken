@@ -20,7 +20,9 @@ function Get-EntraIDAzureVMMSIAccessToken {
         }
 
         $_resource = [String]::IsNullOrEmpty($Resource) ? $AccessTokenProfile.Resource : $Resource
-        $response = Invoke-WebRequest -Uri "$($uri)?resource=$([System.Uri]::EscapeDataString($_resource))$($clientid_param)&api-version=2018-02-01" -Headers @{Metadata = "true" } -UseBasicParsing
+        $fulluri = "$($uri)?resource=$([System.Uri]::EscapeDataString($_resource))$($clientid_param)&api-version=2018-02-01"
+        Write-Debug "GET $fulluri`nMetadata: true"
+        $response = Invoke-WebRequest -Uri $fulluri -Headers @{Metadata = "true" } -UseBasicParsing
 
         if ($response.StatusCode -ne 200) {
             throw "Error getting access token from Azure VM MSI endpoint: $($response.StatusCode) $($response.StatusDescription) $($response.Content)"

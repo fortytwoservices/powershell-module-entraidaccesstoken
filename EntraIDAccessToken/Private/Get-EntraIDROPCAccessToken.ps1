@@ -21,6 +21,8 @@ function Get-EntraIDROPCAccessToken {
                 client_secret = $cred.GetNetworkCredential().Password
             }
 
+            Write-Debug "POST $tokenUrl`n`n$(($body.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join "`n&")"
+
             $response = Invoke-RestMethod -Method Post -Uri $tokenUrl -Body $body -ContentType "application/x-www-form-urlencoded"
 
             if ($response.refresh_token) {
@@ -46,8 +48,12 @@ function Get-EntraIDROPCAccessToken {
             username      = $AccessTokenProfile.UserCredential.UserName
             password      = $AccessTokenProfile.UserCredential.GetNetworkCredential().Password
         }
+
+        $uri = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token"
+        Write-Debug "POST $uri`n`n$(($body.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join "`n&")"
+
         Write-Verbose "Requesting token for $($body.scope) using the user $($AccessTokenProfile.UserCredential.UserName) and client $($body.client_id) for tenant $($AccessTokenProfile.TenantId)"
-        $response = Invoke-RestMethod -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Method Post -Body $body -ContentType "application/x-www-form-urlencoded"
+        $response = Invoke-RestMethod -Uri $uri -Method Post -Body $body -ContentType "application/x-www-form-urlencoded"
 
         if ($response.refresh_token) {
             Write-Debug "Received refresh token, storing it for later use"

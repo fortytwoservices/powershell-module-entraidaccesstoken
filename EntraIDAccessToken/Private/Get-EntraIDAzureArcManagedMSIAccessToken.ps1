@@ -66,6 +66,7 @@ function Get-EntraIDAzureArcManagedMSIAccessToken {
 
             $secret = Get-Content -Raw $secretFile
 
+            Write-Debug "GET $uri`nMetadata: True`nAuthorization: Basic $secret"
             $response = Invoke-WebRequest -Method GET -Uri $uri -Headers @{Metadata = 'True'; Authorization = "Basic $secret" } -UseBasicParsing
             ConvertFrom-Json -InputObject $response.Content
         }

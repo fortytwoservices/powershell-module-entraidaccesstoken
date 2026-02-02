@@ -38,7 +38,9 @@ function Get-EntraIDFederatedCredentialAccessToken {
                 $body["fmi_path"] = $FMIPath
             }
 
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body -ErrorAction Stop
+            $uri = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token"
+            Write-Debug "POST $uri`n`n$(($body.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join "`n&")"
+            Invoke-RestMethod -Method Post -Uri $uri -Body $body -ErrorAction Stop
         }
         else {
             $body = @{
@@ -54,7 +56,10 @@ function Get-EntraIDFederatedCredentialAccessToken {
             if (![string]::IsNullOrEmpty($FMIPath)) {
                 Write-Warning "FMIPath is not supported for v1/resource tokens and will be ignored"
             }
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token" -Body $body -ErrorAction Stop
+
+            $uri = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token"
+            Write-Debug "POST $uri`n`n$(($body.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join "`n&")"
+            Invoke-RestMethod -Method Post -Uri $uri -Body $body -ErrorAction Stop
         }
     }
 }

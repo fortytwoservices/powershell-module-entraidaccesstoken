@@ -29,7 +29,10 @@ function Get-EntraIDFederatedCredentialAccessTokenUsingJWT {
             }
 
             Write-Verbose "Getting access token (v2/scope) for $($body.scope) with federated credentials for client_id $($ClientId)"
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body -ErrorAction Stop
+
+            $uri = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token"
+            Write-Debug "POST $uri`n`n$(($body.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join "`n&")"
+            Invoke-RestMethod -Method Post -Uri $uri -Body $body -ErrorAction Stop
         }
         else {
             $body = @{
@@ -41,7 +44,10 @@ function Get-EntraIDFederatedCredentialAccessTokenUsingJWT {
             }
 
             Write-Verbose "Getting access token (v1/resource) for resource $($body.resource) with federated credentials for client_id $($ClientId)"
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token" -Body $body -ErrorAction Stop
+
+            $uri = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token"
+            Write-Debug "POST $uri`n`n$(($body.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join "`n&")"
+            Invoke-RestMethod -Method Post -Uri $uri -Body $body -ErrorAction Stop
         }
     }
 }

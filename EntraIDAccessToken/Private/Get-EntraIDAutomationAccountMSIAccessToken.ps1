@@ -21,7 +21,8 @@ function Get-EntraIDAutomationAccountMSIAccessToken {
         else {
             Write-Verbose "Getting access token for '$($body.resource)' using Automation Account System Assigned Identity"
         }
-            
+        
+        Write-Debug "POST $($env:IDENTITY_ENDPOINT)`nMetadata: true`nX-IDENTITY-HEADER: $($env:IDENTITY_HEADER)`n`n$(($body.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join "`n&")"
         Invoke-RestMethod -Uri $env:IDENTITY_ENDPOINT -Method 'POST' -Headers @{
             'Metadata'          = 'true'
             'X-IDENTITY-HEADER' = $env:IDENTITY_HEADER
