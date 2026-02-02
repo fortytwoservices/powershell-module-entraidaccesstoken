@@ -34,7 +34,7 @@ function Add-EntraIDFunctionAppMSIAccessTokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
-        $Script:Profiles[$Name] = @{
+        Add-EntraIDAccessTokenProfile -Name $Name -Profile @{
             AuthenticationMethod        = "functionappmsi"
             ClientId                    = $ClientId
             Resource                    = $Resource

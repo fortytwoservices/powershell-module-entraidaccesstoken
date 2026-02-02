@@ -42,7 +42,7 @@ function Add-EntraIDAzureArcManagedMSITokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
-        $Script:Profiles[$Name] = @{
+        Add-EntraIDAccessTokenProfile -Name $Name -Profile @{
             AuthenticationMethod        = "azurearcmsi"
             ClientId                    = $ClientId
             Resource                    = $Resource

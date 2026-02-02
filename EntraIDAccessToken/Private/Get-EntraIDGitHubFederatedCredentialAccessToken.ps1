@@ -19,9 +19,8 @@ function Get-EntraIDGitHubFederatedCredentialAccessToken {
 
         if (!$GitHubJWT.Value) {
             Write-Error "Failed to get GitHub JWT"
-            return
         }
 
-        Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $AccessTokenProfile -JWT $GitHubJWT.Value -ClientId $AccessTokenProfile.ClientId
+        Get-EntraIDFederatedCredentialAccessTokenUsingJWT -AccessTokenProfile $AccessTokenProfile -JWT $GitHubJWT.Value -ClientId $AccessTokenProfile.ClientId
     }
 }

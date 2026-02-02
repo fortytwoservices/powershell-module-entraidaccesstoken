@@ -106,7 +106,7 @@ function Add-EntraIDClientCertificateAccessTokenProfile {
         Write-Verbose "Certificate not valid after: $($Certificate.NotAfter)"
         Write-Verbose "Certificate not valid before: $($Certificate.NotBefore)"
 
-        $Script:Profiles[$Name] = @{
+        Add-EntraIDAccessTokenProfile -Name $Name -Profile @{
             AuthenticationMethod = "clientcertificate"
             ClientId             = $ClientId
             Resource             = ![String]::IsNullOrEmpty($Scope) ? $null : $Resource

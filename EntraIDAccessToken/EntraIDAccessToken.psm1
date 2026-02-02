@@ -1,6 +1,7 @@
 # Inspiration: https://github.com/RamblingCookieMonster/PSStackExchange/blob/master/PSStackExchange/PSStackExchange.psm1
 
 New-Variable -Scope Script -Name Profiles -Value @{}
+New-Variable -Scope Script -Name TokenCache -Value @{}
 New-Variable -Scope Script -Name ConfirmEntraIDAccessTokenJWKSCache -Value @{}
 
 # Get public and private function definition files.

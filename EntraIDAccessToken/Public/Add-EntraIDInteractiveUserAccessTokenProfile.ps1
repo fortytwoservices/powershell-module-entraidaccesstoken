@@ -56,7 +56,7 @@ function Add-EntraIDInteractiveUserAccessTokenProfile {
             }
         }
 
-        $Script:Profiles[$Name] = @{
+        Add-EntraIDAccessTokenProfile -Name $Name -Profile @{
             AuthenticationMethod = "interactiveuser"
             TenantId             = $TenantId
             ClientId             = $ClientId

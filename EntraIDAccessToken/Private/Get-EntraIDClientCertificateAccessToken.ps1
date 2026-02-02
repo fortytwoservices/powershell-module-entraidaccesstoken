@@ -5,6 +5,9 @@ function Get-EntraIDClientCertificateAccessToken {
         [Parameter(Mandatory = $true)]
         $AccessTokenProfile,
 
+        [Parameter(Mandatory = $false)]
+        [String] $FMIPath = $null,
+
         [Parameter(Mandatory = $false, ParameterSetName = "resource")]
         [String] $Resource = $null,
 
@@ -28,6 +31,10 @@ function Get-EntraIDClientCertificateAccessToken {
                 grant_type            = "client_credentials"
             }
 
+            if(![String]::IsNullOrEmpty($FMIPath)) {
+                $body["fmi_path"] = $FMIPath
+            }
+
             Write-Verbose "Getting access token (v2/scope) for '$($body.scope)' using Client Certificate for client_id $($AccessTokenProfile.ClientId)"
         
             # Get token
@@ -43,6 +50,10 @@ function Get-EntraIDClientCertificateAccessToken {
             }
 
             Write-Verbose "Getting access token (v1/resource) for '$($body.resource)' using Client Certificate for client_id $($AccessTokenProfile.ClientId)"
+
+            if(![String]::IsNullOrEmpty($FMIPath)) {
+                Write-Warning "FMIPath parameter is not applicable for v1/resource authentication."
+            }
         
             # Get token
             Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token" -Body $body
