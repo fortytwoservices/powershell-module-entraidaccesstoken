@@ -10,3 +10,7 @@ Add-EntraIDFederatedCredentialTokenProfile -Name "Agent 1" -TenantId "237098ae-0
 Add-EntraIDAgentUserTokenProfile -Name "Agent User 1" -AgentIdentityAccessTokenProfile "Agent 1" -UserPrincipalName "7acd14d47a62@dev.goodworkaround.com" -Verbose -Debug
 Add-EntraIDAgentUserTokenProfile -Name "Agent User 1" -AgentIdentityAccessTokenProfile "Agent 1" -UserPrincipalName "629db438-941d-4e66-a9ef-bbe70e6cf3ac" -Verbose -Debug
 
+
+
+
+Add-EntraIDFederatedCredentialTokenProfile -Name "Agent 1 Graph" -TenantId "237098ae-0798-4cf9-a3a5-208374d2dcfd" -ClientId "cd77c677-16ea-4f9d-b5b1-0aab1841694c" -FederatedAccessTokenProfile Blueprint -AgentIdentity -Scope "https://graph.microsoft.com/.default" -Debug

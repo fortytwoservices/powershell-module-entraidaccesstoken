@@ -101,6 +101,16 @@ $ClientSecret = Read-Host -AsSecureString
 Add-EntraIDROPCAccessTokenProfile -TenantId "237098ae-0798-4cf9-a3a5-208374d2dcfd" -ClientId "179ba868-8e81-4bcb-b8e4-a3268fe8b13d" -ClientSecret $ClientSecret -UserCredential $UserCredential
 ```
 
+## Example 1.14 - Autonomous agent flow
+
+```PowerShell
+# Step 1 - Add blueprint authentication
+Add-EntraIDClientSecretAccessTokenProfile -ClientSecret $ClientSecret -TenantId "237098ae-0798-4cf9-a3a5-208374d2dcfd" -ClientId "9471f355-173a-4466-b142-3d4acf848b03" -Scope "api://AzureADTokenExchange/.default" -Name "Blueprint"
+
+# Step 2 - Add autonomous agent authentication
+Add-EntraIDFederatedCredentialTokenProfile -Name "Agent 1" -TenantId "237098ae-0798-4cf9-a3a5-208374d2dcfd" -ClientId "cd77c677-16ea-4f9d-b5b1-0aab1841694c" -FederatedAccessTokenProfile Blueprint -AgentIdentity -Scope "https://graph.microsoft.com/.default"
+```
+
 ## Example 2.1 - Getting an access token for the default profile
 
 ```PowerShell
