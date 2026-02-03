@@ -9,6 +9,116 @@ A module for simplifying the process of getting an access token from Entra ID
 | Company name | Fortytwo Technologies AS |
 | PowerShell version | 7.1 |
 
+## Add-EntraIDAgentUserTokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens.
+
+### SYNTAX
+
+```
+Add-EntraIDAgentUserTokenProfile [[-Name] <String>] [[-Scope] <String>]
+ [-AgentIdentityAccessTokenProfile] <String> [-UserPrincipalName] <String> [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Add-EntraIDAgentUserTokenProfile
+```
+
+### PARAMETERS
+
+#### -Name
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Scope
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: Https://graph.microsoft.com/.default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -AgentIdentityAccessTokenProfile
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 3
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -UserPrincipalName
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 4
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
 ## Add-EntraIDAutomationAccountMSIAccessTokenProfile
 
 ### SYNOPSIS
@@ -1224,6 +1334,169 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### NOTES
 
 ### RELATED LINKS
+## Add-EntraIDFederatedCredentialTokenProfile
+
+### SYNOPSIS
+Adds a new profile for getting Entra ID access tokens.
+
+### SYNTAX
+
+#### scope (Default)
+```
+Add-EntraIDFederatedCredentialTokenProfile [-Name <String>] [-Scope <String>] -TenantId <String>
+ -FederatedAccessTokenProfile <String> [-AgentIdentity] -ClientId <String> [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+#### resource
+```
+Add-EntraIDFederatedCredentialTokenProfile [-Name <String>] [-Resource <String>] -TenantId <String>
+ -FederatedAccessTokenProfile <String> [-AgentIdentity] -ClientId <String> [-ProgressAction <ActionPreference>]
+ [<CommonParameters>]
+```
+
+### DESCRIPTION
+
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Add-EntraIDFederatedCredentialTokenProfile
+```
+
+### PARAMETERS
+
+#### -Name
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Resource
+
+
+```yaml
+Type: String
+Parameter Sets: resource
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -Scope
+
+
+```yaml
+Type: String
+Parameter Sets: scope
+Aliases:
+
+Required: False
+Position: Named
+Default value: Https://graph.microsoft.com/.default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -TenantId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -FederatedAccessTokenProfile
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -AgentIdentity
+
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: False
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+### NOTES
+
+### RELATED LINKS
 ## Add-EntraIDFunctionAppMSIAccessTokenProfile
 
 ### SYNOPSIS
@@ -2175,8 +2448,8 @@ Gets an access token from Entra ID for the configured profile
 ### SYNTAX
 
 ```
-Get-EntraIDAccessToken [[-Profile] <String>] [-ForceRefresh] [-ProgressAction <ActionPreference>]
- [<CommonParameters>]
+Get-EntraIDAccessToken [[-Profile] <String>] [[-FMIPath] <String>] [-ForceRefresh]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
 ```
 
 ### DESCRIPTION
@@ -2208,6 +2481,21 @@ Aliases:
 Required: False
 Position: 1
 Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -FMIPath
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
 ```
