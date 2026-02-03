@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.2.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.1.0...v3.2.0) (2026-02-03)
+
+
+### Features
+
+* Add debug output for http requests, good for learning and for troubleshooting ([0eec50b](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/0eec50bcdd84ab72ed9da83f4f78f3939513bc4d))
+* Add Entra ID agent authentication for Agent Identity (Autonomous) and Agent User ([ed43a83](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/ed43a8332ea3089ac9414b1e54376292818f0571))
+* Add test for Add-EntraIDFederatedCredentialTokenProfile ([d4109ba](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/d4109baeb80db40b71b6d5d6620eb511c6894a38))
+
 ## [3.1.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.0.0...v3.1.0) (2026-01-08)
 
 
