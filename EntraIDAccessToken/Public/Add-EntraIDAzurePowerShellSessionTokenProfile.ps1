@@ -26,7 +26,7 @@ function Add-EntraIDAzurePowerShellSessionTokenProfile {
 
         $_TEMP = Get-AzAccessToken -ResourceUrl $Resource -AsSecureString
 
-        $Script:Profiles[$Name] = @{
+        Add-EntraIDAccessTokenProfile -Name $Name -Profile @{
             AuthenticationMethod                    = "azurepowershellsession"
             ClientId                                = $_TEMP.UserId
             Resource                                = $Resource

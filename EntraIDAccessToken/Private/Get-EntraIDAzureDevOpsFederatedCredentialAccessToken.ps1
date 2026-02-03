@@ -5,6 +5,9 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
         [Parameter(Mandatory = $true)]
         $AccessTokenProfile,
 
+        [Parameter(Mandatory = $false)]
+        [String] $FMIPath = $null,
+
         [Parameter(Mandatory = $false, ParameterSetName = "resource")]
         [String] $Resource = $null,
 
@@ -60,10 +63,16 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
                 client_assertion      = $OIDCToken
             }
 
+            if (![String]::IsNullOrEmpty($FMIPath)) {
+                $body["fmi_path"] = $FMIPath
+            }
+
             Write-Verbose "Getting access token (v2/scope) for '$($body.scope)' using Azure DevOps Federated Workload Identity for client_id $($AccessTokenProfile.ClientId)"
         
             # Get token
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token" -Body $body
+            $uri = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/token"
+            Write-Debug "POST $uri`n`n$(($body.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join "`n&")"
+            Invoke-RestMethod -Method Post -Uri $uri -Body $body
         }
         else {
             $body = @{
@@ -73,11 +82,17 @@ function Get-EntraIDAzureDevOpsFederatedCredentialAccessToken {
                 client_assertion_type = "urn:ietf:params:oauth:client-assertion-type:jwt-bearer"
                 client_assertion      = $OIDCToken
             }
-            
+
             Write-Verbose "Getting access token (v1/resource) for '$($body.resource)' using Azure DevOps Federated Workload Identity for client_id $($AccessTokenProfile.ClientId)"
+            
+            if (![String]::IsNullOrEmpty($FMIPath)) {
+                Write-Warning "FMIPath parameter is not applicable for v1/resource authentication."
+            }
         
             # Get token
-            Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token" -Body $body -ErrorAction Stop
+            $uri = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/token"
+            Write-Debug "POST $uri`n`n$(($body.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join "`n&")"
+            Invoke-RestMethod -Method Post -Uri $uri -Body $body -ErrorAction Stop
         }        
     }
 }

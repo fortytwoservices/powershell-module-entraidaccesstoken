@@ -59,7 +59,7 @@ function Add-EntraIDAzureVMMSIAccessTokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
-        $Script:Profiles[$Name] = @{
+        Add-EntraIDAccessTokenProfile -Name $Name -Profile @{
             AuthenticationMethod         = "azurevmmsi"
             UserAssignedIdentityClientId = $UserAssignedIdentityClientId
             Resource                     = $PSCmdlet.ParameterSetName -like "resource*" ? $Resource : $null

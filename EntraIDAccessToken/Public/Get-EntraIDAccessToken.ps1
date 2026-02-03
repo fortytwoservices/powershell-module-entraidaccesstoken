@@ -19,6 +19,9 @@ function Get-EntraIDAccessToken {
     Param(
         [Parameter(Mandatory = $false)]
         [String] $Profile = "Default",
+        
+        [Parameter(Mandatory = $false)]
+        [String] $FMIPath = $null,
 
         # If specified, a new access token will be requested even if the cached token is still valid
         [Parameter(Mandatory = $false)]
@@ -31,23 +34,41 @@ function Get-EntraIDAccessToken {
         }
 
         $P = $Script:Profiles[$Profile]
+        $CacheKey = "{0}:::{1}" -f $Profile, $FMIPath
 
-        # Do not try to get access token if we have an active access token
-        if ($P.TokenCache -and !$ForceRefresh.IsPresent -and $P.TokenCache.ExpiresOn -gt (Get-Date).AddMinutes(5)) {
-            Write-Debug "Using cached access token for profile $Profile"
-            return $P.TokenCache.AccessToken
+        Write-Debug "Cache key: $CacheKey"
+
+        $TokenCacheEntry = $Script:TokenCache[$CacheKey]
+
+        if ($TokenCacheEntry) {
+            Write-Debug "Checking existing cached token"
         }
-        # Print verbose message differently depending on if we have an access token or not
-        elseif (!$P.TokenCache) {
-            Write-Verbose "Getting access token for profile $Profile"
+
+        if ($ForceRefresh.IsPresent) {
+            Write-Debug "Force refresh is specified, ignoring cached token"
+        }
+        elseif (!$TokenCacheEntry) {
+            Write-Debug "No cached token to use"
+        }
+        elseif ($TokenCacheEntry.ExpiresOn -le (Get-Date).AddMinutes(5)) {
+            Write-Debug "Cached token is expired or about to expire, requesting new token"
         }
         else {
-            Write-Verbose "Access token expired for profile $Profile, getting new access token"
+            Write-Debug "Using cached access token for profile $Profile"
+            return $TokenCacheEntry.AccessToken
         }
 
         if ($P.AuthenticationMethod -eq "externalaccesstoken") {
             return $P.AccessToken
-        } 
+        }
+        elseif ($P.AuthenticationMethod -eq 'agentuser') {
+        
+        }
+        elseif ($P.AuthenticationMethod -eq "federatedcredential") {
+            if (!$P.FederatedAccessTokenProfile) {
+                throw "FederatedAccessTokenProfile must be specified when using federatedcredential as authentication method"
+            }
+        }
         elseif ($P.AuthenticationMethod -eq "clientsecret") {
             if (!$P.ClientSecret) {
                 throw "ClientSecretCredential must be specified when using clientsecret as authentication method"
@@ -128,7 +149,7 @@ function Get-EntraIDAccessToken {
             }
         }
         elseif ($P.AuthenticationMethod -eq "azurevmmsi") {
-            if($P.Scope -and !$P.TrustingApplicationClientId) {
+            if ($P.Scope -and !$P.TrustingApplicationClientId) {
                 throw "Scope is only supported when using a trusting application with Azure VM Managed Service Identity"
             }
         }
@@ -145,11 +166,11 @@ function Get-EntraIDAccessToken {
                 throw "ClientId is not set"
             }
 
-            if(!$P.ClientSecret) {
+            if (!$P.ClientSecret) {
                 throw "ClientSecret is not set"
             }
 
-            if(!$P.UserCredential) {
+            if (!$P.UserCredential) {
                 throw "UserCredential is not set"
             }
         }
@@ -159,24 +180,45 @@ function Get-EntraIDAccessToken {
         
         try {
             if ($P.AuthenticationMethod -eq "clientsecret") {
-                $result = Get-EntraIDClientSecretAccessToken -AccessTokenProfile $P
+                $result = Get-EntraIDClientSecretAccessToken -AccessTokenProfile $P -FMIPath $FMIPath
+            }
+            elseif($P.AuthenticationMethod -eq 'agentuser') {
+                $result = Get-EntraIDAgentUserAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "clientcertificate") {
-                $result = Get-EntraIDClientCertificateAccessToken -AccessTokenProfile $P
+                $result = Get-EntraIDClientCertificateAccessToken -AccessTokenProfile $P -FMIPath $FMIPath
+            }
+            elseif ($P.AuthenticationMethod -eq "federatedcredential") {
+                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -FMIPath $FMIPath
             }
             elseif ($P.AuthenticationMethod -eq "azuredevopsfederatedcredential") {
-                $result = Get-EntraIDAzureDevOpsFederatedCredentialAccessToken -AccessTokenProfile $P
+                $result = Get-EntraIDAzureDevOpsFederatedCredentialAccessToken -AccessTokenProfile $P -FMIPath $FMIPath
             }
             elseif ($P.AuthenticationMethod -eq "azurepowershellsession") {
+                if (![string]::IsNullOrEmpty($FMIPath)) {
+                    Write-Warning "FMIPath parameter is not applicable for Azure PowerShell Session authentication."
+                }
+
                 $result = Get-EntraIDAzurePowerShellSessionAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "interactiveuser") {
+                if (![string]::IsNullOrEmpty($FMIPath)) {
+                    Write-Warning "FMIPath parameter is not applicable for Interactive User authentication."
+                }
                 $result = Get-EntraIDInteractiveUserAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "ropc") {
+                if (![string]::IsNullOrEmpty($FMIPath)) {
+                    Write-Warning "FMIPath parameter is not applicable for Interactive User authentication."
+                }
+
                 $result = Get-EntraIDROPCAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "githubfederatedcredential") {
+                if (![string]::IsNullOrEmpty($FMIPath)) {
+                    Write-Warning "FMIPath parameter is not applicable for Interactive User authentication."
+                }
+
                 $result = Get-EntraIDGitHubFederatedCredentialAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and !$P.TrustingApplicationClientId) {
@@ -184,32 +226,41 @@ function Get-EntraIDAccessToken {
             }
             elseif ($P.AuthenticationMethod -eq "automationaccountmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDAutomationAccountMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
-                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
+                $result = Get-EntraIDFederatedCredentialAccessTokenUsingJWT -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
             }
             elseif ($P.AuthenticationMethod -eq "functionappmsi" -and !$P.TrustingApplicationClientId) {
                 $result = Get-EntraIDFunctionAppMSIAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "functionappmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDFunctionAppMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
-                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
+                $result = Get-EntraIDFederatedCredentialAccessTokenUsingJWT -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
             }
             elseif ($P.AuthenticationMethod -eq "azurearcmsi" -and !$P.TrustingApplicationClientId) {
                 $result = Get-EntraIDAzureArcManagedMSIAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "azurearcmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDAzureArcManagedMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
-                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
+                $result = Get-EntraIDFederatedCredentialAccessTokenUsingJWT -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
             }
             elseif ($P.AuthenticationMethod -eq "azurevmmsi" -and !$P.TrustingApplicationClientId) {
                 $result = Get-EntraIDAzureVMMSIAccessToken -AccessTokenProfile $P
             }
             elseif ($P.AuthenticationMethod -eq "azurevmmsi" -and $P.TrustingApplicationClientId) {
                 $step1 = Get-EntraIDAzureVMMSIAccessToken -AccessTokenProfile $P -Resource "api://AzureADTokenExchange"
-                $result = Get-EntraIDFederatedCredentialAccessToken -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
+                $result = Get-EntraIDFederatedCredentialAccessTokenUsingJWT -AccessTokenProfile $P -JWT $step1.access_token -ClientId $P.TrustingApplicationClientId
             }
         }
         catch {
-            Write-Error "Caught error when getting access token: $($_)"
+            if ("$_" -like "*AADSTS82008*") {
+                if (!$ENV:NOWARNAADSTS82008) {
+                    Write-Warning "Entra ID returned error AADSTS82008, which is expected for agentic applications. Remember to use -FMIPath to specify the target Agent Identity when using this access token profile. This warning can be muted using WarningPreference or by setting the NOWARNAADSTS82008 environment variable to any value."
+                }
+                
+            }
+            else {
+                Write-Error "Caught error when getting access token: $($_)"
+                return
+            }
             return
         }
 
@@ -223,7 +274,7 @@ function Get-EntraIDAccessToken {
         }
         
         # Save access token and when it expires
-        $P.TokenCache = @{
+        $Script:TokenCache[$CacheKey] = @{
             AccessToken = $result.access_token
             ExpiresOn   = (Get-Date).AddSeconds($result.expires_in - 360)
         }

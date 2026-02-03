@@ -25,6 +25,7 @@ function Get-EntraIDFunctionAppMSIAccessToken {
             Write-Verbose "Getting access token for '$($body.resource)' using Function App System Assigned Identity"
         }
             
+        Write-Debug "GET $uri`nX-IDENTITY-HEADER: $($env:IDENTITY_HEADER)"
         Invoke-RestMethod $uri -Method 'GET' -Headers @{
             'X-IDENTITY-HEADER' = $env:IDENTITY_HEADER
         }    

@@ -47,7 +47,7 @@ function Add-EntraIDExternalAccessTokenProfile {
             }
         }
 
-        $Script:Profiles[$Name] = @{
+        Add-EntraIDAccessTokenProfile -Name $Name -Profile @{
             AuthenticationMethod = "externalaccesstoken"
             AccessToken          = $AccessToken
         }

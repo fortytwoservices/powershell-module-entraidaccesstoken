@@ -36,7 +36,7 @@ function Add-EntraIDROPCAccessTokenProfile {
             Write-Warning "Profile $Name already exists, overwriting"
         }
 
-        $Script:Profiles[$Name] = @{
+        Add-EntraIDAccessTokenProfile -Name $Name -Profile @{
             AuthenticationMethod = "ropc"
             TenantId             = $TenantId
             ClientId             = $ClientId

@@ -49,7 +49,7 @@ function Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile {
             throw "When using the 'scope' parameter set, the Scope parameter must be specified."
         }
 
-        $Script:Profiles[$Name] = @{
+        Add-EntraIDAccessTokenProfile -Name $Name -Profile @{
             AuthenticationMethod = "azuredevopsfederatedcredential"
             ClientId             = $ClientId
             Resource             = $PSCmdlet.ParameterSetName -eq "resource" ? $Resource : $null
