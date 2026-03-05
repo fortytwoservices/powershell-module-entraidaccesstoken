@@ -114,6 +114,7 @@ function Get-EntraIDAccessToken {
             }
 
             if (!$ENV:ACTIONS_ID_TOKEN_REQUEST_TOKEN) {
+                Write-Warning "In order to use federated credentials, please add the below to your action:`n`npermissions:`n    id-token: write"
                 throw "Missing ACTIONS_ID_TOKEN_REQUEST_TOKEN environment variable when using GitHub Federated Credential as authentication method"
             }
 
