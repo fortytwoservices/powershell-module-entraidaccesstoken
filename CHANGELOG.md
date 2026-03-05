@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.2.0...v3.3.0) (2026-03-05)
+
+
+### Features
+
+* Add example for GitHub actions when not configured correctly ([9a5add0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/9a5add01e51854ad40c7ff26771bccd24ad8c831))
+
 ## [3.2.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.1.0...v3.2.0) (2026-02-03)
 
 
