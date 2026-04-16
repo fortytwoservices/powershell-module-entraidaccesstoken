@@ -18,9 +18,8 @@ jobs:
       - name: Publish Module to internal ACR
         shell: pwsh
         run: |
-          $managedserviceclientid = "5560e545-ab37-4d76-ac15-3d35b641b2ec"
           Install-Module Az.Accounts
-          Connect-AzAccount -ServicePrincipal -Tenant "237098ae-0798-4cf9-a3a5-208374d2dcfd" -ApplicationId $managedserviceclientid -FederatedToken $$ACTIONS_ID_TOKEN_REQUEST_TOKEN -Verbose
+          Connect-AzAccount -ServicePrincipal -Tenant "237098ae-0798-4cf9-a3a5-208374d2dcfd" -ApplicationId "5560e545-ab37-4d76-ac15-3d35b641b2ec" -FederatedToken $ACTIONS_ID_TOKEN_REQUEST_TOKEN -Verbose
           Register-PSResourceRepository -Name FortytwoInternal -Uri "https://fortytwointernal.azurecr.io/"
 
           $psd1 = Get-ChildItem -Recurse -Include *.psd1
