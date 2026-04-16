@@ -13,7 +13,9 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        
       - name: Azure Login
         uses: azure/login@v3
         with:
@@ -28,7 +30,7 @@ jobs:
           azPSVersion: "latest"
           inlineScript: |
             Write-Host "Registering repository"
-            Register-PSResourceRepository -Name FortytwoInternal -Uri "${{ vars.FORTYTWO_INTERNAL_POWERSHELL_REPOSITORY }}"
+            Register-PSResourceRepository -Name FortytwoInternal -Uri "${{ vars.FORTYTWO_INTERNAL_POWERSHELL_REPOSITORY }}" -Trusted -Priority 1
 
             Write-Host "Processing required modules"
             $psd1 = Get-ChildItem -Recurse -Include *.psd1
@@ -36,7 +38,7 @@ jobs:
             if($RequiredModules) {
               $RequiredModules | ForEach-Object {
                 Write-Host "Installing required module - $($_)"
-                Install-PSResource -Name $_ -Force -Confirm:$false -Repository FortytwoInternal -Scope CurrentUser
+                Install-PSResource -Name $_ -Confirm:$false -Repository FortytwoInternal -Scope CurrentUser
               }
             }
 
