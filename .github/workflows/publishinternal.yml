@@ -28,7 +28,7 @@ jobs:
           azPSVersion: "latest"
           inlineScript: |
             Write-Host "Registering repository"
-            Register-PSResourceRepository -Name FortytwoInternal -Uri "${{ vars.FORTYTWO_INTERNAL_POWERSHELL_REPOSITORY }}"
+            Register-PSResourceRepository -Name FortytwoInternal -Uri "${{ vars.FORTYTWO_INTERNAL_POWERSHELL_REPOSITORY }}" -Trusted -Priority 1
 
             Write-Host "Processing required modules"
             $psd1 = Get-ChildItem -Recurse -Include *.psd1
@@ -36,7 +36,7 @@ jobs:
             if($RequiredModules) {
               $RequiredModules | ForEach-Object {
                 Write-Host "Installing required module - $($_)"
-                Install-PSResource -Name $_ -Force -Confirm:$false -Repository FortytwoInternal -Scope CurrentUser
+                Install-PSResource -Name $_ -Confirm:$false -Repository FortytwoInternal -Scope CurrentUser
               }
             }
 
