@@ -1,0 +1,52 @@
+name: Publish Module to internal ACR
+permissions:
+  contents: read
+  id-token: write
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Azure Login
+        uses: azure/login@v3
+        with:
+          client-id: ${{ vars.FORTYTWO_INTERNAL_POWERSHELL_PUSH_CLIENTID }}
+          tenant-id: ${{ vars.FORTYTWO_MANAGED_SERVICE_TENANTID }}
+          allow-no-subscriptions: true
+          enable-AzPSSession: true # Injects authentication into Az PowerShell module
+
+      - name: Publish Module to internal ACR
+        uses: azure/powershell@v3
+        with:
+          azPSVersion: "latest"
+          inlineScript: |
+            Write-Host "Registering repository"
+            Register-PSResourceRepository -Name FortytwoInternal -Uri "${{ vars.FORTYTWO_INTERNAL_POWERSHELL_REPOSITORY }}"
+
+            Write-Host "Processing required modules"
+            $psd1 = Get-ChildItem -Recurse -Include *.psd1
+            $RequiredModules = [ScriptBlock]::Create((Get-Content -Raw $psd1.FullName)).Invoke().RequiredModules
+            if($RequiredModules) {
+              $RequiredModules | ForEach-Object {
+                Write-Host "Installing required module - $($_)"
+                Install-PSResource -Name $_ -Force -Confirm:$false -Repository FortytwoInternal -Scope CurrentUser
+              }
+            }
+
+            Write-Host "Publishing modules"
+            $psd1 |
+            ForEach-Object {
+              Test-ModuleManifest $_.FullName
+
+              $ModulePath = Split-Path -Parent $_.FullName
+              $ModuleName = $_.BaseName
+              Write-Host "Publishing module $ModuleName"
+              Publish-PSResource -Path $ModulePath -Repository FortytwoInternal
+            }
