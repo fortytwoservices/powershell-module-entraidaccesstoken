@@ -24,7 +24,7 @@ function Get-EntraIDAccessTokenPayload {
         }
 
         $payload = $InputObject.Split(".")[1]
-        $payload = $payload.PadRight($payload.Length + (4 - ($payload.Length % 4)), "=").Replace("====", "")
+        $payload = $payload.PadRight($payload.Length + (4 - ($payload.Length % 4)), "=").Replace("====", "").Replace("-","+").Replace("_","/")
         ConvertFrom-Json -InputObject ([System.Text.Encoding]::UTF8.GetString([System.Convert]::FromBase64String($payload))) -AsHashtable:$AsHashTable
     }
 }
