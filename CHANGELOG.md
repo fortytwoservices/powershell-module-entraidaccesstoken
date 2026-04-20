@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.3.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.3.0...v3.3.1) (2026-04-20)
+
+
+### Bug Fixes
+
+* Fix payload decoding ([c50fbec](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/c50fbec2c3f255a25752c29ee9902fc22343f68d))
+* Remove version check functionality to avoid slow loading of the … ([1369d30](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/1369d303b1c31429e6bd6e74de562c37e7e406ee))
+* Remove version check functionality to avoid slow loading of the module ([6fd2424](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/6fd242441a6016649479cbf27645d50b1dd7244b))
+
 ## [3.3.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.2.0...v3.3.0) (2026-04-16)
 
 
