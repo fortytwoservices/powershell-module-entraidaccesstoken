@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.3.2](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.3.1...v3.3.2) (2026-04-21)
+
+
+### Bug Fixes
+
+* restrict update-readme job to same-repo PRs only ([8feb767](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/8feb767ce7269b026f7344cef498bb9f30448f44))
+
 ## [3.3.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.3.0...v3.3.1) (2026-04-20)
 
 
