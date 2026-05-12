@@ -12,6 +12,7 @@ Get-EntraIDAccessTokenProfile | Get-EntraIDAdminConsentUrl
 Get-EntraIDAdminConsentUrl -ClientId "your-client-id"
 #>
 function Get-EntraIDAdminConsentUrl {
+    [OutputType([string])]
     [CmdletBinding()]
 
     Param(
