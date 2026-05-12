@@ -7,6 +7,12 @@ function Get-EntraIDInteractiveUserAccessToken {
     )
 
     process {
+        $LocalHostPort = $AccessTokenProfile.LocalhostPort
+        if ($LocalHostPort -eq -1) {
+            Write-Verbose "No localhost port specified, selecting random port between 1024 and 65535"
+            $LocalHostPort = Get-Random -Minimum 1024 -Maximum 65535
+        }
+
         # If we already have a refresh token, use that to get a new access token
         if ($AccessTokenProfile["RefreshToken"]) {
             Write-Verbose "We have a refresh token, using it to get a new access token"
@@ -19,7 +25,7 @@ function Get-EntraIDInteractiveUserAccessToken {
             }
 
             $response = Invoke-RestMethod -Method Post -Uri $tokenUrl -Body $body -ContentType "application/x-www-form-urlencoded" -Headers @{
-                Origin = "{0}://localhost:{1}/" -f ($AccessTokenProfile.Https ? "https" : "http"), $AccessTokenProfile.LocalhostPort
+                Origin = "{0}://localhost:{1}/" -f ($AccessTokenProfile.Https ? "https" : "http"), $LocalHostPort
             }
 
             if ($response.refresh_token) {
@@ -38,18 +44,19 @@ function Get-EntraIDInteractiveUserAccessToken {
 
         # Create listener
         $listener = $null
-        if($AccessTokenProfile["Listener"]) {
+        if ($AccessTokenProfile["Listener"]) {
             Write-Verbose "Using existing listener"
             $listener = $AccessTokenProfile["Listener"]
-        } elseif ($AccessTokenProfile.Https) {
-            Write-Verbose "Creating HTTPS listener on port $($AccessTokenProfile.LocalhostPort)"
+        }
+        elseif ($AccessTokenProfile.Https) {
+            Write-Verbose "Creating HTTPS listener on port $($LocalHostPort)"
             $listener = New-Object System.Net.HttpListener
-            $listener.Prefixes.Add("https://localhost:$($AccessTokenProfile.LocalhostPort)/")
+            $listener.Prefixes.Add("https://localhost:$($LocalHostPort)/")
         }
         else {
-            Write-Verbose "Creating HTTP listener on port $($AccessTokenProfile.LocalhostPort)"
+            Write-Verbose "Creating HTTP listener on port $($LocalHostPort)"
             $listener = New-Object System.Net.HttpListener
-            $listener.Prefixes.Add("http://localhost:$($AccessTokenProfile.LocalhostPort)/")
+            $listener.Prefixes.Add("http://localhost:$($LocalHostPort)/")
         }
 
         Write-Verbose "Starting listener"
@@ -66,7 +73,7 @@ function Get-EntraIDInteractiveUserAccessToken {
         $code_challenge = $code_challenge.Replace("+", "-")
         $code_challenge = $code_challenge.Replace("=", "")
 
-        $authorizeUrl = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/authorize?client_id=$($AccessTokenProfile.ClientId)&response_type=code&redirect_uri=http://localhost:$($AccessTokenProfile.LocalhostPort)/&scope=$($AccessTokenProfile.Scope)&code_challenge=$($code_challenge)&code_challenge_method=S256"
+        $authorizeUrl = "https://login.microsoftonline.com/$($AccessTokenProfile.TenantId)/oauth2/v2.0/authorize?client_id=$($AccessTokenProfile.ClientId)&response_type=code&redirect_uri=http://localhost:$($LocalHostPort)/&scope=$($AccessTokenProfile.Scope)&code_challenge=$($code_challenge)&code_challenge_method=S256"
 
         # Display message or launch browser
         if ($AccessTokenProfile.LaunchBrowser) {
@@ -83,7 +90,7 @@ function Get-EntraIDInteractiveUserAccessToken {
         $counter = 0
         while (-not $contextTask.AsyncWaitHandle.WaitOne(100)) { 
             $counter += 1
-            if($counter % 30 -eq 0) {
+            if ($counter % 30 -eq 0) {
                 Write-Verbose "Waiting for authorization response..."
             }
         }
@@ -96,7 +103,7 @@ function Get-EntraIDInteractiveUserAccessToken {
 
         if ($code) {
             Write-Verbose "Writing success message back to http stream"
-            $context.Response.OutputStream.Write([System.Text.Encoding]::UTF8.GetBytes("<html><body>Authorization code received. You can close this window now.</body></html>"))
+            $context.Response.OutputStream.Write([System.Text.Encoding]::UTF8.GetBytes("<html><body>&#128640; Authorization code received. You can close this window now. &#9989;</body></html>"))
         }
         else {
             $errorHtml = "<html><body>ERROR: Authorization code not received. Go back to powershell and retry.</body></html>"
@@ -123,13 +130,13 @@ function Get-EntraIDInteractiveUserAccessToken {
             client_id     = $AccessTokenProfile.ClientId
             scope         = $AccessTokenProfile.Scope
             code          = $code
-            redirect_uri  = "{0}://localhost:{1}/" -f ($AccessTokenProfile.Https ? "https" : "http"), $AccessTokenProfile.LocalhostPort
+            redirect_uri  = "{0}://localhost:{1}/" -f ($AccessTokenProfile.Https ? "https" : "http"), $LocalHostPort
             grant_type    = "authorization_code"
             code_verifier = $codeVerifier
         }
 
         $headers = @{
-            Origin = "{0}://localhost:{1}/" -f ($AccessTokenProfile.Https ? "https" : "http"), $AccessTokenProfile.LocalhostPort
+            Origin = "{0}://localhost:{1}/" -f ($AccessTokenProfile.Https ? "https" : "http"), $LocalHostPort
         }
 
 

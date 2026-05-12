@@ -40,10 +40,6 @@ function Add-EntraIDInteractiveUserAccessTokenProfile {
     )
     
     Process {
-        if ($LocalhostPort -eq -1) {
-            $LocalhostPort = Get-Random -Minimum 1024 -Maximum 65535
-        }
-        
         if ($Script:Profiles.ContainsKey($Name)) {
             Write-Warning "Profile $Name already exists, overwriting"
         }
