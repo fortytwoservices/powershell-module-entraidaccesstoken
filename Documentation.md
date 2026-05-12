@@ -4,7 +4,7 @@ A module for simplifying the process of getting an access token from Entra ID
 
 | Metadata | Information |
 | --- | --- |
-| Version | 3.3.2 |
+| Version | 3.4.0 |
 | Author | Marius Solbakken Mellum |
 | Company name | Fortytwo Technologies AS |
 | PowerShell version | 7.1 |
@@ -3172,6 +3172,75 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### OUTPUTS
 
+### NOTES
+
+### RELATED LINKS
+## Get-EntraIDAdminConsentUrl
+
+### SYNOPSIS
+Generates an admin consent URL for a given application
+
+### SYNTAX
+
+```
+Get-EntraIDAdminConsentUrl [-ClientId] <String> [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+Generates an admin consent URL for a given application
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Get-EntraIDAccessTokenProfile | Get-EntraIDAdminConsentUrl
+```
+
+#### EXAMPLE 2
+```
+Get-EntraIDAdminConsentUrl -ClientId "your-client-id"
+```
+
+### PARAMETERS
+
+#### -ClientId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: True
+Position: 1
+Default value: None
+Accept pipeline input: True (ByPropertyName)
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
+#### System.String
 ### NOTES
 
 ### RELATED LINKS

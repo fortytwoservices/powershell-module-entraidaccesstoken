@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.3.2...v3.4.0) (2026-05-12)
+
+
+### Features
+
+* Add cmdlet Get-EntraIDAdminConsentUrl ([c807062](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/c8070628e29cf125f5720b655475814f829d1dbb))
+
 ## [3.3.2](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.3.1...v3.3.2) (2026-04-21)
 
 
