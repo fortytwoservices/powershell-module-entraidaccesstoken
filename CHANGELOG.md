@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.4.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.4.0...v3.4.1) (2026-05-12)
+
+
+### Bug Fixes
+
+* Adjust localhost randomization to randomize each run to avoid locked ports after cancels ([65076fa](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/65076fa559ac5ec2ee91e5f9675cd8972810d693))
+
 ## [3.4.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.3.2...v3.4.0) (2026-05-12)
 
 
