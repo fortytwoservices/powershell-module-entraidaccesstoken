@@ -4,7 +4,7 @@ A module for simplifying the process of getting an access token from Entra ID
 
 | Metadata | Information |
 | --- | --- |
-| Version | 3.4.1 |
+| Version | 3.5.0 |
 | Author | Marius Solbakken Mellum |
 | Company name | Fortytwo Technologies AS |
 | PowerShell version | 7.1 |
@@ -3241,6 +3241,85 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ### OUTPUTS
 
 #### System.String
+### NOTES
+
+### RELATED LINKS
+## Get-EntraIDAppPermission
+
+### SYNOPSIS
+Lists the available app permissions for an application
+
+### SYNTAX
+
+```
+Get-EntraIDAppPermission [[-ResourceApplicationId] <String>] [[-AccessTokenProfile] <String>]
+ [-ProgressAction <ActionPreference>] [<CommonParameters>]
+```
+
+### DESCRIPTION
+Lists the available app permissions for an application
+
+### EXAMPLES
+
+#### EXAMPLE 1
+```
+Get-EntraIDAppPermission -ResourceApplicationId "2808f963-7bba-4e66-9eee-82d0b178f408"
+```
+
+### PARAMETERS
+
+#### -ResourceApplicationId
+
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 1
+Default value: 00000003-0000-0000-c000-000000000000
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -AccessTokenProfile
+Microsoft Graph
+
+```yaml
+Type: String
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: 2
+Default value: Default
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### -ProgressAction
+
+
+```yaml
+Type: ActionPreference
+Parameter Sets: (All)
+Aliases: proga
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+#### CommonParameters
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
+
+### INPUTS
+
+### OUTPUTS
+
 ### NOTES
 
 ### RELATED LINKS
