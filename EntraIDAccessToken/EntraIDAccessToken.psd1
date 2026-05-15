@@ -8,7 +8,7 @@
     RootModule        = 'EntraIDAccessToken.psm1'
 
     # Version number of this module.
-    ModuleVersion = '3.4.1'
+    ModuleVersion = '3.5.0'
 
     # Supported PSEditions
     CompatiblePSEditions = @('Core')
@@ -68,7 +68,7 @@
     FunctionsToExport = '*'
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
-    CmdletsToExport = @('Add-EntraIDAgentUserTokenProfile','Add-EntraIDAutomationAccountMSIAccessTokenProfile','Add-EntraIDAzureArcManagedMSITokenProfile','Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile','Add-EntraIDAzurePowerShellSessionTokenProfile','Add-EntraIDAzureVMMSIAccessTokenProfile','Add-EntraIDClientCertificateAccessTokenProfile','Add-EntraIDClientSecretAccessTokenProfile','Add-EntraIDExternalAccessTokenProfile','Add-EntraIDFederatedCredentialTokenProfile','Add-EntraIDFunctionAppMSIAccessTokenProfile','Add-EntraIDGitHubFederatedCredentialAccessTokenProfile','Add-EntraIDInteractiveUserAccessTokenProfile','Add-EntraIDROPCAccessTokenProfile','Confirm-EntraIDAccessToken','ConvertFrom-EntraIDAccessToken','Get-EntraIDAccessToken','Get-EntraIDAccessTokenHasRoles','Get-EntraIDAccessTokenHasScopes','Get-EntraIDAccessTokenHeader','Get-EntraIDAccessTokenPayload','Get-EntraIDAccessTokenProfile','Get-EntraIDAccessTokenSecureString','Get-EntraIDAccessTokenType','Get-EntraIDAdminConsentUrl','New-DummyJWT','New-EntraIDAppPermission','Write-EntraIDAccessToken')
+    CmdletsToExport = @('Add-EntraIDAgentUserTokenProfile','Add-EntraIDAutomationAccountMSIAccessTokenProfile','Add-EntraIDAzureArcManagedMSITokenProfile','Add-EntraIDAzureDevOpsFederatedCredentialAccessTokenProfile','Add-EntraIDAzurePowerShellSessionTokenProfile','Add-EntraIDAzureVMMSIAccessTokenProfile','Add-EntraIDClientCertificateAccessTokenProfile','Add-EntraIDClientSecretAccessTokenProfile','Add-EntraIDExternalAccessTokenProfile','Add-EntraIDFederatedCredentialTokenProfile','Add-EntraIDFunctionAppMSIAccessTokenProfile','Add-EntraIDGitHubFederatedCredentialAccessTokenProfile','Add-EntraIDInteractiveUserAccessTokenProfile','Add-EntraIDROPCAccessTokenProfile','Confirm-EntraIDAccessToken','ConvertFrom-EntraIDAccessToken','Get-EntraIDAccessToken','Get-EntraIDAccessTokenHasRoles','Get-EntraIDAccessTokenHasScopes','Get-EntraIDAccessTokenHeader','Get-EntraIDAccessTokenPayload','Get-EntraIDAccessTokenProfile','Get-EntraIDAccessTokenSecureString','Get-EntraIDAccessTokenType','Get-EntraIDAdminConsentUrl','Get-EntraIDAppPermission','New-DummyJWT','New-EntraIDAppPermission','Write-EntraIDAccessToken')
 
     # Variables to export from this module
     VariablesToExport = @()

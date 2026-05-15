@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.5.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.4.1...v3.5.0) (2026-05-15)
+
+
+### Features
+
+* Add Get-EntraIDAppPermission ([f1afd75](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/f1afd7569f266883c73f32fb021832471cde4b93))
+
 ## [3.4.1](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.4.0...v3.4.1) (2026-05-12)
 
 
