@@ -9,15 +9,26 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
     steps:
     - name: Checkout
       uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       with:
         fetch-depth: 2
+    - name: Azure Login
+      uses: azure/login@v3
+      with:
+        client-id: ${{ vars.FORTYTWO_INTERNAL_POWERSHELL_PUSH_CLIENTID }}
+        tenant-id: ${{ vars.FORTYTWO_MANAGED_SERVICE_TENANTID }}
+        allow-no-subscriptions: true
+        enable-AzPSSession: true # Injects authentication into Az PowerShell module
     - name: Pester tests
       shell: pwsh
       run: |
-        Get-ChildItem -Recurse -Include *.psd1 | Import-PowerShellDataFile | Where-Object RequiredModules | Select-Object -ExpandProperty RequiredModules | Sort-Object -Unique | ForEach-Object {Install-Module -Scope CurrentUser -Force -Confirm:$false -Name $_}
+        Write-Host "Registering repository"
+        Register-PSResourceRepository -Name FortytwoInternal -Uri "${{ vars.FORTYTWO_INTERNAL_POWERSHELL_REPOSITORY }}" -Trusted -Priority 1
+        Set-PSResourceRepository -Name PSGallery -Trusted:$true
+        Get-ChildItem -Recurse -Include *.psd1 | Import-PowerShellDataFile | Where-Object RequiredModules | Select-Object -ExpandProperty RequiredModules | Sort-Object -Unique | ForEach-Object {Install-PSResource -Scope CurrentUser -Confirm:$false -Name $_}
         Invoke-Pester -ExcludeTagFilter "WindowsOnly"
       env:
         PESTERSECRET1: ${{ secrets.PESTERSECRET1 }}
