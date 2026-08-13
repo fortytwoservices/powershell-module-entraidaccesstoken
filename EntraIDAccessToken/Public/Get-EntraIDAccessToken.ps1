@@ -78,6 +78,23 @@ function Get-EntraIDAccessToken {
                 throw "TenantId is not set"
             }
         }
+        elseif ($P.AuthenticationMethod -eq "federatedtokenfile") {
+            if (!$P.File) {
+                throw "Federated token file must be specified when using federatedtokenfile as authentication method"
+            }
+
+            if(!(Test-Path -Path $P.File -PathType Leaf)) {
+                throw "Federated token file '$($P.File)' does not exist"
+            }
+
+            if([string]::IsNullOrEmpty((Get-Content -Raw -Path $P.File))) {
+                throw "Federated token file '$($P.File)' is empty"
+            }
+
+            if (!$P.TenantId) {
+                throw "TenantId is not set"
+            }
+        }
         elseif ($P.AuthenticationMethod -eq "clientcertificate") {
             if (!$P.Certificate) {
                 throw "No certificate specificed for clientcertificate auth method"
@@ -182,6 +199,9 @@ function Get-EntraIDAccessToken {
         try {
             if ($P.AuthenticationMethod -eq "clientsecret") {
                 $result = Get-EntraIDClientSecretAccessToken -AccessTokenProfile $P -FMIPath $FMIPath
+            }
+            elseif ($P.AuthenticationMethod -eq "federatedtokenfile") {
+                $result = Get-EntraIDFederatedTokenFileAccessToken -AccessTokenProfile $P
             }
             elseif($P.AuthenticationMethod -eq 'agentuser') {
                 $result = Get-EntraIDAgentUserAccessToken -AccessTokenProfile $P
