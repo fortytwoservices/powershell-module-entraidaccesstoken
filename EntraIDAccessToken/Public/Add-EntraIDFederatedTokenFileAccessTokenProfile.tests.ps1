@@ -2,11 +2,12 @@ BeforeAll {
     $Script:Module = Import-Module "$PSScriptRoot/../" -Force -PassThru
 
     $Script:TenantId = "12345678-1234-1234-1234-123456789012"
-    $Script:ClientIdForCredItself = "98fe3f87-d6ce-43b7-96d1-ddd2eb4fd2f1"
-    $Script:ClientIdWithFedCred = "bb3d51a9-8f6e-4f51-b52b-9c284bfe3120"
+    $Script:ClientId = "98fe3f87-d6ce-43b7-96d1-ddd2eb4fd2f1"
+    $Script:File = (New-TemporaryFile).FullName
+    New-DummyJWT -Aud "API://AzureADTokenExchange" -Iss "https://sts.windows.net/$($Script:TenantId)/" -Sub $Script:ClientId | Set-Content -Path $Script:File -NoNewline -Encoding UTF8
 }
 
-Describe "Add-EntraIDFederatedCredentialTokenProfile.1" -Tag Mocked {
+Describe "Add-EntraIDFederatedTokenFileAccessTokenProfile.1" -Tag Mocked, Dev {
     BeforeAll {
         Mock -ModuleName $Script:Module.Name -CommandName Invoke-RestMethod -ParameterFilter { $Uri -like "https://login.microsoftonline.com/$($Script:TenantId)/oauth2/v2.0/token" } -MockWith {
             Write-Verbose "Mocked Invoke-RestMethod called with Uri: $Uri" -Verbose
@@ -16,12 +17,12 @@ Describe "Add-EntraIDFederatedCredentialTokenProfile.1" -Tag Mocked {
 
             if ($Body["client_assertion"]) {
                 $CA = $Body["client_assertion"] | ConvertFrom-EntraIDAccessToken -AsHashTable
-                if ($CA.payload.aud -ne "fb60f99c-7a34-4190-8149-302f77469936") {
+                if ($CA.payload.aud -ne "API://AzureADTokenExchange") {
                     throw "Invalid audience $($CA.payload.aud) in client_assertion"
                 }
             }
 
-            $aud = ($scope.Replace("/.default", "")) -replace "api://AzureADTokenExchange", "fb60f99c-7a34-4190-8149-302f77469936"
+            $aud = ($scope.Replace("/.default", ""))
 
             return @{
                 access_token = New-DummyJWT -Aud $aud -Iss "https://sts.windows.net/$($Script:TenantId)/" -Sub $ClientId -Verbose
@@ -31,9 +32,8 @@ Describe "Add-EntraIDFederatedCredentialTokenProfile.1" -Tag Mocked {
         }
     }
 
-    It "Calls the Add-EntraIDFederatedCredentialTokenProfile function without throwing an error" {
-        { Add-EntraIDClientSecretAccessTokenProfile -Name "CredItself" -ClientId $Script:ClientIdForCredItself -TenantId $Script:TenantId -ClientSecret (ConvertTo-SecureString -String "dummy" -AsPlainText -Force) -Scope "api://AzureADTokenExchange/.default" } | Should -Not -Throw
-        { Add-EntraIDFederatedCredentialTokenProfile -Name "Fedprod" -Scope "https://graph.microsoft.com/.default" -ClientId $Script:ClientIdWithFedCred -TenantId $Script:TenantId -FederatedAccessTokenProfile "CredItself" } | Should -Not -Throw
+    It "Calls the Add-EntraIDFederatedTokenFileAccessTokenProfile function without throwing an error" {
+        { Add-EntraIDFederatedTokenFileAccessTokenProfile -Name "Fedprod" -Scope "https://graph.microsoft.com/.default" -ClientId $Script:ClientId -TenantId $Script:TenantId -File $Script:File } | Should -Not -Throw
 
         $AccessToken = Get-EntraIDAccessToken -Profile "Fedprod" | ConvertFrom-EntraIDAccessToken -AsHashTable
 
