@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.6.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.5.0...v3.6.0) (2026-08-13)
+
+
+### Features
+
+* Add new access token profile: Add-EntraIDFederatedTokenFileAccessTokenProfile ([3889844](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/commit/38898443fcf9a2f7f50dd22d6bb604e359ddd838))
+
 ## [3.5.0](https://github.com/fortytwoservices/powershell-module-entraidaccesstoken/compare/v3.4.1...v3.5.0) (2026-05-15)
 
 
