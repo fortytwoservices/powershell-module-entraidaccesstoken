@@ -42,8 +42,14 @@ jobs:
           $RequiredModules = [ScriptBlock]::Create((Get-Content -Raw $psd1.FullName)).Invoke().RequiredModules
           if($RequiredModules) {
             $RequiredModules | ForEach-Object {
-              Write-Host "Installing required module $_"
-              Install-Module -Name $_ -Scope CurrentUser -Confirm:$false -Force
+              $ModuleName = $_
+              Write-Host "Installing required module $ModuleName"
+              try {
+                Install-Module -Name $ModuleName -Scope CurrentUser -Confirm:$false -Force
+              } catch {
+                Write-Warning "Failed to install required module $ModuleName, instead we will import a dummy module to replace this requirement."
+                New-Module $ModuleName -ScriptBlock {} | Import-Module -Global
+              }
             }
           }
           $ModulePath = $psd1.FullName | Split-Path -Parent
@@ -63,7 +69,7 @@ jobs:
               ForEach-Object {if($_ -like "*ModuleVersion*=*"){"    ModuleVersion = '$releasePleaseVersion'"} else {$_}} | 
               ForEach-Object {if($_ -like "*CmdletsToExport*'`*'*" -or $_ -like "*CmdletsToExport*@(*)*"){"    CmdletsToExport = @('{0}')" -f ($module.ExportedFunctions.Keys -join "','")} else {$_}} | 
               Out-String).Trim() | 
-              Set-Content $psd1.FullName
+              Set-Content -Encoding utf8BOM $psd1.FullName
           }
           
           # Generate README.md
